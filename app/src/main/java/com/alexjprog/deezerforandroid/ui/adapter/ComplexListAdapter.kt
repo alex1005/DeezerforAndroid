@@ -19,10 +19,12 @@ class ComplexListAdapter(private var data: List<ComplexListItem>) :
         }
     }
 
-    inner class HorizontalTrackListViewHolder(binding: HorizontalTrackListItemBinding) :
+    inner class HorizontalTrackListViewHolder(private val binding: HorizontalTrackListItemBinding) :
         ComplexViewHolder(binding.root) {
         fun onBindView(item: ComplexListItem.HorizontalTrackListItem) {
-
+            with(binding) {
+                rcHorizontalList.adapter = TileListAdapter(item.data)
+            }
         }
     }
 

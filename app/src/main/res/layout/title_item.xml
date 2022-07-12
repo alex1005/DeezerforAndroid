@@ -5,4 +5,4 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:text="Title"
-    android:textSize="24sp"/>
+    android:textSize="@dimen/big_text"/>
