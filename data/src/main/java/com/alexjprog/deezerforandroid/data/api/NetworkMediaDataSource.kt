@@ -6,10 +6,14 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import javax.inject.Inject
+import javax.inject.Named
+import kotlin.coroutines.CoroutineContext
 
-class NetworkMediaDataSource(
+class NetworkMediaDataSource @Inject constructor(
     private val api: MediaService,
-    private val apiDispatcher: CoroutineDispatcher
+    @Named("api")
+    private val apiCoroutineContext: CoroutineContext
 ):IMediaDataSource {
 
     override fun getCharts(): Flow<List<TrackApiData>> = flow {
@@ -17,5 +21,5 @@ class NetworkMediaDataSource(
         if (!response.isSuccessful) emit(listOf())
         emit(response.body()?.data ?: listOf())
     }.catch { emit(listOf()) }
-        .flowOn(apiDispatcher)
+        .flowOn(apiCoroutineContext)
 }

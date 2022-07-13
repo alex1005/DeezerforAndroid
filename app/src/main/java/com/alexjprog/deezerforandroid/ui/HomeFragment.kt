@@ -1,19 +1,32 @@
 package com.alexjprog.deezerforandroid.ui
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import com.alexjprog.deezerforandroid.app.DeezerApplication
 import com.alexjprog.deezerforandroid.databinding.FragmentHomeBinding
 import com.alexjprog.deezerforandroid.ui.adapter.ComplexListAdapter
 import com.alexjprog.deezerforandroid.viewmodel.HomeViewModel
+import com.alexjprog.deezerforandroid.viewmodel.ViewModelFactory
+import javax.inject.Inject
 
 class HomeFragment : Fragment() {
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+
     private var _binding: FragmentHomeBinding? = null
     private val binding: FragmentHomeBinding get() = _binding!!
-    private val viewModel: HomeViewModel by activityViewModels()
+    private val viewModel: HomeViewModel
+        by activityViewModels(factoryProducer = { viewModelFactory })
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (context.applicationContext as DeezerApplication).appComponent.inject(this)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

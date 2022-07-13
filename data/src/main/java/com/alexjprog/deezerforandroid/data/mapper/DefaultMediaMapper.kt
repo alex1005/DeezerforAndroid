@@ -6,8 +6,9 @@ import com.alexjprog.deezerforandroid.data.api.model.TrackApiData
 import com.alexjprog.deezerforandroid.domain.model.AlbumModel
 import com.alexjprog.deezerforandroid.domain.model.ArtistModel
 import com.alexjprog.deezerforandroid.domain.model.TrackModel
+import javax.inject.Inject
 
-class DefaultMediaMapper : IMediaMapper {
+class DefaultMediaMapper @Inject constructor() : IMediaMapper {
     override fun mapTrack(track: TrackApiData): TrackModel =
         TrackModel(
             id = track.id,

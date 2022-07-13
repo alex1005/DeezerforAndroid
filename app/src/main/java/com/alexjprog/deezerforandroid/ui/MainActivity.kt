@@ -2,6 +2,7 @@ package com.alexjprog.deezerforandroid.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.viewModels
 import com.alexjprog.deezerforandroid.R
 
 class MainActivity : AppCompatActivity() {

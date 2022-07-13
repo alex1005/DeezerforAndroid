@@ -12,25 +12,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Inject
 
-class HomeViewModel : ViewModel() {
+class HomeViewModel @Inject constructor(
+    private val getChartsUseCase: GetChartsUseCase) : ViewModel() {
     private val _feed = MutableLiveData<List<ComplexListItem>>()
     val feed: LiveData<List<ComplexListItem>> by this::_feed
-
-    //Will be injected
-    private val repository: MediaRepository by lazy {
-        val api = Retrofit.Builder()
-            .baseUrl("https://api.deezer.com/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-            .create(MediaService::class.java)
-
-        val dataSource = NetworkMediaDataSource(api, Dispatchers.IO)
-        val mapper = DefaultMediaMapper()
-        MediaRepositoryImpl(dataSource, mapper)
-    }
-
-    private val getChartsUseCase = GetChartsUseCase(repository)
 
     init {
         loadFeed()
