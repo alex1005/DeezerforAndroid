@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import com.alexjprog.deezerforandroid.databinding.FragmentHomeBinding
+import com.alexjprog.deezerforandroid.ui.adapter.ComplexListAdapter
 import com.alexjprog.deezerforandroid.viewmodel.HomeViewModel
 
 class HomeFragment : Fragment() {
@@ -20,6 +21,12 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
+
+        viewModel.feed.observe(viewLifecycleOwner) {
+            if(it != null) {
+                binding.rcHomeFeed.adapter = ComplexListAdapter(it)
+            }
+        }
         return binding.root
     }
 

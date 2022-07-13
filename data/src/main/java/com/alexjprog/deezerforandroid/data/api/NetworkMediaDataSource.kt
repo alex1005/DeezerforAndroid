@@ -15,7 +15,7 @@ class NetworkMediaDataSource(
     override fun getCharts(): Flow<List<TrackApiData>> = flow {
         val response = api.getCharts()
         if (!response.isSuccessful) emit(listOf())
-        emit(response.body() ?: listOf())
+        emit(response.body()?.data ?: listOf())
     }.catch { emit(listOf()) }
         .flowOn(apiDispatcher)
 }
