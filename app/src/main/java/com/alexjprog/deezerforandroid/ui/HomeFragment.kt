@@ -7,9 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.alexjprog.deezerforandroid.app.DeezerApplication
 import com.alexjprog.deezerforandroid.databinding.FragmentHomeBinding
-import com.alexjprog.deezerforandroid.ui.adapter.ComplexListAdapter
+import com.alexjprog.deezerforandroid.ui.adapter.complex.ComplexListAdapter
 import com.alexjprog.deezerforandroid.viewmodel.HomeViewModel
 import com.alexjprog.deezerforandroid.viewmodel.ViewModelFactory
 import javax.inject.Inject
@@ -22,6 +23,10 @@ class HomeFragment : Fragment() {
     private val binding: FragmentHomeBinding get() = _binding!!
     private val viewModel: HomeViewModel
         by activityViewModels(factoryProducer = { viewModelFactory })
+
+    private val openMoreAction: (MoreContentFragment.ContentCategory) -> Unit = { category ->
+        findNavController().navigate(HomeFragmentDirections.actionOpenMoreContent(category))
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -37,7 +42,7 @@ class HomeFragment : Fragment() {
 
         viewModel.feed.observe(viewLifecycleOwner) {
             if(it != null) {
-                binding.rcHomeFeed.adapter = ComplexListAdapter(it)
+                binding.rcHomeFeed.adapter = ComplexListAdapter(it, openMoreAction)
             }
         }
         return binding.root

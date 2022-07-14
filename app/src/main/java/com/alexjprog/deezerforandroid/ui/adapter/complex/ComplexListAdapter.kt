@@ -1,4 +1,4 @@
-package com.alexjprog.deezerforandroid.ui.adapter
+package com.alexjprog.deezerforandroid.ui.adapter.complex
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,16 +6,23 @@ import androidx.recyclerview.widget.RecyclerView
 import com.alexjprog.deezerforandroid.R
 import com.alexjprog.deezerforandroid.databinding.HorizontalTrackListItemBinding
 import com.alexjprog.deezerforandroid.databinding.TitleItemBinding
-import com.alexjprog.deezerforandroid.ui.adapter.complex.ComplexListItem
-import com.alexjprog.deezerforandroid.ui.adapter.complex.ComplexViewHolder
+import com.alexjprog.deezerforandroid.ui.MoreContentFragment
+import com.alexjprog.deezerforandroid.ui.adapter.tile.HorizontalTileListAdapter
 
-class ComplexListAdapter(private var data: List<ComplexListItem>) :
+class ComplexListAdapter(
+    private val data: List<ComplexListItem>,
+    private val openMoreAction: (MoreContentFragment.ContentCategory) -> Unit) :
     RecyclerView.Adapter<ComplexViewHolder>() {
 
     inner class TitleViewHolder(private val binding: TitleItemBinding) :
         ComplexViewHolder(binding.root) {
         fun onBindView(item: ComplexListItem.TitleItem) {
-            binding.tvTitle.text = item.title
+            with(binding) {
+                tvTitle.also {
+                    it.text = it.resources.getString(item.category.titleResId)
+                }
+                btnMoreContent.setOnClickListener { openMoreAction(item.category) }
+            }
         }
     }
 
@@ -23,7 +30,7 @@ class ComplexListAdapter(private var data: List<ComplexListItem>) :
         ComplexViewHolder(binding.root) {
         fun onBindView(item: ComplexListItem.HorizontalTrackListItem) {
             with(binding) {
-                rcHorizontalList.adapter = TileListAdapter(item.data)
+                rcHorizontalList.adapter = HorizontalTileListAdapter(item.data)
             }
         }
     }

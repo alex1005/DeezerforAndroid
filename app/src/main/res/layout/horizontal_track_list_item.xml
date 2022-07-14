@@ -6,8 +6,8 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
-    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
     tools:itemCount="7"
-    tools:listitem="@layout/tile_item">
+    tools:listitem="@layout/tile_item_linear">
 
 </androidx.recyclerview.widget.RecyclerView>

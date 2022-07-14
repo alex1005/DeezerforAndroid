@@ -9,5 +9,18 @@
         android:id="@+id/homeFragment"
         android:name="com.alexjprog.deezerforandroid.ui.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/actionOpenMoreContent"
+            app:destination="@id/moreContentFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/moreContentFragment"
+        android:name="com.alexjprog.deezerforandroid.ui.MoreContentFragment"
+        android:label="fragment_more_content"
+        tools:layout="@layout/fragment_more_content" >
+        <argument
+            android:name="category"
+            app:argType="com.alexjprog.deezerforandroid.ui.MoreContentFragment$ContentCategory" />
+    </fragment>
 </navigation>

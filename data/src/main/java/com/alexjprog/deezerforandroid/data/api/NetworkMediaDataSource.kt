@@ -1,7 +1,6 @@
 package com.alexjprog.deezerforandroid.data.api
 
 import com.alexjprog.deezerforandroid.data.api.model.TrackApiData
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow

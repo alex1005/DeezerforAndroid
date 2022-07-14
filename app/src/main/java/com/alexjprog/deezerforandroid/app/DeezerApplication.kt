@@ -9,6 +9,6 @@ class DeezerApplication: Application() {
 
     override fun onCreate() {
         super.onCreate()
-        appComponent = DaggerAppComponent.builder().build()
+        appComponent = DaggerAppComponent.builder().application(this).build()
     }
 }
