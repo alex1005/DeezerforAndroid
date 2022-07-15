@@ -1,9 +1,10 @@
 package com.alexjprog.deezerforandroid.di
 
-import android.app.Application
+import android.content.Context
 import com.alexjprog.deezerforandroid.di.module.*
-import com.alexjprog.deezerforandroid.ui.HomeFragment
-import com.alexjprog.deezerforandroid.ui.MoreContentFragment
+import com.alexjprog.deezerforandroid.ui.mvvm.HomeFragment
+import com.alexjprog.deezerforandroid.ui.mvp.LoginActivity
+import com.alexjprog.deezerforandroid.ui.mvvm.MoreContentFragment
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -17,9 +18,10 @@ interface AppComponent {
         fun build(): AppComponent
 
         @BindsInstance
-        fun application(application: Application): Builder
+        fun application(context: Context): Builder
     }
 
+    fun inject(loginActivity: LoginActivity)
     fun inject(homeFragment: HomeFragment)
     fun inject(moreContentFragment: MoreContentFragment)
 }

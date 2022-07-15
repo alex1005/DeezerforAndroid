@@ -1,4 +1,4 @@
-package com.alexjprog.deezerforandroid.ui
+package com.alexjprog.deezerforandroid.ui.mvp
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -7,15 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.alexjprog.deezerforandroid.R
-import com.alexjprog.deezerforandroid.viewmodel.SearchViewModel
 
 class SearchFragment : Fragment() {
-
-    companion object {
-        fun newInstance() = SearchFragment()
-    }
-
-    private lateinit var viewModel: SearchViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -23,11 +16,4 @@ class SearchFragment : Fragment() {
     ): View? {
         return inflater.inflate(R.layout.fragment_search, container, false)
     }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(SearchViewModel::class.java)
-        // TODO: Use the ViewModel
-    }
-
 }

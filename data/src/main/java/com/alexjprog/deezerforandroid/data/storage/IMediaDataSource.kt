@@ -1,4 +1,4 @@
-package com.alexjprog.deezerforandroid.data.api
+package com.alexjprog.deezerforandroid.data.storage
 
 import com.alexjprog.deezerforandroid.data.api.model.TrackApiData
 import kotlinx.coroutines.flow.Flow

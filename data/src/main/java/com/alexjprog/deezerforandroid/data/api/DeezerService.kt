@@ -6,7 +6,7 @@ import com.alexjprog.deezerforandroid.domain.model.TrackModel
 import retrofit2.Response
 import retrofit2.http.GET
 
-interface MediaService {
+interface DeezerService {
     @GET("chart/0/tracks")
     suspend fun getCharts(): Response<ResultPageApiData<TrackApiData>>
 }

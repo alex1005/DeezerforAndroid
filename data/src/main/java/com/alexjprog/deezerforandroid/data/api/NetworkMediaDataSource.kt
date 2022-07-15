@@ -1,6 +1,7 @@
 package com.alexjprog.deezerforandroid.data.api
 
 import com.alexjprog.deezerforandroid.data.api.model.TrackApiData
+import com.alexjprog.deezerforandroid.data.storage.IMediaDataSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
@@ -10,10 +11,10 @@ import javax.inject.Named
 import kotlin.coroutines.CoroutineContext
 
 class NetworkMediaDataSource @Inject constructor(
-    private val api: MediaService,
+    private val api: DeezerService,
     @Named("api")
     private val apiCoroutineContext: CoroutineContext
-):IMediaDataSource {
+): IMediaDataSource {
 
     override fun getCharts(): Flow<List<TrackApiData>> = flow {
         val response = api.getCharts()

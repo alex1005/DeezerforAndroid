@@ -1,6 +1,6 @@
 package com.alexjprog.deezerforandroid.data.repository
 
-import com.alexjprog.deezerforandroid.data.api.IMediaDataSource
+import com.alexjprog.deezerforandroid.data.storage.IMediaDataSource
 import com.alexjprog.deezerforandroid.data.mapper.IMediaMapper
 import com.alexjprog.deezerforandroid.domain.model.TrackModel
 import com.alexjprog.deezerforandroid.domain.repository.MediaRepository

@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId "com.alexjprog.deezerforandroid"
-        minSdk 21
+        minSdk 23
         targetSdk 31
         versionCode 1
         versionName "1.0"
@@ -73,6 +73,6 @@ dependencies {
     implementation "com.github.bumptech.glide:glide:$glide_ver"
     annotationProcessor "com.github.bumptech.glide:compiler:$glide_ver"
 
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.9.1'
+    //debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.9.1'
 
 }

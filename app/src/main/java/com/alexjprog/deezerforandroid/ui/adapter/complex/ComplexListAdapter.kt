@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.alexjprog.deezerforandroid.R
 import com.alexjprog.deezerforandroid.databinding.HorizontalTrackListItemBinding
 import com.alexjprog.deezerforandroid.databinding.TitleItemBinding
-import com.alexjprog.deezerforandroid.ui.MoreContentFragment
+import com.alexjprog.deezerforandroid.ui.mvvm.MoreContentFragment
 import com.alexjprog.deezerforandroid.ui.adapter.tile.HorizontalTileListAdapter
 
 class ComplexListAdapter(

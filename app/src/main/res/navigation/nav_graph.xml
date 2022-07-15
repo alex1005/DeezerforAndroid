@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.alexjprog.deezerforandroid.ui.HomeFragment"
+        android:name="com.alexjprog.deezerforandroid.ui.mvvm.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -16,11 +16,11 @@
     </fragment>
     <fragment
         android:id="@+id/moreContentFragment"
-        android:name="com.alexjprog.deezerforandroid.ui.MoreContentFragment"
+        android:name="com.alexjprog.deezerforandroid.ui.mvvm.MoreContentFragment"
         android:label="fragment_more_content"
         tools:layout="@layout/fragment_more_content" >
         <argument
             android:name="category"
-            app:argType="com.alexjprog.deezerforandroid.ui.MoreContentFragment$ContentCategory" />
+            app:argType="com.alexjprog.deezerforandroid.ui.mvvm.MoreContentFragment$ContentCategory" />
     </fragment>
 </navigation>

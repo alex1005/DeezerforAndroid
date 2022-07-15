@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alexjprog.deezerforandroid.domain.model.TrackModel
 import com.alexjprog.deezerforandroid.domain.usecase.GetChartsUseCase
-import com.alexjprog.deezerforandroid.ui.MoreContentFragment
+import com.alexjprog.deezerforandroid.ui.mvvm.MoreContentFragment
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

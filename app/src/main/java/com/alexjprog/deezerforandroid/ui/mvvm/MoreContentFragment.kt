@@ -1,4 +1,4 @@
-package com.alexjprog.deezerforandroid.ui
+package com.alexjprog.deezerforandroid.ui.mvvm
 
 import android.content.Context
 import android.os.Bundle
