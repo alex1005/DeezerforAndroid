@@ -13,6 +13,9 @@
         <action
             android:id="@+id/actionOpenMoreContent"
             app:destination="@id/moreContentFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
     </fragment>
     <fragment
         android:id="@+id/moreContentFragment"
@@ -23,4 +26,9 @@
             android:name="category"
             app:argType="com.alexjprog.deezerforandroid.ui.mvvm.MoreContentFragment$ContentCategory" />
     </fragment>
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.alexjprog.deezerforandroid.ui.mvp.SearchFragment"
+        android:label="fragment_search"
+        tools:layout="@layout/fragment_search" />
 </navigation>

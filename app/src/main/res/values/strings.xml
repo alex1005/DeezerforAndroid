@@ -1,5 +1,7 @@
 <resources>
-    <string name="app_name">Deezer for Android</string>
+    <string name="app_name">Deezer App</string>
     <string name="charts">Charts</string>
     <string name="login">Login</string>
+    <string name="search">Search</string>
+    <string name="account">Account</string>
 </resources>

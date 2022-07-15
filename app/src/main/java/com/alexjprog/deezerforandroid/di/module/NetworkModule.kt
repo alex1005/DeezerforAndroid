@@ -19,12 +19,11 @@ class NetworkModule {
     fun provideOkHttpClient(loginStore: LoginStore): OkHttpClient =
         OkHttpClient.Builder()
             .also { builder ->
-                loginStore.userToken?.let{ builder.addInterceptor(AuthInterceptor(it)) }
+                builder.addInterceptor(AuthInterceptor(loginStore))
             }.build()
 
     @Singleton
     @Provides
-    @Named("logged_in")
     fun provideLoggedInRetrofitInstance(okHttpClient: OkHttpClient): Retrofit =
         Retrofit.Builder()
             .baseUrl("https://api.deezer.com/")
@@ -34,6 +33,6 @@ class NetworkModule {
 
     @Singleton
     @Provides
-    fun provideMediaService(@Named("logged_in") retrofit: Retrofit): DeezerService =
+    fun provideMediaService(retrofit: Retrofit): DeezerService =
         retrofit.create(DeezerService::class.java)
 }
