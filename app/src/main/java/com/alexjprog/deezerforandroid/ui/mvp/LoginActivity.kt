@@ -55,6 +55,11 @@ class LoginActivity : AppCompatActivity(), LoginContract.View {
         startActivity(intent)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.onDetach()
+    }
+
     companion object {
         private const val APP_ID = ***REMOVED***
         private const val REDIRECT_URI = ***REMOVED***

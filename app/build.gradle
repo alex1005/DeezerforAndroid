@@ -73,6 +73,8 @@ dependencies {
     implementation "com.github.bumptech.glide:glide:$glide_ver"
     annotationProcessor "com.github.bumptech.glide:compiler:$glide_ver"
 
-    //debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.9.1'
+    implementation "io.reactivex.rxjava3:rxjava:3.1.5"
+    implementation 'com.squareup.retrofit2:adapter-rxjava3:2.9.0'
 
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.9.1'
 }

@@ -1,9 +1,9 @@
 package com.alexjprog.deezerforandroid.di.module
 
-import com.alexjprog.deezerforandroid.data.storage.IMediaDataSource
-import com.alexjprog.deezerforandroid.data.api.NetworkMediaDataSource
-import com.alexjprog.deezerforandroid.data.mapper.DefaultMediaMapper
-import com.alexjprog.deezerforandroid.data.mapper.IMediaMapper
+import com.alexjprog.deezerforandroid.data.storage.IDeezerDataSource
+import com.alexjprog.deezerforandroid.data.api.NetworkDeezerDataSource
+import com.alexjprog.deezerforandroid.data.mapper.DefaultApiMapper
+import com.alexjprog.deezerforandroid.data.mapper.IApiMapper
 import com.alexjprog.deezerforandroid.data.repository.MediaRepositoryImpl
 import com.alexjprog.deezerforandroid.data.repository.UserRepositoryImpl
 import com.alexjprog.deezerforandroid.data.sharedprefs.LoginStore
@@ -20,11 +20,11 @@ class DataModule {
     interface DataBinds {
         @Singleton
         @Binds
-        fun bindMediaDataSource(networkMediaDataSource: NetworkMediaDataSource): IMediaDataSource
+        fun bindMediaDataSource(networkDeezerDataSource: NetworkDeezerDataSource): IDeezerDataSource
 
         @Singleton
         @Binds
-        fun bindMediaMapper(defaultMediaMapper: DefaultMediaMapper): IMediaMapper
+        fun bindMediaMapper(defaultApiMapper: DefaultApiMapper): IApiMapper
 
         @Singleton
         @Binds

@@ -1,16 +1,17 @@
 package com.alexjprog.deezerforandroid.di.module
 
-import android.app.Application
+
 import com.alexjprog.deezerforandroid.data.api.DeezerService
 import com.alexjprog.deezerforandroid.data.api.interceptor.AuthInterceptor
 import com.alexjprog.deezerforandroid.data.sharedprefs.LoginStore
 import dagger.Module
 import dagger.Provides
+import io.reactivex.rxjava3.schedulers.Schedulers
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import javax.inject.Named
 import javax.inject.Singleton
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 
 @Module
 class NetworkModule {
@@ -28,6 +29,7 @@ class NetworkModule {
         Retrofit.Builder()
             .baseUrl("https://api.deezer.com/")
             .client(okHttpClient)
+            .addCallAdapterFactory(RxJava3CallAdapterFactory.createWithScheduler(Schedulers.io()))
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
