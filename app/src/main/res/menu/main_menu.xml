@@ -10,5 +10,5 @@
         android:id="@+id/account_menu"
         android:title="@string/account"
         android:icon="@drawable/ic_baseline_account_circle_24"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom" />
 </menu>

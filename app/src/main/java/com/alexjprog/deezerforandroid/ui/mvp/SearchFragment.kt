@@ -2,6 +2,8 @@ package com.alexjprog.deezerforandroid.ui.mvp
 
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +17,6 @@ import com.alexjprog.deezerforandroid.domain.model.SearchSuggestionModel
 import com.alexjprog.deezerforandroid.presenter.SearchPresenter
 import com.alexjprog.deezerforandroid.ui.adapter.search.SearchSuggestionListAdapter
 import com.alexjprog.deezerforandroid.ui.mvp.contract.SearchContract
-import com.alexjprog.deezerforandroid.util.ui.onStartOrEndDrawableClicked
 import javax.inject.Inject
 
 class SearchFragment : Fragment(), SearchContract.View {
@@ -26,12 +27,12 @@ class SearchFragment : Fragment(), SearchContract.View {
     private var _binding: FragmentSearchBinding? = null
     private val binding: FragmentSearchBinding get() = _binding!!
 
-    private val backAction: (view: EditText) -> Unit = {
+    private val backAction: (View) -> Unit = {
         findNavController().navigateUp()
     }
 
-    private val clearAction: (view: EditText) -> Unit = {
-        it.text.clear()
+    private val clearAction: (View) -> Unit = {
+        binding.inputField.etSearch.text.clear()
     }
 
     override fun onAttach(context: Context) {
@@ -48,8 +49,32 @@ class SearchFragment : Fragment(), SearchContract.View {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
 
         with(binding) {
-            etSearch.onStartOrEndDrawableClicked(backAction, clearAction)
-            etSearch.requestFocus()
+            with(inputField){
+                btnBack.setOnClickListener(backAction)
+                btnClear.setOnClickListener(clearAction)
+                etSearch.addTextChangedListener(object: TextWatcher {
+                    override fun beforeTextChanged(
+                        s: CharSequence?,
+                        start: Int,
+                        count: Int,
+                        after: Int
+                    ) {
+                    }
+
+                    override fun onTextChanged(
+                        s: CharSequence?,
+                        start: Int,
+                        before: Int,
+                        count: Int
+                    ) {
+                    }
+
+                    override fun afterTextChanged(s: Editable?) {
+                        btnClear.visibility = if(s == null || s.isEmpty()) View.GONE
+                        else View.VISIBLE
+                    }
+                })
+            }
 
             rcSearchSuggestions.adapter = SearchSuggestionListAdapter(listOf(SearchSuggestionModel("Eminem", true), SearchSuggestionModel("Rock", false)))
         }

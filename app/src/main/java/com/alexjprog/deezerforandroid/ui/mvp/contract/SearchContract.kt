@@ -5,5 +5,7 @@ import com.alexjprog.deezerforandroid.ui.mvp.BaseView
 
 interface SearchContract {
     interface View: BaseView
-    interface Presenter: MVPPresenter<View>
+    interface Presenter: MVPPresenter<View> {
+
+    }
 }
