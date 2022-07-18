@@ -28,6 +28,8 @@ class SearchFragment : Fragment(), SearchContract.View {
     private var _binding: FragmentSearchBinding? = null
     private val binding: FragmentSearchBinding get() = _binding!!
 
+    private var searchSuggestionListState: Parcelable? = null
+
     private val backAction: (View) -> Unit = {
         findNavController().navigateUp()
     }
@@ -98,11 +100,12 @@ class SearchFragment : Fragment(), SearchContract.View {
             with(binding) {
                 val restoredData =
                     SaveStateHelper.restoreSearchSuggestionModelList(savedInstanceState)
-                val state = savedInstanceState.getParcelable<Parcelable>(
-                    SEARCH_SUGGESTIONS_LIST_STATE_KEY
-                )
                 rcSearchSuggestions.adapter = SearchSuggestionListAdapter(restoredData)
-                rcSearchSuggestions.layoutManager?.onRestoreInstanceState(state)
+                SaveStateHelper.restoreRecyclerViewState(
+                    savedInstanceState,
+                    SEARCH_SUGGESTIONS_LIST_STATE_KEY,
+                    rcSearchSuggestions
+                )
             }
         }
     }
@@ -111,9 +114,10 @@ class SearchFragment : Fragment(), SearchContract.View {
         with(binding) {
             val data = (rcSearchSuggestions.adapter as? SearchSuggestionListAdapter)?.data
             SaveStateHelper.saveSearchSuggestionModelList(outState, data)
-            outState.putParcelable(
+            SaveStateHelper.saveRecyclerViewState(
+                outState,
                 SEARCH_SUGGESTIONS_LIST_STATE_KEY,
-                rcSearchSuggestions.layoutManager?.onSaveInstanceState()
+                searchSuggestionListState
             )
         }
         super.onSaveInstanceState(outState)
@@ -122,12 +126,19 @@ class SearchFragment : Fragment(), SearchContract.View {
     override fun onStop() {
         super.onStop()
         (requireActivity() as AppCompatActivity).supportActionBar?.show()
-        binding.inputField.etSearch.clearFocus()
+        with(binding) {
+            inputField.etSearch.clearFocus()
+            searchSuggestionListState = rcSearchSuggestions.layoutManager?.onSaveInstanceState()
+        }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         _binding = null
+    }
+
+    override fun onDetach() {
+        super.onDetach()
         presenter.onDetach()
     }
 
@@ -136,6 +147,6 @@ class SearchFragment : Fragment(), SearchContract.View {
     }
 
     companion object {
-        const val SEARCH_SUGGESTIONS_LIST_STATE_KEY = "search"
+        const val SEARCH_SUGGESTIONS_LIST_STATE_KEY = "search_list"
     }
 }

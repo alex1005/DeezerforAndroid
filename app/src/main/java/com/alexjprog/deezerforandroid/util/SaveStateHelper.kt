@@ -1,6 +1,8 @@
 package com.alexjprog.deezerforandroid.util
 
 import android.os.Bundle
+import android.os.Parcelable
+import androidx.recyclerview.widget.RecyclerView
 import com.alexjprog.deezerforandroid.domain.model.SearchSuggestionModel
 
 object SaveStateHelper {
@@ -22,6 +24,19 @@ object SaveStateHelper {
             titles.zip(historyMarks.toTypedArray())
                 .map { (title, isHistory) -> SearchSuggestionModel(title, isHistory) }
         } else listOf()
+    }
+
+    fun saveRecyclerViewState(outState: Bundle, recyclerKey: String, state: Parcelable?) {
+        outState.putParcelable(recyclerKey, state)
+    }
+
+    fun restoreRecyclerViewState(
+        savedInstanceState: Bundle,
+        recyclerKey: String,
+        recyclerView: RecyclerView
+    ) {
+        val state = savedInstanceState.getParcelable<Parcelable>(recyclerKey)
+        recyclerView.layoutManager?.onRestoreInstanceState(state)
     }
 
     private const val SEARCH_SUGGESTION_TITLES = "search_titles"
