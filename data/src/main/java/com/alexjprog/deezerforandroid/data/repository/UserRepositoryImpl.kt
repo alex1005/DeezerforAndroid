@@ -19,8 +19,8 @@ class UserRepositoryImpl @Inject constructor(
         loginStore.userToken = token
     }
 
-    override fun getSearchHistory(query: String): Observable<List<SearchSuggestionModel>> =
-        deezerSource.getSearchHistory(query).map { list ->
+    override fun getSearchHistory(): Observable<List<SearchSuggestionModel>> =
+        deezerSource.getSearchHistory().map { list ->
             list.map { apiMapper.mapSearchHistoryResult(it) }
         }
 }

@@ -7,7 +7,6 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -48,8 +47,10 @@ class SearchFragment : Fragment(), SearchContract.View {
     ): View {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
 
+        presenter.subscribeToSearchInput()
         with(binding) {
             with(inputField){
+                etSearch.requestFocus()
                 btnBack.setOnClickListener(backAction)
                 btnClear.setOnClickListener(clearAction)
                 etSearch.addTextChangedListener(object: TextWatcher {
@@ -70,13 +71,13 @@ class SearchFragment : Fragment(), SearchContract.View {
                     }
 
                     override fun afterTextChanged(s: Editable?) {
-                        btnClear.visibility = if(s == null || s.isEmpty()) View.GONE
+                        btnClear.visibility = if (s == null || s.isEmpty()) View.GONE
                         else View.VISIBLE
+
+                        s?.let { presenter.postSearchQuery(it.toString()) }
                     }
                 })
             }
-
-            rcSearchSuggestions.adapter = SearchSuggestionListAdapter(listOf(SearchSuggestionModel("Eminem", true), SearchSuggestionModel("Rock", false)))
         }
         return binding.root
     }
@@ -95,5 +96,9 @@ class SearchFragment : Fragment(), SearchContract.View {
         super.onDestroy()
         _binding = null
         presenter.onDetach()
+    }
+
+    override fun updateSearchSuggestions(data: List<SearchSuggestionModel>) {
+        binding.rcSearchSuggestions.adapter = SearchSuggestionListAdapter(data)
     }
 }

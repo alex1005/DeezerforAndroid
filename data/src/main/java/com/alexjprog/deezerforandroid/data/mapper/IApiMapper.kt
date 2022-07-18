@@ -15,4 +15,5 @@ interface IApiMapper {
     fun mapAlbum(album: AlbumApiData): AlbumModel
 
     fun mapSearchHistoryResult(result: SearchHistoryResultApiData): SearchSuggestionModel
+    fun mapSearchResult(result: TrackApiData): SearchSuggestionModel
 }

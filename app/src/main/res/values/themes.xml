@@ -16,7 +16,7 @@
         <item name="toolbarStyle">@style/Theme.DeezerForAndroid.Toolbar</item>
         <item name="actionBarStyle">@style/Theme.DeezerForAndroid.ActionBar</item>
         <item name="android:textViewStyle">@style/Theme.DeezerForAndroid.TextView.Basic</item>
-
+        <item name="colorControlHighlight">@color/colorPrimaryVariant</item>
         <item name="materialButtonStyle">@style/Theme.DeezerForAndroid.Button</item>
         <item name="actionButtonStyle">@style/Theme.DeezerForAndroid.ActionButton</item>
         <item name="imageButtonStyle">@style/Theme.DeezerForAndroid.ImageButton</item>

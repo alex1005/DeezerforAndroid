@@ -3,17 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:focusable="true">
 
     <ImageView
         android:id="@+id/ivCover"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintDimensionRatio="1:1"
-        android:layout_marginTop="@dimen/default_margin"
+        android:foreground="@drawable/tile_ripple"
         android:layout_marginHorizontal="@dimen/small_margin"
+        android:layout_marginTop="@dimen/default_margin"
         android:src="@drawable/default_track_cover"
         app:layout_constraintBottom_toTopOf="@id/tvTitle"
+        app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -37,6 +40,7 @@
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:maxLines="1"
+        android:textColor="@color/colorTextSecondary"
         android:textSize="@dimen/default_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/ivCover"

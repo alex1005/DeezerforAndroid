@@ -12,4 +12,6 @@
     <color name="colorPrimaryVariant">#CCCCCC</color>
     <color name="colorSecondary">#EF5466</color>
     <color name="colorSecondaryVariant">#B7193C</color>
+    <color name="colorTextPrimary">#FF000000</color>
+    <color name="colorTextSecondary">#999999</color>
 </resources>

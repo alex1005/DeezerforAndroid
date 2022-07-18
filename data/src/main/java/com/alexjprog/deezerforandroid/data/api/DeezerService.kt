@@ -13,6 +13,10 @@ interface DeezerService {
     suspend fun getCharts(): Response<ResultPageApiData<TrackApiData>>
 
     @GET("search/history")
-    fun getSearchHistory(@Query("q") query: String):
+    fun getSearchHistory():
             Single<ResultPageApiData<SearchHistoryResultApiData>>
+
+    @GET("search")
+    fun getSearchResultsForQuery(@Query("q") query: String):
+            Single<ResultPageApiData<TrackApiData>>
 }

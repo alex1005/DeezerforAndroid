@@ -64,6 +64,6 @@ class LoginActivity : AppCompatActivity(), LoginContract.View {
         private const val APP_ID = ***REMOVED***
         private const val REDIRECT_URI = ***REMOVED***
         private const val LOGIN_URL = "https://connect.deezer.com/oauth/auth.php?app_id=$APP_ID&" +
-                "redirect_uri=$REDIRECT_URI&perms=basic_access,email,offline_access&response_type=token"
+                "redirect_uri=$REDIRECT_URI&perms=basic_access,email,listening_history,offline_access&response_type=token"
     }
 }

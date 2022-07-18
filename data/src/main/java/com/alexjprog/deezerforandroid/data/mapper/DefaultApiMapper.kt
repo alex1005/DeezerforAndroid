@@ -31,4 +31,7 @@ class DefaultApiMapper @Inject constructor() : IApiMapper {
 
     override fun mapSearchHistoryResult(result: SearchHistoryResultApiData): SearchSuggestionModel =
         SearchSuggestionModel(title = result.title, isInHistory = true)
+
+    override fun mapSearchResult(result: TrackApiData): SearchSuggestionModel =
+        SearchSuggestionModel(title = result.title, isInHistory = false)
 }

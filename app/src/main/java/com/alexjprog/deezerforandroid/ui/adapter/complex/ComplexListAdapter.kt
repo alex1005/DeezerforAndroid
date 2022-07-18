@@ -6,8 +6,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.alexjprog.deezerforandroid.R
 import com.alexjprog.deezerforandroid.databinding.HorizontalTrackListItemBinding
 import com.alexjprog.deezerforandroid.databinding.TitleItemBinding
-import com.alexjprog.deezerforandroid.ui.mvvm.MoreContentFragment
 import com.alexjprog.deezerforandroid.ui.adapter.tile.HorizontalTileListAdapter
+import com.alexjprog.deezerforandroid.ui.mvvm.MoreContentFragment
 
 class ComplexListAdapter(
     private val data: List<ComplexListItem>,
@@ -21,6 +21,7 @@ class ComplexListAdapter(
                 tvTitle.also {
                     it.text = it.resources.getString(item.category.titleResId)
                 }
+                root.setOnClickListener { openMoreAction(item.category) }
                 btnMoreContent.setOnClickListener { openMoreAction(item.category) }
             }
         }

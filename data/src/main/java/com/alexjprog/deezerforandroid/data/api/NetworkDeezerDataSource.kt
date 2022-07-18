@@ -3,7 +3,6 @@ package com.alexjprog.deezerforandroid.data.api
 import com.alexjprog.deezerforandroid.data.api.model.SearchHistoryResultApiData
 import com.alexjprog.deezerforandroid.data.api.model.TrackApiData
 import com.alexjprog.deezerforandroid.data.storage.IDeezerDataSource
-import com.alexjprog.deezerforandroid.domain.model.SearchSuggestionModel
 import io.reactivex.rxjava3.core.Observable
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -26,8 +25,13 @@ class NetworkDeezerDataSource @Inject constructor(
     }.catch { emit(listOf()) }
         .flowOn(apiCoroutineContext)
 
-    override fun getSearchHistory(query: String): Observable<List<SearchHistoryResultApiData>> =
-        api.getSearchHistory(query).map { it.data }
+    override fun getSearchHistory(): Observable<List<SearchHistoryResultApiData>> =
+        api.getSearchHistory().map { it.data }
+            .onErrorReturn { listOf() }
+            .toObservable()
+
+    override fun getSearchResultsForQuery(query: String): Observable<List<TrackApiData>> =
+        api.getSearchResultsForQuery(query).map { it.data }
             .onErrorReturn { listOf() }
             .toObservable()
 }
