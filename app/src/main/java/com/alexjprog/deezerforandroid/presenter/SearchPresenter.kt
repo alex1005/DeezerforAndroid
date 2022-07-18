@@ -15,9 +15,9 @@ class SearchPresenter @Inject constructor(
 
     override fun subscribeToSearchInput() {
         val disposable = searchInputEvents
+            .observeOn(Schedulers.io())
             .debounce(DEBOUNCE_INTERVAL_LENGTH, DEBOUNCE_INTERVAL_UNITS)
             .switchMap { getSearchSuggestionsUseCase(it) }
-            .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 view?.updateSearchSuggestions(it)

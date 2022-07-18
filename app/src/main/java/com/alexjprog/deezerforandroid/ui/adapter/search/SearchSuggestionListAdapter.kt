@@ -8,7 +8,7 @@ import com.alexjprog.deezerforandroid.databinding.SearchSuggestionItemBinding
 import com.alexjprog.deezerforandroid.domain.model.SearchSuggestionModel
 
 class SearchSuggestionListAdapter(
-    private val data: List<SearchSuggestionModel>
+    val data: List<SearchSuggestionModel>
 ):
     RecyclerView.Adapter<SearchSuggestionListAdapter.SearchSuggestionViewHolder>() {
 

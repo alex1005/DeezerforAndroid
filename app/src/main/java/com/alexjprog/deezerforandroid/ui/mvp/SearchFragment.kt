@@ -2,6 +2,7 @@ package com.alexjprog.deezerforandroid.ui.mvp
 
 import android.content.Context
 import android.os.Bundle
+import android.os.Parcelable
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -16,6 +17,7 @@ import com.alexjprog.deezerforandroid.domain.model.SearchSuggestionModel
 import com.alexjprog.deezerforandroid.presenter.SearchPresenter
 import com.alexjprog.deezerforandroid.ui.adapter.search.SearchSuggestionListAdapter
 import com.alexjprog.deezerforandroid.ui.mvp.contract.SearchContract
+import com.alexjprog.deezerforandroid.util.SaveStateHelper
 import javax.inject.Inject
 
 class SearchFragment : Fragment(), SearchContract.View {
@@ -48,12 +50,14 @@ class SearchFragment : Fragment(), SearchContract.View {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
 
         presenter.subscribeToSearchInput()
+        if (savedInstanceState == null)
+            presenter.postSearchQuery("")
+
         with(binding) {
-            with(inputField){
-                etSearch.requestFocus()
+            with(inputField) {
                 btnBack.setOnClickListener(backAction)
                 btnClear.setOnClickListener(clearAction)
-                etSearch.addTextChangedListener(object: TextWatcher {
+                etSearch.addTextChangedListener(object : TextWatcher {
                     override fun beforeTextChanged(
                         s: CharSequence?,
                         start: Int,
@@ -73,8 +77,8 @@ class SearchFragment : Fragment(), SearchContract.View {
                     override fun afterTextChanged(s: Editable?) {
                         btnClear.visibility = if (s == null || s.isEmpty()) View.GONE
                         else View.VISIBLE
-
-                        s?.let { presenter.postSearchQuery(it.toString()) }
+                        if (etSearch.hasFocus())
+                            s?.let { presenter.postSearchQuery(it.toString()) }
                     }
                 })
             }
@@ -85,11 +89,40 @@ class SearchFragment : Fragment(), SearchContract.View {
     override fun onStart() {
         super.onStart()
         (requireActivity() as AppCompatActivity).supportActionBar?.hide()
+        binding.inputField.etSearch.requestFocus()
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        if (savedInstanceState != null) {
+            with(binding) {
+                val restoredData =
+                    SaveStateHelper.restoreSearchSuggestionModelList(savedInstanceState)
+                val state = savedInstanceState.getParcelable<Parcelable>(
+                    SEARCH_SUGGESTIONS_LIST_STATE_KEY
+                )
+                rcSearchSuggestions.adapter = SearchSuggestionListAdapter(restoredData)
+                rcSearchSuggestions.layoutManager?.onRestoreInstanceState(state)
+            }
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        with(binding) {
+            val data = (rcSearchSuggestions.adapter as? SearchSuggestionListAdapter)?.data
+            SaveStateHelper.saveSearchSuggestionModelList(outState, data)
+            outState.putParcelable(
+                SEARCH_SUGGESTIONS_LIST_STATE_KEY,
+                rcSearchSuggestions.layoutManager?.onSaveInstanceState()
+            )
+        }
+        super.onSaveInstanceState(outState)
     }
 
     override fun onStop() {
         super.onStop()
         (requireActivity() as AppCompatActivity).supportActionBar?.show()
+        binding.inputField.etSearch.clearFocus()
     }
 
     override fun onDestroy() {
@@ -100,5 +133,9 @@ class SearchFragment : Fragment(), SearchContract.View {
 
     override fun updateSearchSuggestions(data: List<SearchSuggestionModel>) {
         binding.rcSearchSuggestions.adapter = SearchSuggestionListAdapter(data)
+    }
+
+    companion object {
+        const val SEARCH_SUGGESTIONS_LIST_STATE_KEY = "search"
     }
 }
