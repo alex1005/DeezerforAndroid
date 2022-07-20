@@ -18,8 +18,12 @@ class NetworkDeezerDataSource @Inject constructor(
     private val apiCoroutineContext: CoroutineContext
 ): IDeezerDataSource {
 
-    override fun getChartsPage(page: Int, amount: Int): Flow<List<TrackApiData>> = flow {
-        val response = api.getCharts(page, amount)
+    /* [pageSize] must be constant when changing [page] argument!!!
+    * It happens because the API accepts queries with item offset and not page offset.
+    * So to calculate page offset we multiply page number by page size where page size is constant */
+    override fun getChartsPage(page: Int, pageSize: Int): Flow<List<TrackApiData>> = flow {
+        val pageOffset = page * pageSize
+        val response = api.getCharts(pageOffset, pageSize)
         if (!response.isSuccessful) emit(listOf())
         emit(response.body()?.data ?: listOf())
     }.catch { emit(listOf()) }

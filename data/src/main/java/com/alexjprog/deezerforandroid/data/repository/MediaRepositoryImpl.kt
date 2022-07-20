@@ -28,8 +28,9 @@ class MediaRepositoryImpl @Inject constructor(
         pageSize: Int,
         category: ContentCategoryParam
     ): Flow<PagingData<TrackModel>> =
-        Pager(PagingConfig(pageSize)) { TrackPagingSource(category, deezerSource) }
-            .flow
+        Pager(PagingConfig(pageSize = pageSize, initialLoadSize = pageSize)) {
+            TrackPagingSource(category, deezerSource)
+        }.flow
             .map { pagingData -> pagingData.map { apiMapper.mapTrack(it) } }
 
     override fun getSearchResultsForQuery(query: String): Observable<List<SearchSuggestionModel>> =

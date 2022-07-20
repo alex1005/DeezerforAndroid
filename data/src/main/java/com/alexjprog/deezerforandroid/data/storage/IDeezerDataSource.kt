@@ -6,7 +6,7 @@ import io.reactivex.rxjava3.core.Observable
 import kotlinx.coroutines.flow.Flow
 
 interface IDeezerDataSource {
-    fun getChartsPage(page: Int, amount: Int): Flow<List<TrackApiData>>
+    fun getChartsPage(page: Int, pageSize: Int): Flow<List<TrackApiData>>
 
     fun getSearchHistory(): Observable<List<SearchHistoryResultApiData>>
     fun getSearchResultsForQuery(query: String): Observable<List<TrackApiData>>
