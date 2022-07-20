@@ -11,7 +11,9 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.alexjprog.deezerforandroid.app.DeezerApplication
 import com.alexjprog.deezerforandroid.databinding.FragmentHomeBinding
+import com.alexjprog.deezerforandroid.model.ContentCategory
 import com.alexjprog.deezerforandroid.ui.adapter.complex.ComplexListAdapter
+import com.alexjprog.deezerforandroid.util.HOME_FEED_LIST_STATE_KEY
 import com.alexjprog.deezerforandroid.util.SaveStateHelper
 import com.alexjprog.deezerforandroid.viewmodel.HomeViewModel
 import com.alexjprog.deezerforandroid.viewmodel.ViewModelFactory
@@ -28,7 +30,7 @@ class HomeFragment : Fragment() {
 
     private var homeFeedListState: Parcelable? = null
 
-    private val openMoreAction: (MoreContentFragment.ContentCategory) -> Unit = { category ->
+    private val openMoreAction: (ContentCategory) -> Unit = { category ->
         findNavController().navigate(HomeFragmentDirections.actionOpenMoreContent(category))
     }
 
@@ -80,9 +82,5 @@ class HomeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    companion object {
-        const val HOME_FEED_LIST_STATE_KEY = "home_list"
     }
 }

@@ -6,12 +6,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.alexjprog.deezerforandroid.R
 import com.alexjprog.deezerforandroid.databinding.HorizontalTrackListItemBinding
 import com.alexjprog.deezerforandroid.databinding.TitleItemBinding
+import com.alexjprog.deezerforandroid.model.ContentCategory
 import com.alexjprog.deezerforandroid.ui.adapter.tile.HorizontalTileListAdapter
-import com.alexjprog.deezerforandroid.ui.mvvm.MoreContentFragment
 
 class ComplexListAdapter(
     private val data: List<ComplexListItem>,
-    private val openMoreAction: (MoreContentFragment.ContentCategory) -> Unit) :
+    private val openMoreAction: (ContentCategory) -> Unit
+) :
     RecyclerView.Adapter<ComplexViewHolder>() {
 
     inner class TitleViewHolder(private val binding: TitleItemBinding) :

@@ -1,4 +1,4 @@
-package com.alexjprog.deezerforandroid.data.sharedprefs
+package com.alexjprog.deezerforandroid.data.storage.sharedprefs
 
 import android.content.Context
 import androidx.security.crypto.EncryptedSharedPreferences

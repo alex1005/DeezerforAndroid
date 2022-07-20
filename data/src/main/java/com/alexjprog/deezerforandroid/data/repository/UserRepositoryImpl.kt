@@ -1,8 +1,8 @@
 package com.alexjprog.deezerforandroid.data.repository
 
 import com.alexjprog.deezerforandroid.data.mapper.IApiMapper
-import com.alexjprog.deezerforandroid.data.sharedprefs.LoginStore
 import com.alexjprog.deezerforandroid.data.storage.IDeezerDataSource
+import com.alexjprog.deezerforandroid.data.storage.sharedprefs.LoginStore
 import com.alexjprog.deezerforandroid.domain.model.SearchSuggestionModel
 import com.alexjprog.deezerforandroid.domain.repository.UserRepository
 import io.reactivex.rxjava3.core.Observable

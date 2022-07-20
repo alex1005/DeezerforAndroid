@@ -17,6 +17,7 @@ import com.alexjprog.deezerforandroid.domain.model.SearchSuggestionModel
 import com.alexjprog.deezerforandroid.presenter.SearchPresenter
 import com.alexjprog.deezerforandroid.ui.adapter.search.SearchSuggestionListAdapter
 import com.alexjprog.deezerforandroid.ui.mvp.contract.SearchContract
+import com.alexjprog.deezerforandroid.util.SEARCH_SUGGESTIONS_LIST_STATE_KEY
 import com.alexjprog.deezerforandroid.util.SaveStateHelper
 import javax.inject.Inject
 
@@ -146,7 +147,4 @@ class SearchFragment : Fragment(), SearchContract.View {
         binding.rcSearchSuggestions.adapter = SearchSuggestionListAdapter(data)
     }
 
-    companion object {
-        const val SEARCH_SUGGESTIONS_LIST_STATE_KEY = "search_list"
-    }
 }

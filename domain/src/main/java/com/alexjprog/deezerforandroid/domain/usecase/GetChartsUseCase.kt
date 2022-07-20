@@ -6,5 +6,5 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class GetChartsUseCase @Inject constructor(private val repository: MediaRepository) {
-    operator fun invoke(): Flow<List<TrackModel>> = repository.getCharts()
+    operator fun invoke(amount: Int): Flow<List<TrackModel>> = repository.getChartsPreview(amount)
 }

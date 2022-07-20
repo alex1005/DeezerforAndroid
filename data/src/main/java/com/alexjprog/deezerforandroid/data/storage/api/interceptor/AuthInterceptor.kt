@@ -1,6 +1,6 @@
-package com.alexjprog.deezerforandroid.data.api.interceptor
+package com.alexjprog.deezerforandroid.data.storage.api.interceptor
 
-import com.alexjprog.deezerforandroid.data.sharedprefs.LoginStore
+import com.alexjprog.deezerforandroid.data.storage.sharedprefs.LoginStore
 import okhttp3.Interceptor
 import okhttp3.Response
 import javax.inject.Inject

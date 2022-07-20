@@ -1,13 +1,13 @@
 package com.alexjprog.deezerforandroid.di.module
 
-import com.alexjprog.deezerforandroid.data.storage.IDeezerDataSource
-import com.alexjprog.deezerforandroid.data.api.NetworkDeezerDataSource
 import com.alexjprog.deezerforandroid.data.mapper.DefaultApiMapper
 import com.alexjprog.deezerforandroid.data.mapper.IApiMapper
 import com.alexjprog.deezerforandroid.data.repository.MediaRepositoryImpl
 import com.alexjprog.deezerforandroid.data.repository.UserRepositoryImpl
-import com.alexjprog.deezerforandroid.data.sharedprefs.LoginStore
-import com.alexjprog.deezerforandroid.data.sharedprefs.LoginStoreImpl
+import com.alexjprog.deezerforandroid.data.storage.IDeezerDataSource
+import com.alexjprog.deezerforandroid.data.storage.api.NetworkDeezerDataSource
+import com.alexjprog.deezerforandroid.data.storage.sharedprefs.LoginStore
+import com.alexjprog.deezerforandroid.data.storage.sharedprefs.LoginStoreImpl
 import com.alexjprog.deezerforandroid.domain.repository.MediaRepository
 import com.alexjprog.deezerforandroid.domain.repository.UserRepository
 import dagger.Binds

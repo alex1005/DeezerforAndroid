@@ -24,7 +24,7 @@
         tools:layout="@layout/fragment_more_content" >
         <argument
             android:name="category"
-            app:argType="com.alexjprog.deezerforandroid.ui.mvvm.MoreContentFragment$ContentCategory" />
+            app:argType="com.alexjprog.deezerforandroid.model.ContentCategory" />
         <action
             android:id="@+id/actionOpenSearchFromMore"
             app:destination="@id/searchFragment" />

@@ -3,20 +3,23 @@ package com.alexjprog.deezerforandroid.ui.mvvm
 import android.content.Context
 import android.os.Bundle
 import android.os.Parcelable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
-import com.alexjprog.deezerforandroid.R
 import com.alexjprog.deezerforandroid.app.DeezerApplication
 import com.alexjprog.deezerforandroid.databinding.FragmentMoreContentBinding
-import com.alexjprog.deezerforandroid.ui.adapter.tile.VerticalTileListAdapter
+import com.alexjprog.deezerforandroid.ui.adapter.tile.TileFlowAdapter
+import com.alexjprog.deezerforandroid.ui.adapter.tile.TrackModelComparator
+import com.alexjprog.deezerforandroid.util.CONTENT_LIST_STATE_KEY
 import com.alexjprog.deezerforandroid.util.SaveStateHelper
 import com.alexjprog.deezerforandroid.viewmodel.MoreContentViewModel
 import com.alexjprog.deezerforandroid.viewmodel.ViewModelFactory
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MoreContentFragment : Fragment() {
@@ -43,14 +46,15 @@ class MoreContentFragment : Fragment() {
     ): View {
         _binding = FragmentMoreContentBinding.inflate(inflater, container, false)
         with(viewModel) {
-            content.observe(viewLifecycleOwner) {
-                if (it != null) {
-                    binding.rcContent.adapter = VerticalTileListAdapter(it)
+            with(binding) {
+                val contentAdapter = TileFlowAdapter(TrackModelComparator)
+                rcContent.adapter = contentAdapter
+                viewLifecycleOwner.lifecycleScope.launch {
+                    loadCategory(args.category).collectLatest { pagingData ->
+                        contentAdapter.submitData(lifecycle, pagingData)
+                    }
                 }
             }
-
-            if (viewModel.content.value == null)
-                loadCategory(args.category)
         }
         return binding.root
     }
@@ -83,18 +87,5 @@ class MoreContentFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.i("DeezerTag", "onDestroy: ")
-    }
-
-    enum class ContentCategory(val titleResId: Int) {
-        CHARTS(R.string.charts)
-    }
-
-    companion object {
-        const val CONTENT_LIST_STATE_KEY = "content_list"
     }
 }

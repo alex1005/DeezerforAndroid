@@ -1,4 +1,4 @@
-package com.alexjprog.deezerforandroid.data.api.model
+package com.alexjprog.deezerforandroid.data.storage.api.model
 
 import com.google.gson.annotations.SerializedName
 

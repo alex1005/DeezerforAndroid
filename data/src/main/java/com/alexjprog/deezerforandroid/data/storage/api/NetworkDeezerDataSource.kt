@@ -1,8 +1,8 @@
-package com.alexjprog.deezerforandroid.data.api
+package com.alexjprog.deezerforandroid.data.storage.api
 
-import com.alexjprog.deezerforandroid.data.api.model.SearchHistoryResultApiData
-import com.alexjprog.deezerforandroid.data.api.model.TrackApiData
 import com.alexjprog.deezerforandroid.data.storage.IDeezerDataSource
+import com.alexjprog.deezerforandroid.data.storage.api.model.SearchHistoryResultApiData
+import com.alexjprog.deezerforandroid.data.storage.api.model.TrackApiData
 import io.reactivex.rxjava3.core.Observable
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -18,8 +18,8 @@ class NetworkDeezerDataSource @Inject constructor(
     private val apiCoroutineContext: CoroutineContext
 ): IDeezerDataSource {
 
-    override fun getCharts(): Flow<List<TrackApiData>> = flow {
-        val response = api.getCharts()
+    override fun getChartsPage(page: Int, amount: Int): Flow<List<TrackApiData>> = flow {
+        val response = api.getCharts(page, amount)
         if (!response.isSuccessful) emit(listOf())
         emit(response.body()?.data ?: listOf())
     }.catch { emit(listOf()) }

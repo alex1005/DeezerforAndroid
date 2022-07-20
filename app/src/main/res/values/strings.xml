@@ -6,4 +6,6 @@
     <string name="account">Account</string>
     <string name="search_on_deezer">Search on Deezer</string>
     <string name="more">More</string>
+
+    <string name="unknown">Unknown</string>
 </resources>
