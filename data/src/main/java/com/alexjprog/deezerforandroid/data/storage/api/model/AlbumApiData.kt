@@ -8,5 +8,7 @@ data class AlbumApiData(
     @SerializedName("title")
     val title: String,
     @SerializedName("cover")
-    val cover: String
+    val cover: String?,
+    @SerializedName("cover_big")
+    val coverBig: String?
 )

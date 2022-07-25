@@ -22,7 +22,7 @@ class TileFlowAdapter(diffCallback: DiffUtil.ItemCallback<TrackModel>) :
                 ivCover.also {
                     ImageHelper.loadRoundedPicture(
                         it,
-                        track?.album?.cover,
+                        track?.album?.coverBig ?: track?.album?.cover,
                         it.resources.getDimensionPixelSize(R.dimen.tile_corner_radius)
                     )
                 }
