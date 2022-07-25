@@ -124,13 +124,16 @@ class SearchFragment : Fragment(), SearchContract.View {
         super.onSaveInstanceState(outState)
     }
 
+    override fun onPause() {
+        super.onPause()
+        searchSuggestionListState =
+            binding.rcSearchSuggestions.layoutManager?.onSaveInstanceState()
+    }
+
     override fun onStop() {
         super.onStop()
         (requireActivity() as AppCompatActivity).supportActionBar?.show()
-        with(binding) {
-            inputField.etSearch.clearFocus()
-            searchSuggestionListState = rcSearchSuggestions.layoutManager?.onSaveInstanceState()
-        }
+        binding.inputField.etSearch.clearFocus()
     }
 
     override fun onDestroyView() {

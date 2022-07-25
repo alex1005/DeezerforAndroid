@@ -65,8 +65,8 @@ class HomeFragment : Fragment() {
         }
     }
 
-    override fun onStop() {
-        super.onStop()
+    override fun onPause() {
+        super.onPause()
         homeFeedListState = binding.rcHomeFeed.layoutManager?.onSaveInstanceState()
     }
 
