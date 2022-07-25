@@ -29,8 +29,6 @@ class MoreContentFragment : Fragment() {
     private val viewModel: MoreContentViewModel
             by activityViewModels { viewModelFactory }
 
-//    private var contentListState: Parcelable? = null
-
     private val args: MoreContentFragmentArgs by navArgs()
 
     override fun onAttach(context: Context) {
@@ -44,11 +42,14 @@ class MoreContentFragment : Fragment() {
     ): View {
         _binding = FragmentMoreContentBinding.inflate(inflater, container, false)
         with(viewModel) {
+
+            if (contentFlow == null) loadCategory(args.category)
+
             with(binding) {
                 val contentAdapter = TileFlowAdapter(TrackModelComparator)
                 rcContent.adapter = contentAdapter
                 viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
-                    loadCategory(args.category).collectLatest { pagingData ->
+                    contentFlow?.collectLatest { pagingData ->
                         contentAdapter.submitData(viewLifecycleOwner.lifecycle, pagingData)
                     }
                 }
@@ -56,31 +57,6 @@ class MoreContentFragment : Fragment() {
         }
         return binding.root
     }
-
-//    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-//        super.onViewStateRestored(savedInstanceState)
-//        if (savedInstanceState != null) {
-//            SaveStateHelper.restoreRecyclerViewState(
-//                savedInstanceState,
-//                CONTENT_LIST_STATE_KEY,
-//                binding.rcContent
-//            )
-//        }
-//    }
-//
-//    override fun onPause() {
-//        super.onPause()
-//        contentListState = binding.rcContent.layoutManager?.onSaveInstanceState()
-//    }
-//
-//    override fun onSaveInstanceState(outState: Bundle) {
-//        SaveStateHelper.saveRecyclerViewState(
-//            outState,
-//            CONTENT_LIST_STATE_KEY,
-//            contentListState
-//        )
-//        super.onSaveInstanceState(outState)
-//    }
 
     override fun onDestroyView() {
         super.onDestroyView()

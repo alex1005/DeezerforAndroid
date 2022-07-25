@@ -2,7 +2,6 @@ package com.alexjprog.deezerforandroid.ui.mvvm
 
 import android.content.Context
 import android.os.Bundle
-import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,8 +12,6 @@ import com.alexjprog.deezerforandroid.app.DeezerApplication
 import com.alexjprog.deezerforandroid.databinding.FragmentHomeBinding
 import com.alexjprog.deezerforandroid.model.ContentCategory
 import com.alexjprog.deezerforandroid.ui.adapter.complex.ComplexListAdapter
-import com.alexjprog.deezerforandroid.util.HOME_FEED_LIST_STATE_KEY
-import com.alexjprog.deezerforandroid.util.SaveStateHelper
 import com.alexjprog.deezerforandroid.viewmodel.HomeViewModel
 import com.alexjprog.deezerforandroid.viewmodel.ViewModelFactory
 import javax.inject.Inject
@@ -28,7 +25,7 @@ class HomeFragment : Fragment() {
     private val viewModel: HomeViewModel
             by activityViewModels(factoryProducer = { viewModelFactory })
 
-    private var homeFeedListState: Parcelable? = null
+//    private var homeFeedListState: Parcelable? = null
 
     private val openMoreAction: (ContentCategory) -> Unit = { category ->
         findNavController().navigate(HomeFragmentDirections.actionOpenMoreContent(category))
@@ -54,30 +51,30 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
-    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        super.onViewStateRestored(savedInstanceState)
-        if (savedInstanceState != null) {
-            SaveStateHelper.restoreRecyclerViewState(
-                savedInstanceState,
-                HOME_FEED_LIST_STATE_KEY,
-                binding.rcHomeFeed
-            )
-        }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        homeFeedListState = binding.rcHomeFeed.layoutManager?.onSaveInstanceState()
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        SaveStateHelper.saveRecyclerViewState(
-            outState,
-            HOME_FEED_LIST_STATE_KEY,
-            homeFeedListState
-        )
-        super.onSaveInstanceState(outState)
-    }
+//    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+//        super.onViewStateRestored(savedInstanceState)
+//        if (savedInstanceState != null) {
+//            SaveStateHelper.restoreRecyclerViewState(
+//                savedInstanceState,
+//                HOME_FEED_LIST_STATE_KEY,
+//                binding.rcHomeFeed
+//            )
+//        }
+//    }
+//
+//    override fun onPause() {
+//        super.onPause()
+//        homeFeedListState = binding.rcHomeFeed.layoutManager?.onSaveInstanceState()
+//    }
+//
+//    override fun onSaveInstanceState(outState: Bundle) {
+//        SaveStateHelper.saveRecyclerViewState(
+//            outState,
+//            HOME_FEED_LIST_STATE_KEY,
+//            homeFeedListState
+//        )
+//        super.onSaveInstanceState(outState)
+//    }
 
     override fun onDestroyView() {
         super.onDestroyView()

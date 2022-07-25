@@ -17,8 +17,13 @@ class MoreContentViewModel @Inject constructor(
     private val getMoreContentUseCase: GetMoreContentUseCase
 ) : ViewModel() {
 
-    fun loadCategory(category: ContentCategory): Flow<PagingData<TrackModel>> =
-        getMoreContentUseCase(CONTENT_PAGE_SIZE, category.toCategoryParam())
+    private var _contentFlow: Flow<PagingData<TrackModel>>? = null
+    val contentFlow: Flow<PagingData<TrackModel>>?
+        get() = _contentFlow
+
+    fun loadCategory(category: ContentCategory) {
+        _contentFlow = getMoreContentUseCase(CONTENT_PAGE_SIZE, category.toCategoryParam())
             .cachedIn(viewModelScope)
             .flowOn(Dispatchers.Default)
+    }
 }
