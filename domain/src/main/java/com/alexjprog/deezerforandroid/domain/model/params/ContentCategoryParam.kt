@@ -1,5 +1,7 @@
 package com.alexjprog.deezerforandroid.domain.model.params
 
 enum class ContentCategoryParam {
-    CHARTS
+    CHARTS,
+    FLOW,
+    RECOMMENDATIONS
 }

@@ -8,4 +8,6 @@
     <string name="more">More</string>
 
     <string name="unknown">Unknown</string>
+    <string name="flow">Flow</string>
+    <string name="recommendations">Recommendations</string>
 </resources>

@@ -13,6 +13,14 @@ interface DeezerService {
     suspend fun getCharts(@Query("index") pageIndex: Int, @Query("limit") itemAmount: Int):
             Response<ResultPageApiData<TrackApiData>>
 
+    @GET("user/me/flow")
+    suspend fun getFlow(@Query("index") pageIndex: Int, @Query("limit") itemAmount: Int):
+            Response<ResultPageApiData<TrackApiData>>
+
+    @GET("user/me/recommendations/tracks")
+    suspend fun getRecommendations(@Query("index") pageIndex: Int, @Query("limit") itemAmount: Int):
+            Response<ResultPageApiData<TrackApiData>>
+
     @GET("search/history")
     fun getSearchHistory():
             Single<ResultPageApiData<SearchHistoryResultApiData>>

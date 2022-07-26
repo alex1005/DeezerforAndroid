@@ -9,6 +9,9 @@ import kotlinx.coroutines.flow.Flow
 
 interface MediaRepository {
     fun getChartsPreview(amount: Int): Flow<List<TrackModel>>
+    fun getFlowPreview(amount: Int): Flow<List<TrackModel>>
+    fun getRecommendationsPreview(amount: Int): Flow<List<TrackModel>>
+
     fun getCategoryContent(pageSize: Int, category: ContentCategoryParam):
             Flow<PagingData<TrackModel>>
 

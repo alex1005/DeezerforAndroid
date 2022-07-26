@@ -15,8 +15,6 @@ class DefaultApiMapper @Inject constructor() : IApiMapper {
         TrackModel(
             id = track.id,
             title = track.title,
-            deezerLink = track.deezerLink,
-            trackLink = track.trackLink,
             rank = track.rank,
             duration = track.duration,
             artist = mapArtist(track.artist),

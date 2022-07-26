@@ -23,6 +23,11 @@ class TrackPagingSource(
             val trackPage = when (categoryParam) {
                 ContentCategoryParam.CHARTS -> dataSource.getChartsPage(page, params.loadSize)
                     .lastOrNull() ?: listOf()
+                ContentCategoryParam.FLOW -> dataSource.getFlowPage(page, params.loadSize)
+                    .lastOrNull() ?: listOf()
+                ContentCategoryParam.RECOMMENDATIONS ->
+                    dataSource.getRecommendationsPage(page, params.loadSize)
+                        .lastOrNull() ?: listOf()
             }
 
             LoadResult.Page(

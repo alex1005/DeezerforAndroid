@@ -29,6 +29,22 @@ class NetworkDeezerDataSource @Inject constructor(
     }.catch { emit(listOf()) }
         .flowOn(apiCoroutineContext)
 
+    override fun getFlowPage(page: Int, pageSize: Int): Flow<List<TrackApiData>> = flow {
+        val pageOffset = page * pageSize
+        val response = api.getFlow(pageOffset, pageSize)
+        if (!response.isSuccessful) emit(listOf())
+        emit(response.body()?.data ?: listOf())
+    }.catch { emit(listOf()) }
+        .flowOn(apiCoroutineContext)
+
+    override fun getRecommendationsPage(page: Int, pageSize: Int): Flow<List<TrackApiData>> = flow {
+        val pageOffset = page * pageSize
+        val response = api.getRecommendations(pageOffset, pageSize)
+        if (!response.isSuccessful) emit(listOf())
+        emit(response.body()?.data ?: listOf())
+    }.catch { emit(listOf()) }
+        .flowOn(apiCoroutineContext)
+
     override fun getSearchHistory(): Observable<List<SearchHistoryResultApiData>> =
         api.getSearchHistory().map { it.data }
             .onErrorReturn { listOf() }

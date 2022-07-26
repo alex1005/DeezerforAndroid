@@ -24,6 +24,14 @@ class MediaRepositoryImpl @Inject constructor(
         deezerSource.getChartsPage(0, amount)
             .map { list -> list.map { apiMapper.mapTrack(it) } }
 
+    override fun getFlowPreview(amount: Int): Flow<List<TrackModel>> =
+        deezerSource.getFlowPage(0, amount)
+            .map { list -> list.map { apiMapper.mapTrack(it) } }
+
+    override fun getRecommendationsPreview(amount: Int): Flow<List<TrackModel>> =
+        deezerSource.getRecommendationsPage(0, amount)
+            .map { list -> list.map { apiMapper.mapTrack(it) } }
+
     override fun getCategoryContent(
         pageSize: Int,
         category: ContentCategoryParam
