@@ -15,6 +15,10 @@ enum class ContentCategory(val titleResId: Int) {
     RECOMMENDATIONS(R.string.recommendations) {
         override fun toCategoryParam(): ContentCategoryParam =
             ContentCategoryParam.RECOMMENDATIONS
+    },
+    EDIT_SELECTION(R.string.edit_selection) {
+        override fun toCategoryParam(): ContentCategoryParam =
+            ContentCategoryParam.EDIT_SELECTION
     };
 
     abstract fun toCategoryParam(): ContentCategoryParam

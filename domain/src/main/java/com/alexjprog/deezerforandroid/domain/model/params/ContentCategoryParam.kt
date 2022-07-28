@@ -3,5 +3,6 @@ package com.alexjprog.deezerforandroid.domain.model.params
 enum class ContentCategoryParam {
     CHARTS,
     FLOW,
-    RECOMMENDATIONS
+    RECOMMENDATIONS,
+    EDIT_SELECTION
 }

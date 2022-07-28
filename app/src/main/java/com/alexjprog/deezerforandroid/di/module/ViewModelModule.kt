@@ -1,6 +1,7 @@
 package com.alexjprog.deezerforandroid.di.module
 
 import androidx.lifecycle.ViewModel
+import com.alexjprog.deezerforandroid.viewmodel.EditorialViewModel
 import com.alexjprog.deezerforandroid.viewmodel.HomeViewModel
 import com.alexjprog.deezerforandroid.viewmodel.MoreContentViewModel
 import dagger.Binds
@@ -20,6 +21,11 @@ interface ViewModelModule {
     @IntoMap
     @ViewModelKey(MoreContentViewModel::class)
     fun bindMoreContentViewModel(moreContentViewModel: MoreContentViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(EditorialViewModel::class)
+    fun bindEditorialViewModel(editorialViewModel: EditorialViewModel): ViewModel
 }
 
 @Retention(AnnotationRetention.RUNTIME)

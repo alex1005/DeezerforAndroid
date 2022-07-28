@@ -11,10 +11,10 @@
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
-            android:id="@+id/actionOpenMoreContent"
+            android:id="@+id/actionOpenMoreContentFromHome"
             app:destination="@id/moreContentFragment" />
         <action
-            android:id="@+id/actionOpenSearch"
+            android:id="@+id/actionOpenSearchFromHome"
             app:destination="@id/searchFragment" />
     </fragment>
     <fragment
@@ -34,4 +34,15 @@
         android:name="com.alexjprog.deezerforandroid.ui.mvp.SearchFragment"
         android:label="fragment_search"
         tools:layout="@layout/fragment_search" />
+    <fragment
+        android:id="@+id/editorialFragment"
+        android:name="com.alexjprog.deezerforandroid.ui.mvvm.EditorialFragment"
+        android:label="EditorialFragment">
+        <action
+            android:id="@+id/actionOpenSearchFromEditorial"
+            app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/actionOpenMoreContentFromEditorial"
+            app:destination="@id/moreContentFragment" />
+    </fragment>
 </navigation>

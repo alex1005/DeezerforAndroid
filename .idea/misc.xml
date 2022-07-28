@@ -17,17 +17,22 @@
         <entry key="..\:/projects/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/ic_baseline_account_circle_24.xml" value="0.126" />
         <entry key="..\:/projects/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/ic_baseline_arrow_back_24.xml" value="0.2265" />
         <entry key="..\:/projects/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/ic_baseline_audiotrack_24.xml" value="0.2265" />
+        <entry key="..\:/projects/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/ic_baseline_auto_awesome_24.xml" value="0.2265" />
         <entry key="..\:/projects/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/ic_baseline_brightness_1_24.xml" value="0.2265" />
         <entry key="..\:/projects/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/ic_baseline_clear_24.xml" value="0.2265" />
         <entry key="..\:/projects/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/ic_baseline_history_24.xml" value="0.2265" />
+        <entry key="..\:/projects/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/ic_baseline_home_24.xml" value="0.2265" />
         <entry key="..\:/projects/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/ic_baseline_keyboard_arrow_right_24.xml" value="0.121" />
         <entry key="..\:/projects/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/ic_baseline_search_24.xml" value="0.2265" />
         <entry key="..\:/projects/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/ic_launcher_background.xml" value="0.126" />
         <entry key="..\:/projects/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/search_form_background.xml" value="0.2265" />
         <entry key="..\:/projects/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/tile_ripple.xml" value="0.2265" />
+        <entry key="..\:/projects/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/tile_ripple_round.xml" value="0.121" />
         <entry key="..\:/projects/AndroidProj/DeezerforAndroid/app/src/main/res/layout-land/fragment_more_content.xml" value="0.4" />
+        <entry key="..\:/projects/AndroidProj/DeezerforAndroid/app/src/main/res/layout-w936dp/fragment_editorial.xml" value="0.1875" />
         <entry key="..\:/projects/AndroidProj/DeezerforAndroid/app/src/main/res/layout/activity_login.xml" value="0.11510416666666666" />
         <entry key="..\:/projects/AndroidProj/DeezerforAndroid/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/projects/AndroidProj/DeezerforAndroid/app/src/main/res/layout/fragment_editorial.xml" value="0.25" />
         <entry key="..\:/projects/AndroidProj/DeezerforAndroid/app/src/main/res/layout/fragment_home.xml" value="0.25" />
         <entry key="..\:/projects/AndroidProj/DeezerforAndroid/app/src/main/res/layout/fragment_more_content.xml" value="0.4" />
         <entry key="..\:/projects/AndroidProj/DeezerforAndroid/app/src/main/res/layout/fragment_search.xml" value="0.264" />
@@ -39,6 +44,7 @@
         <entry key="..\:/projects/AndroidProj/DeezerforAndroid/app/src/main/res/layout/tile_item_grid.xml" value="0.4" />
         <entry key="..\:/projects/AndroidProj/DeezerforAndroid/app/src/main/res/layout/tile_item_linear.xml" value="0.264" />
         <entry key="..\:/projects/AndroidProj/DeezerforAndroid/app/src/main/res/layout/title_item.xml" value="0.24895833333333334" />
+        <entry key="..\:/projects/AndroidProj/DeezerforAndroid/app/src/main/res/menu/bottom_nav_menu.xml" value="0.20512820512820512" />
         <entry key="..\:/projects/AndroidProj/DeezerforAndroid/app/src/main/res/menu/main_menu.xml" value="0.536" />
       </map>
     </option>

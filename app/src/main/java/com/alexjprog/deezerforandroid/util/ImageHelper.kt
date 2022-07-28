@@ -6,9 +6,15 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 
 object ImageHelper {
-    fun loadRoundedPicture(destPicture: ImageView, uri: String?, cornerRadius: Int) =
+    fun loadRoundedCornersPicture(destPicture: ImageView, uri: String?, cornerRadius: Int) =
         Glide.with(destPicture)
             .load(uri)
             .apply(RequestOptions.bitmapTransform(RoundedCorners(cornerRadius)))
+            .into(destPicture)
+
+    fun loadRoundPicture(destPicture: ImageView, uri: String?) =
+        Glide.with(destPicture)
+            .load(uri)
+            .circleCrop()
             .into(destPicture)
 }

@@ -11,7 +11,7 @@
         android:id="@+id/ivCover"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:foreground="@drawable/tile_ripple"
+        android:foreground="@drawable/tile_ripple_rect"
         android:layout_marginHorizontal="@dimen/small_margin"
         android:layout_marginTop="@dimen/default_margin"
         android:src="@drawable/default_track_cover"
@@ -19,7 +19,8 @@
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/cover" />
 
     <TextView
         android:id="@+id/tvTitle"
@@ -28,14 +29,14 @@
         android:ellipsize="end"
         android:maxLines="1"
         android:textSize="@dimen/default_text"
-        app:layout_constraintBottom_toTopOf="@id/tvArtist"
+        app:layout_constraintBottom_toTopOf="@id/tv_subtitle"
         app:layout_constraintEnd_toEndOf="@id/ivCover"
         app:layout_constraintStart_toStartOf="@id/ivCover"
         app:layout_constraintTop_toBottomOf="@id/ivCover"
         tools:text="Title" />
 
     <TextView
-        android:id="@+id/tvArtist"
+        android:id="@+id/tv_subtitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ellipsize="end"
@@ -45,7 +46,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/ivCover"
         app:layout_constraintStart_toStartOf="@id/ivCover"
-        app:layout_constraintTop_toBottomOf="@id/tvArtist"
+        app:layout_constraintTop_toBottomOf="@id/tv_subtitle"
         app:layout_constraintVertical_bias="0.0"
         tools:text="Artist" />
 

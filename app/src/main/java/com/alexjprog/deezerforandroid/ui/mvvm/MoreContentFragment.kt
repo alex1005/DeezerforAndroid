@@ -11,8 +11,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.alexjprog.deezerforandroid.app.DeezerApplication
 import com.alexjprog.deezerforandroid.databinding.FragmentMoreContentBinding
+import com.alexjprog.deezerforandroid.ui.adapter.tile.MusicItemComparator
 import com.alexjprog.deezerforandroid.ui.adapter.tile.TileFlowAdapter
-import com.alexjprog.deezerforandroid.ui.adapter.tile.TrackModelComparator
 import com.alexjprog.deezerforandroid.viewmodel.MoreContentViewModel
 import com.alexjprog.deezerforandroid.viewmodel.ViewModelFactory
 import kotlinx.coroutines.Dispatchers
@@ -46,7 +46,7 @@ class MoreContentFragment : Fragment() {
             if (contentFlow == null) loadCategory(args.category)
 
             with(binding) {
-                val contentAdapter = TileFlowAdapter(TrackModelComparator)
+                val contentAdapter = TileFlowAdapter(MusicItemComparator)
                 rcContent.adapter = contentAdapter
                 viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
                     contentFlow?.collectLatest { pagingData ->

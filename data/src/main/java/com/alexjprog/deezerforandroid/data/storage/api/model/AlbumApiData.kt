@@ -7,8 +7,12 @@ data class AlbumApiData(
     val id: Int,
     @SerializedName("title")
     val title: String,
+    @SerializedName("artist")
+    val artist: ArtistApiData?,
     @SerializedName("cover")
     val cover: String?,
     @SerializedName("cover_big")
-    val coverBig: String?
+    val coverBig: String?,
+    @SerializedName("tracks")
+    val trackList: List<TrackApiData>?
 )

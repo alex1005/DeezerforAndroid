@@ -10,4 +10,8 @@
     <string name="unknown">Unknown</string>
     <string name="flow">Flow</string>
     <string name="recommendations">Recommendations</string>
+    <string name="home">Home</string>
+    <string name="editorial">Editorial</string>
+    <string name="edit_selection">Weekly selection</string>
+    <string name="cover">Cover</string>
 </resources>

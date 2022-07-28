@@ -1,5 +1,6 @@
 package com.alexjprog.deezerforandroid.data.storage.api
 
+import com.alexjprog.deezerforandroid.data.storage.api.model.AlbumApiData
 import com.alexjprog.deezerforandroid.data.storage.api.model.ResultPageApiData
 import com.alexjprog.deezerforandroid.data.storage.api.model.SearchHistoryResultApiData
 import com.alexjprog.deezerforandroid.data.storage.api.model.TrackApiData
@@ -20,6 +21,13 @@ interface DeezerService {
     @GET("user/me/recommendations/tracks")
     suspend fun getRecommendations(@Query("index") pageIndex: Int, @Query("limit") itemAmount: Int):
             Response<ResultPageApiData<TrackApiData>>
+
+    @GET("editorial/0/selection")
+    suspend fun getEditorialSelection(
+        @Query("index") pageIndex: Int,
+        @Query("limit") itemAmount: Int
+    ):
+            Response<ResultPageApiData<AlbumApiData>>
 
     @GET("search/history")
     fun getSearchHistory():

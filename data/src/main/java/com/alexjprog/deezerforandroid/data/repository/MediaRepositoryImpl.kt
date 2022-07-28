@@ -3,10 +3,11 @@ package com.alexjprog.deezerforandroid.data.repository
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import androidx.paging.map
 import com.alexjprog.deezerforandroid.data.mapper.IApiMapper
 import com.alexjprog.deezerforandroid.data.storage.IDeezerDataSource
 import com.alexjprog.deezerforandroid.data.storage.paging.TrackPagingSource
+import com.alexjprog.deezerforandroid.domain.model.AlbumModel
+import com.alexjprog.deezerforandroid.domain.model.MediaItemModel
 import com.alexjprog.deezerforandroid.domain.model.SearchSuggestionModel
 import com.alexjprog.deezerforandroid.domain.model.TrackModel
 import com.alexjprog.deezerforandroid.domain.model.params.ContentCategoryParam
@@ -32,14 +33,17 @@ class MediaRepositoryImpl @Inject constructor(
         deezerSource.getRecommendationsPage(0, amount)
             .map { list -> list.map { apiMapper.mapTrack(it) } }
 
+    override fun getEditorialSelectionPreview(amount: Int): Flow<List<AlbumModel>> =
+        deezerSource.getEditorialSelectionPage(0, amount)
+            .map { list -> list.map { apiMapper.mapAlbum(it) } }
+
     override fun getCategoryContent(
         pageSize: Int,
         category: ContentCategoryParam
-    ): Flow<PagingData<TrackModel>> =
+    ): Flow<PagingData<MediaItemModel>> =
         Pager(PagingConfig(pageSize = pageSize, initialLoadSize = pageSize)) {
-            TrackPagingSource(category, deezerSource)
+            TrackPagingSource(category, deezerSource, apiMapper)
         }.flow
-            .map { pagingData -> pagingData.map { apiMapper.mapTrack(it) } }
 
     override fun getSearchResultsForQuery(query: String): Observable<List<SearchSuggestionModel>> =
         deezerSource.getSearchResultsForQuery(query)

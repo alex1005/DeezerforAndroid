@@ -28,8 +28,10 @@ class DefaultApiMapper @Inject constructor() : IApiMapper {
         AlbumModel(
             id = album.id,
             title = album.title,
+            artist = album.artist?.let { mapArtist(it) },
             cover = album.cover,
-            coverBig = album.coverBig
+            coverBig = album.coverBig,
+            trackList = album.trackList?.map { mapTrack(it) }
         )
 
     override fun mapSearchHistoryResult(result: SearchHistoryResultApiData): SearchSuggestionModel =

@@ -1,6 +1,8 @@
 package com.alexjprog.deezerforandroid.domain.repository
 
 import androidx.paging.PagingData
+import com.alexjprog.deezerforandroid.domain.model.AlbumModel
+import com.alexjprog.deezerforandroid.domain.model.MediaItemModel
 import com.alexjprog.deezerforandroid.domain.model.SearchSuggestionModel
 import com.alexjprog.deezerforandroid.domain.model.TrackModel
 import com.alexjprog.deezerforandroid.domain.model.params.ContentCategoryParam
@@ -11,9 +13,10 @@ interface MediaRepository {
     fun getChartsPreview(amount: Int): Flow<List<TrackModel>>
     fun getFlowPreview(amount: Int): Flow<List<TrackModel>>
     fun getRecommendationsPreview(amount: Int): Flow<List<TrackModel>>
+    fun getEditorialSelectionPreview(amount: Int): Flow<List<AlbumModel>>
 
     fun getCategoryContent(pageSize: Int, category: ContentCategoryParam):
-            Flow<PagingData<TrackModel>>
+            Flow<PagingData<MediaItemModel>>
 
     fun getSearchResultsForQuery(query: String): Observable<List<SearchSuggestionModel>>
 }

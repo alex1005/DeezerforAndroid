@@ -1,19 +1,29 @@
 package com.alexjprog.deezerforandroid.ui
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
 import com.alexjprog.deezerforandroid.R
+import com.alexjprog.deezerforandroid.databinding.ActivityMainBinding
 import com.alexjprog.deezerforandroid.ui.mvp.LoginActivity
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        val navController =
+            (supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment)
+                .navController
+        binding.bottomNavigationView.setupWithNavController(navController)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

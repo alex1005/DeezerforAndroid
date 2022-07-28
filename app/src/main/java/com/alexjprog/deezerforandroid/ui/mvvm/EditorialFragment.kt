@@ -9,26 +9,25 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.alexjprog.deezerforandroid.app.DeezerApplication
-import com.alexjprog.deezerforandroid.databinding.FragmentHomeBinding
+import com.alexjprog.deezerforandroid.databinding.FragmentEditorialBinding
 import com.alexjprog.deezerforandroid.model.ContentCategory
 import com.alexjprog.deezerforandroid.ui.adapter.complex.ComplexListAdapter
-import com.alexjprog.deezerforandroid.viewmodel.HomeViewModel
+import com.alexjprog.deezerforandroid.viewmodel.EditorialViewModel
 import com.alexjprog.deezerforandroid.viewmodel.ViewModelFactory
 import javax.inject.Inject
 
-class HomeFragment : Fragment() {
+class EditorialFragment : Fragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
-    private var _binding: FragmentHomeBinding? = null
-    private val binding: FragmentHomeBinding get() = _binding!!
-    private val viewModel: HomeViewModel
+    private var _binding: FragmentEditorialBinding? = null
+    private val binding: FragmentEditorialBinding get() = _binding!!
+    private val viewModel: EditorialViewModel
             by activityViewModels(factoryProducer = { viewModelFactory })
 
-//    private var homeFeedListState: Parcelable? = null
-
     private val openMoreAction: (ContentCategory) -> Unit = { category ->
-        findNavController().navigate(HomeFragmentDirections.actionOpenMoreContentFromHome(category))
+        findNavController()
+            .navigate(EditorialFragmentDirections.actionOpenMoreContentFromEditorial(category))
     }
 
     override fun onAttach(context: Context) {
@@ -41,7 +40,7 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        _binding = FragmentEditorialBinding.inflate(inflater, container, false)
 
         viewModel.feed.observe(viewLifecycleOwner) {
             if (it != null) {
