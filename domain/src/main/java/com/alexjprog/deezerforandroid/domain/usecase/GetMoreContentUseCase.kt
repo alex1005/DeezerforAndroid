@@ -1,7 +1,7 @@
 package com.alexjprog.deezerforandroid.domain.usecase
 
 import androidx.paging.PagingData
-import com.alexjprog.deezerforandroid.domain.model.TrackModel
+import com.alexjprog.deezerforandroid.domain.model.MediaItemModel
 import com.alexjprog.deezerforandroid.domain.model.params.ContentCategoryParam
 import com.alexjprog.deezerforandroid.domain.repository.MediaRepository
 import kotlinx.coroutines.flow.Flow
@@ -11,5 +11,5 @@ class GetMoreContentUseCase @Inject constructor(private val mediaRepository: Med
     operator fun invoke(
         pageSize: Int,
         category: ContentCategoryParam
-    ): Flow<PagingData<TrackModel>> = mediaRepository.getCategoryContent(pageSize, category)
+    ): Flow<PagingData<MediaItemModel>> = mediaRepository.getCategoryContent(pageSize, category)
 }
