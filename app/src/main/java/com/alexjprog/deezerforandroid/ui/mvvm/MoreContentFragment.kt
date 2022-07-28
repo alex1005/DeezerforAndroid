@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.alexjprog.deezerforandroid.app.DeezerApplication
@@ -27,7 +27,7 @@ class MoreContentFragment : Fragment() {
     private var _binding: FragmentMoreContentBinding? = null
     private val binding: FragmentMoreContentBinding get() = _binding!!
     private val viewModel: MoreContentViewModel
-            by activityViewModels { viewModelFactory }
+            by viewModels { viewModelFactory }
 
     private val args: MoreContentFragmentArgs by navArgs()
 
