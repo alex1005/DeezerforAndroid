@@ -30,9 +30,7 @@ class TrackPagingSource(
                 ContentCategoryParam.RECOMMENDATIONS ->
                     dataSource.getRecommendationsPage(page, params.loadSize)
                         .lastOrNull()?.map { apiMapper.mapTrack(it) } ?: listOf()
-                ContentCategoryParam.EDIT_SELECTION ->
-                    dataSource.getEditorialSelectionPage(page, params.loadSize)
-                        .lastOrNull()?.map { apiMapper.mapAlbum(it) } ?: listOf()
+                else -> throw IllegalArgumentException("Cannot page this category")
             }
 
             LoadResult.Page(

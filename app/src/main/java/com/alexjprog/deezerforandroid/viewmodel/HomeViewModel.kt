@@ -12,7 +12,7 @@ import com.alexjprog.deezerforandroid.ui.adapter.complex.ComplexListItem
 import com.alexjprog.deezerforandroid.util.CHARTS_PREVIEW_SIZE
 import com.alexjprog.deezerforandroid.util.FLOW_PREVIEW_SIZE
 import com.alexjprog.deezerforandroid.util.RECOMMENDATIONS_PREVIEW_SIZE
-import com.alexjprog.deezerforandroid.util.addNewFeedCategory
+import com.alexjprog.deezerforandroid.util.addNewFeedCategoryWithMoreAction
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -33,19 +33,19 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             val newFeed = mutableListOf<ComplexListItem>()
             getRecommendationsUseCase(RECOMMENDATIONS_PREVIEW_SIZE).collectLatest { content ->
-                newFeed.addNewFeedCategory(
+                newFeed.addNewFeedCategoryWithMoreAction(
                     ContentCategory.RECOMMENDATIONS,
                     content
                 )
             }
             getChartsUseCase(CHARTS_PREVIEW_SIZE).collectLatest { content ->
-                newFeed.addNewFeedCategory(
+                newFeed.addNewFeedCategoryWithMoreAction(
                     ContentCategory.CHARTS,
                     content
                 )
             }
             getFlowUseCase(FLOW_PREVIEW_SIZE).collectLatest { content ->
-                newFeed.addNewFeedCategory(
+                newFeed.addNewFeedCategoryWithMoreAction(
                     ContentCategory.FLOW,
                     content
                 )

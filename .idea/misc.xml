@@ -3,6 +3,18 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/fazbe/Documents/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/ic_baseline_auto_awesome_24.xml" value="0.2265" />
+        <entry key="..\:/Users/fazbe/Documents/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/ic_baseline_home_24.xml" value="0.2265" />
+        <entry key="..\:/Users/fazbe/Documents/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/ic_outline_auto_awesome_24.xml" value="0.2265" />
+        <entry key="..\:/Users/fazbe/Documents/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/ic_outline_home_24.xml" value="0.2265" />
+        <entry key="..\:/Users/fazbe/Documents/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/menu_editorial.xml" value="0.2265" />
+        <entry key="..\:/Users/fazbe/Documents/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/menu_home.xml" value="0.2265" />
+        <entry key="..\:/Users/fazbe/Documents/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/search_form_background.xml" value="0.2265" />
+        <entry key="..\:/Users/fazbe/Documents/AndroidProj/DeezerforAndroid/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/Users/fazbe/Documents/AndroidProj/DeezerforAndroid/app/src/main/res/layout/title_item.xml" value="0.24895833333333334" />
+        <entry key="..\:/Users/fazbe/Documents/AndroidProj/DeezerforAndroid/app/src/main/res/layout/title_item_with_more_action.xml" value="0.25" />
+        <entry key="..\:/Users/fazbe/Documents/AndroidProj/DeezerforAndroid/app/src/main/res/menu/bottom_nav_menu.xml" value="0.25" />
+        <entry key="..\:/Users/fazbe/Documents/AndroidProj/DeezerforAndroid/app/src/main/res/menu/main_menu.xml" value="0.25" />
         <entry key="..\:/android_sdk/platforms/android-32/data/res/drawable/action_bar_item_background_material.xml" value="0.2265" />
         <entry key="..\:/android_sdk/platforms/android-32/data/res/drawable/item_background.xml" value="0.2265" />
         <entry key="..\:/android_sdk/platforms/android-32/data/res/drawable/item_background_material.xml" value="0.2265" />

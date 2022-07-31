@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.alexjprog.deezerforandroid.domain.usecase.GetEditorialSelection
 import com.alexjprog.deezerforandroid.model.ContentCategory
 import com.alexjprog.deezerforandroid.ui.adapter.complex.ComplexListItem
-import com.alexjprog.deezerforandroid.util.EDIT_SELECTION_PREVIEW_SIZE
 import com.alexjprog.deezerforandroid.util.addNewFeedCategory
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -26,7 +25,7 @@ class EditorialViewModel @Inject constructor(
     fun loadFeed() {
         viewModelScope.launch {
             val newFeed = mutableListOf<ComplexListItem>()
-            getEditorialSelection(EDIT_SELECTION_PREVIEW_SIZE).collectLatest { content ->
+            getEditorialSelection().collectLatest { content ->
                 newFeed.addNewFeedCategory(ContentCategory.EDIT_SELECTION, content)
             }
             _feed.postValue(newFeed)

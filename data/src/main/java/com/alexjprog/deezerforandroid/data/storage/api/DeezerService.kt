@@ -23,10 +23,7 @@ interface DeezerService {
             Response<ResultPageApiData<TrackApiData>>
 
     @GET("editorial/0/selection")
-    suspend fun getEditorialSelection(
-        @Query("index") pageIndex: Int,
-        @Query("limit") itemAmount: Int
-    ):
+    suspend fun getEditorialSelection():
             Response<ResultPageApiData<AlbumApiData>>
 
     @GET("search/history")

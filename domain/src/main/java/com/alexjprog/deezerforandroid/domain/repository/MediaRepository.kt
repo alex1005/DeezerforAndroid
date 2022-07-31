@@ -13,7 +13,7 @@ interface MediaRepository {
     fun getChartsPreview(amount: Int): Flow<List<TrackModel>>
     fun getFlowPreview(amount: Int): Flow<List<TrackModel>>
     fun getRecommendationsPreview(amount: Int): Flow<List<TrackModel>>
-    fun getEditorialSelectionPreview(amount: Int): Flow<List<AlbumModel>>
+    fun getEditorialSelectionPreview(): Flow<List<AlbumModel>>
 
     fun getCategoryContent(pageSize: Int, category: ContentCategoryParam):
             Flow<PagingData<MediaItemModel>>

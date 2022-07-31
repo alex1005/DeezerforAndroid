@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.alexjprog.deezerforandroid.app.DeezerApplication
 import com.alexjprog.deezerforandroid.databinding.FragmentEditorialBinding
@@ -23,7 +23,7 @@ class EditorialFragment : Fragment() {
     private var _binding: FragmentEditorialBinding? = null
     private val binding: FragmentEditorialBinding get() = _binding!!
     private val viewModel: EditorialViewModel
-            by activityViewModels(factoryProducer = { viewModelFactory })
+            by viewModels(factoryProducer = { viewModelFactory })
 
     private val openMoreAction: (ContentCategory) -> Unit = { category ->
         findNavController()
@@ -49,31 +49,6 @@ class EditorialFragment : Fragment() {
         }
         return binding.root
     }
-
-//    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-//        super.onViewStateRestored(savedInstanceState)
-//        if (savedInstanceState != null) {
-//            SaveStateHelper.restoreRecyclerViewState(
-//                savedInstanceState,
-//                HOME_FEED_LIST_STATE_KEY,
-//                binding.rcHomeFeed
-//            )
-//        }
-//    }
-//
-//    override fun onPause() {
-//        super.onPause()
-//        homeFeedListState = binding.rcHomeFeed.layoutManager?.onSaveInstanceState()
-//    }
-//
-//    override fun onSaveInstanceState(outState: Bundle) {
-//        SaveStateHelper.saveRecyclerViewState(
-//            outState,
-//            HOME_FEED_LIST_STATE_KEY,
-//            homeFeedListState
-//        )
-//        super.onSaveInstanceState(outState)
-//    }
 
     override fun onDestroyView() {
         super.onDestroyView()

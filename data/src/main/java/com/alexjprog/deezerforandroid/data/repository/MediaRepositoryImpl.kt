@@ -33,8 +33,8 @@ class MediaRepositoryImpl @Inject constructor(
         deezerSource.getRecommendationsPage(0, amount)
             .map { list -> list.map { apiMapper.mapTrack(it) } }
 
-    override fun getEditorialSelectionPreview(amount: Int): Flow<List<AlbumModel>> =
-        deezerSource.getEditorialSelectionPage(0, amount)
+    override fun getEditorialSelectionPreview(): Flow<List<AlbumModel>> =
+        deezerSource.getEditorialSelectionPage()
             .map { list -> list.map { apiMapper.mapAlbum(it) } }
 
     override fun getCategoryContent(

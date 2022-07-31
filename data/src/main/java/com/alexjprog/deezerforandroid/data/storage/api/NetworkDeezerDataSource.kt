@@ -1,6 +1,5 @@
 package com.alexjprog.deezerforandroid.data.storage.api
 
-import android.util.Log
 import com.alexjprog.deezerforandroid.data.storage.IDeezerDataSource
 import com.alexjprog.deezerforandroid.data.storage.api.model.AlbumApiData
 import com.alexjprog.deezerforandroid.data.storage.api.model.SearchHistoryResultApiData
@@ -47,13 +46,12 @@ class NetworkDeezerDataSource @Inject constructor(
     }.catch { emit(listOf()) }
         .flowOn(apiCoroutineContext)
 
-    override fun getEditorialSelectionPage(page: Int, pageSize: Int): Flow<List<AlbumApiData>> =
+    override fun getEditorialSelectionPage(): Flow<List<AlbumApiData>> =
         flow {
-            val pageOffset = page * pageSize
-            val response = api.getEditorialSelection(pageOffset, pageSize)
+            val response = api.getEditorialSelection()
             if (!response.isSuccessful) emit(listOf())
             emit(response.body()?.data ?: listOf())
-        }.catch { emit(listOf()); Log.d("MyTag", it.toString()) }
+        }.catch { emit(listOf()) }
             .flowOn(apiCoroutineContext)
 
     override fun getSearchHistory(): Observable<List<SearchHistoryResultApiData>> =
