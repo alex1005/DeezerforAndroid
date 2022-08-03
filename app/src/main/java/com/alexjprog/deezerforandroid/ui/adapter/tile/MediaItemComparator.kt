@@ -3,7 +3,7 @@ package com.alexjprog.deezerforandroid.ui.adapter.tile
 import androidx.recyclerview.widget.DiffUtil
 import com.alexjprog.deezerforandroid.domain.model.MediaItemModel
 
-object MusicItemComparator : DiffUtil.ItemCallback<MediaItemModel>() {
+object MediaItemComparator : DiffUtil.ItemCallback<MediaItemModel>() {
     override fun areItemsTheSame(oldItem: MediaItemModel, newItem: MediaItemModel): Boolean {
         return oldItem.id == newItem.id
     }

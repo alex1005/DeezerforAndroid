@@ -10,7 +10,11 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.alexjprog.deezerforandroid.app.DeezerApplication
 import com.alexjprog.deezerforandroid.databinding.FragmentEditorialBinding
+import com.alexjprog.deezerforandroid.domain.model.AlbumModel
+import com.alexjprog.deezerforandroid.domain.model.MediaItemModel
+import com.alexjprog.deezerforandroid.domain.model.TrackModel
 import com.alexjprog.deezerforandroid.model.ContentCategory
+import com.alexjprog.deezerforandroid.model.MediaTypeParam
 import com.alexjprog.deezerforandroid.ui.adapter.complex.ComplexListAdapter
 import com.alexjprog.deezerforandroid.viewmodel.EditorialViewModel
 import com.alexjprog.deezerforandroid.viewmodel.ViewModelFactory
@@ -30,6 +34,18 @@ class EditorialFragment : Fragment() {
             .navigate(EditorialFragmentDirections.actionOpenMoreContentFromEditorial(category))
     }
 
+    private val openPlayerAction: (MediaItemModel) -> Unit = { mediaItem ->
+        findNavController().navigate(
+            EditorialFragmentDirections.actionOpenPlayerFragmentFromEditorial(
+                mediaItem.id,
+                when (mediaItem) {
+                    is AlbumModel -> MediaTypeParam.ALBUM
+                    is TrackModel -> MediaTypeParam.TRACK
+                }
+            )
+        )
+    }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         (context.applicationContext as DeezerApplication).appComponent.inject(this)
@@ -44,7 +60,8 @@ class EditorialFragment : Fragment() {
 
         viewModel.feed.observe(viewLifecycleOwner) {
             if (it != null) {
-                binding.rcHomeFeed.adapter = ComplexListAdapter(it, openMoreAction)
+                binding.rcHomeFeed.adapter =
+                    ComplexListAdapter(it, openMoreAction, openPlayerAction)
             }
         }
         return binding.root

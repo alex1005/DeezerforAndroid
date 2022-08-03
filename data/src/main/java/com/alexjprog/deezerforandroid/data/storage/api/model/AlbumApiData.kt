@@ -14,5 +14,5 @@ data class AlbumApiData(
     @SerializedName("cover_big")
     val coverBig: String?,
     @SerializedName("tracks")
-    val trackList: List<TrackApiData>?
+    val trackList: ResultPageApiData<TrackApiData>?
 )

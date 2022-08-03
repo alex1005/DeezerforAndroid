@@ -8,4 +8,6 @@
     <dimen name="default_margin">16dp</dimen>
     <dimen name="small_controls_size">48dp</dimen>
     <dimen name="big_controls_size">64dp</dimen>
+    <dimen name="small_controls_padding">5dp</dimen>
+    <dimen name="big_controls_padding">3dp</dimen>
 </resources>

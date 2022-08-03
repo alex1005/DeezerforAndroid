@@ -2,21 +2,21 @@
     <!-- Base application theme. -->
     <style name="Theme.DeezerForAndroid" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
+        <item name="colorPrimary">@color/color_primary</item>
+        <item name="colorPrimaryVariant">@color/color_primary_variant</item>
         <item name="colorOnPrimary">@color/black</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/colorSecondary</item>
-        <item name="colorSecondaryVariant">@color/colorSecondaryVariant</item>
+        <item name="colorSecondary">@color/color_secondary</item>
+        <item name="colorSecondaryVariant">@color/color_secondary_variant</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" >@color/colorPrimary</item>
+        <item name="android:statusBarColor">@color/color_primary</item>
         <item name="android:windowLightStatusBar">true</item>
         <!-- Customize your theme here. -->
         <item name="toolbarStyle">@style/Theme.DeezerForAndroid.Toolbar</item>
         <item name="actionBarStyle">@style/Theme.DeezerForAndroid.ActionBar</item>
         <item name="android:textViewStyle">@style/Theme.DeezerForAndroid.TextView.Basic</item>
-        <item name="colorControlHighlight">@color/colorPrimaryVariant</item>
+        <item name="colorControlHighlight">@color/color_primary_variant</item>
         <item name="materialButtonStyle">@style/Theme.DeezerForAndroid.Button</item>
         <item name="actionButtonStyle">@style/Theme.DeezerForAndroid.ActionButton</item>
         <item name="imageButtonStyle">@style/Theme.DeezerForAndroid.ImageButton</item>
@@ -32,11 +32,11 @@
 
     <style name="Theme.DeezerForAndroid.Button" parent="Widget.MaterialComponents.Button">
         <item name="titleTextColor">?attr/colorOnPrimary</item>
-        <item name="rippleColor">@color/colorPrimaryVariant</item>
+        <item name="rippleColor">@color/color_primary_variant</item>
     </style>
 
     <style name="Theme.DeezerForAndroid.ImageButton" parent="Widget.AppCompat.Button.Borderless">
-        <item name="rippleColor">@color/colorPrimaryVariant</item>
+        <item name="rippleColor">@color/color_primary_variant</item>
     </style>
 
     <style name="Theme.DeezerForAndroid.ActionButton" parent="Widget.AppCompat.ActionButton">

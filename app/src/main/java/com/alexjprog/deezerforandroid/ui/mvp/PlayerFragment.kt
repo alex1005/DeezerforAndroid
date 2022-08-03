@@ -13,6 +13,7 @@ import com.alexjprog.deezerforandroid.R
 import com.alexjprog.deezerforandroid.app.DeezerApplication
 import com.alexjprog.deezerforandroid.databinding.FragmentPlayerBinding
 import com.alexjprog.deezerforandroid.service.MediaPlayerService
+import com.alexjprog.deezerforandroid.ui.MainActivity
 import com.alexjprog.deezerforandroid.ui.mvp.contract.PlayerContract
 import com.alexjprog.deezerforandroid.util.MEDIA_ID_KEY
 import com.alexjprog.deezerforandroid.util.MEDIA_TYPE_KEY
@@ -59,17 +60,19 @@ class PlayerFragment : Fragment(), PlayerContract.View {
 
         with(binding) {
             btnPlayPause.setOnClickListener {
-                if (isPlaying)
-                    presenter.pauseMedia()
+                if (isPlaying) presenter.pauseMedia()
                 else presenter.playMedia()
             }
         }
+
+        (requireActivity() as MainActivity).setBottomNavigationVisibility(false)
         return binding.root
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        (requireActivity() as MainActivity).setBottomNavigationVisibility(true)
     }
 
     override fun onDetach() {
@@ -80,12 +83,12 @@ class PlayerFragment : Fragment(), PlayerContract.View {
 
     private fun setPlayButtonState(playing: Boolean) {
         try {
-            val stateDrawable =
+            val drawableState =
                 if (playing) R.drawable.ic_baseline_pause_24 else R.drawable.ic_baseline_play_arrow_24
             binding.btnPlayPause.setImageDrawable(
                 ContextCompat.getDrawable(
                     requireContext(),
-                    stateDrawable
+                    drawableState
                 )
             )
         } catch (e: NullPointerException) {

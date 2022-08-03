@@ -17,7 +17,7 @@
             android:id="@+id/actionOpenSearchFromHome"
             app:destination="@id/searchFragment" />
         <action
-            android:id="@+id/action_homeFragment_to_playerFragment"
+            android:id="@+id/actionOpenPlayerFragmentFromHome"
             app:destination="@id/playerFragment" />
     </fragment>
     <fragment
@@ -32,7 +32,7 @@
             android:id="@+id/actionOpenSearchFromMore"
             app:destination="@id/searchFragment" />
         <action
-            android:id="@+id/action_moreContentFragment_to_playerFragment"
+            android:id="@+id/actionOpenPlayerFragmentFromMore"
             app:destination="@id/playerFragment" />
     </fragment>
     <fragment
@@ -51,7 +51,7 @@
             android:id="@+id/actionOpenMoreContentFromEditorial"
             app:destination="@id/moreContentFragment" />
         <action
-            android:id="@+id/action_editorialFragment_to_playerFragment"
+            android:id="@+id/actionOpenPlayerFragmentFromEditorial"
             app:destination="@id/playerFragment" />
     </fragment>
     <fragment

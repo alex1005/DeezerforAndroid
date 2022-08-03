@@ -41,7 +41,7 @@
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:maxLines="1"
-        android:textColor="@color/colorTextSecondary"
+        android:textColor="@color/color_text_secondary"
         android:textSize="@dimen/default_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/ivCover"

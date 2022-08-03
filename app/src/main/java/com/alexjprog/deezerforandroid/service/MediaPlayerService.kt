@@ -22,7 +22,7 @@ import kotlin.properties.Delegates
 
 class MediaPlayerService : Service() {
 
-    private val binder = MediaPlayerBinder()
+    private val binder = MediaPlayerBinder(this)
     private val mediaPlayerListeners: MutableList<MediaPlayerListener> = mutableListOf()
 
     @Inject
@@ -69,6 +69,7 @@ class MediaPlayerService : Service() {
             player.start()
         } catch (e: UninitializedPropertyAccessException) {
         }
+        pushOnPlayEvent()
     }
 
     fun pauseMedia() {
@@ -76,11 +77,13 @@ class MediaPlayerService : Service() {
             player.pause()
         } catch (e: UninitializedPropertyAccessException) {
         }
+        pushOnPauseEvent()
     }
 
     fun stopMedia() {
         try {
             player.stop()
+            player.release()
         } catch (e: UninitializedPropertyAccessException) {
         }
     }
@@ -97,7 +100,7 @@ class MediaPlayerService : Service() {
                 )
                 newPlayer.setDataSource(track.trackLink)
                 newPlayer.prepareAsync()
-                newPlayer.setOnPreparedListener { it.start() }
+                newPlayer.setOnPreparedListener { playMedia() }
             }
         }
     }
@@ -105,17 +108,6 @@ class MediaPlayerService : Service() {
     fun previousTrack() = changeTrack(true)
 
     fun nextTrack() = changeTrack(false)
-
-    override fun onBind(intent: Intent): IBinder {
-        val type = intent.getSerializableExtra(MEDIA_TYPE_KEY) as? MediaTypeParam
-        val id = intent.getIntExtra(MEDIA_ID_KEY, -1)
-        when (type) {
-            MediaTypeParam.TRACK -> TrackModel(id = id)
-            MediaTypeParam.ALBUM -> AlbumModel(id = id)
-            else -> null
-        }?.let { playlistSource = it }
-        return binder
-    }
 
     private fun pushOnPlayEvent() {
         mediaPlayerListeners.forEach { listener ->
@@ -137,8 +129,28 @@ class MediaPlayerService : Service() {
         mediaPlayerListeners.remove(listener)
     }
 
-    inner class MediaPlayerBinder : Binder() {
-        fun getMediaPlayerService() = this@MediaPlayerService
+    override fun onBind(intent: Intent): IBinder {
+        val type = intent.getSerializableExtra(MEDIA_TYPE_KEY) as? MediaTypeParam
+        val id = intent.getIntExtra(MEDIA_ID_KEY, -1)
+        when (type) {
+            MediaTypeParam.TRACK -> TrackModel(id = id)
+            MediaTypeParam.ALBUM -> AlbumModel(id = id)
+            else -> null
+        }?.let { playlistSource = it }
+        return binder
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        stopMedia()
+        binder.releaseService()
+    }
+
+    class MediaPlayerBinder(private var mediaPlayerService: MediaPlayerService?) : Binder() {
+        fun getMediaPlayerService() = mediaPlayerService
+        fun releaseService() {
+            mediaPlayerService = null
+        }
     }
 
     interface MediaPlayerListener {

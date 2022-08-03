@@ -13,10 +13,13 @@ import com.alexjprog.deezerforandroid.domain.model.MediaItemModel
 import com.alexjprog.deezerforandroid.domain.model.TrackModel
 import com.alexjprog.deezerforandroid.util.ImageHelper
 
-class TileFlowAdapter(diffCallback: DiffUtil.ItemCallback<MediaItemModel>) :
+class TileFlowAdapter(
+    diffCallback: DiffUtil.ItemCallback<MediaItemModel>,
+    private val openPlayerAction: (MediaItemModel) -> Unit
+) :
     PagingDataAdapter<MediaItemModel, TileFlowAdapter.GridTileViewHolder>(diffCallback) {
 
-    class GridTileViewHolder(private val binding: TileItemGridBinding) :
+    inner class GridTileViewHolder(private val binding: TileItemGridBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun onBindView(item: MediaItemModel?) {
             with(binding) {
@@ -41,6 +44,7 @@ class TileFlowAdapter(diffCallback: DiffUtil.ItemCallback<MediaItemModel>) :
                         else -> {}
                     }
                 }
+                root.setOnClickListener { _ -> item?.let { openPlayerAction(it) } }
             }
         }
     }

@@ -11,10 +11,13 @@ import com.alexjprog.deezerforandroid.domain.model.MediaItemModel
 import com.alexjprog.deezerforandroid.domain.model.TrackModel
 import com.alexjprog.deezerforandroid.util.ImageHelper
 
-class HorizontalTileListAdapter(private val data: List<MediaItemModel>) :
+class HorizontalTileListAdapter(
+    private val data: List<MediaItemModel>,
+    private val openPlayerAction: (MediaItemModel) -> Unit
+) :
     RecyclerView.Adapter<HorizontalTileListAdapter.LinearTileViewHolder>() {
 
-    class LinearTileViewHolder(private val binding: TileItemLinearBinding) :
+    inner class LinearTileViewHolder(private val binding: TileItemLinearBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun onBindView(item: MediaItemModel) {
             with(binding) {
@@ -38,6 +41,7 @@ class HorizontalTileListAdapter(private val data: List<MediaItemModel>) :
                         }
                     }
                 }
+                root.setOnClickListener { openPlayerAction(item) }
             }
         }
     }

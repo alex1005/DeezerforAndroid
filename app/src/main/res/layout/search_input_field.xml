@@ -26,7 +26,7 @@
         android:elevation="5dp"
         android:ellipsize="end"
         android:fontFamily="@font/poppins_400"
-        android:textColor="@color/colorTextPrimary"
+        android:textColor="@color/color_text_primary"
         android:hint="@string/search_on_deezer"
         android:importantForAutofill="no"
         android:inputType="text"

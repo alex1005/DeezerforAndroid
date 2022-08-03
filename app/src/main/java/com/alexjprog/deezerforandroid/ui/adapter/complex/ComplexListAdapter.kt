@@ -7,12 +7,14 @@ import com.alexjprog.deezerforandroid.R
 import com.alexjprog.deezerforandroid.databinding.HorizontalTrackListItemBinding
 import com.alexjprog.deezerforandroid.databinding.TitleItemBinding
 import com.alexjprog.deezerforandroid.databinding.TitleItemWithMoreActionBinding
+import com.alexjprog.deezerforandroid.domain.model.MediaItemModel
 import com.alexjprog.deezerforandroid.model.ContentCategory
 import com.alexjprog.deezerforandroid.ui.adapter.tile.HorizontalTileListAdapter
 
 class ComplexListAdapter(
     private val data: List<ComplexListItem>,
-    private val openMoreAction: (ContentCategory) -> Unit
+    private val openMoreAction: (ContentCategory) -> Unit,
+    private val openPlayerAction: (MediaItemModel) -> Unit
 ) :
     RecyclerView.Adapter<ComplexViewHolder>() {
 
@@ -44,7 +46,7 @@ class ComplexListAdapter(
         ComplexViewHolder(binding.root) {
         fun onBindView(item: ComplexListItem.HorizontalTrackListItem) {
             with(binding) {
-                rcHorizontalList.adapter = HorizontalTileListAdapter(item.data)
+                rcHorizontalList.adapter = HorizontalTileListAdapter(item.data, openPlayerAction)
             }
         }
     }
