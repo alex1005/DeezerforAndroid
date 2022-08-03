@@ -1,11 +1,10 @@
 package com.alexjprog.deezerforandroid.di
 
 import android.content.Context
-import com.alexjprog.deezerforandroid.di.module.CoroutineModule
-import com.alexjprog.deezerforandroid.di.module.DataModule
-import com.alexjprog.deezerforandroid.di.module.NetworkModule
-import com.alexjprog.deezerforandroid.di.module.ViewModelModule
+import com.alexjprog.deezerforandroid.di.module.*
+import com.alexjprog.deezerforandroid.service.MediaPlayerService
 import com.alexjprog.deezerforandroid.ui.mvp.LoginActivity
+import com.alexjprog.deezerforandroid.ui.mvp.PlayerFragment
 import com.alexjprog.deezerforandroid.ui.mvp.SearchFragment
 import com.alexjprog.deezerforandroid.ui.mvvm.EditorialFragment
 import com.alexjprog.deezerforandroid.ui.mvvm.HomeFragment
@@ -15,8 +14,10 @@ import dagger.Component
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [ViewModelModule::class, DataModule::class,
-    NetworkModule::class, CoroutineModule::class])
+@Component(
+    modules = [ViewModelModule::class, DataModule::class,
+        NetworkModule::class, CoroutineModule::class, PresenterModule::class]
+)
 interface AppComponent {
     @Component.Builder
     interface Builder {
@@ -31,4 +32,7 @@ interface AppComponent {
     fun inject(homeFragment: EditorialFragment)
     fun inject(moreContentFragment: MoreContentFragment)
     fun inject(searchFragment: SearchFragment)
+    fun inject(playerFragment: PlayerFragment)
+
+    fun inject(mediaPlayerService: MediaPlayerService)
 }

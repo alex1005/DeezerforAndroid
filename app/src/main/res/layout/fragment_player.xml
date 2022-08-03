@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.mvp.PlayerFragment">
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/btnPlayPause"
+        android:layout_width="@dimen/big_controls_size"
+        android:layout_height="@dimen/big_controls_size"
+        android:src="@drawable/play_pause_button"
+        android:background="@drawable/player_controls_background"
+        android:layout_marginBottom="@dimen/default_margin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnNext"
+        app:layout_constraintStart_toEndOf="@+id/btnPrevious" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/btnPrevious"
+        android:layout_width="@dimen/small_controls_size"
+        android:layout_height="@dimen/small_controls_size"
+        android:background="@drawable/player_controls_background"
+        android:src="@drawable/ic_baseline_skip_previous_24"
+        app:layout_constraintBottom_toBottomOf="@+id/btnPlayPause"
+        app:layout_constraintEnd_toStartOf="@+id/btnPlayPause"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btnPlayPause" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/btnNext"
+        android:layout_width="@dimen/small_controls_size"
+        android:layout_height="@dimen/small_controls_size"
+        android:background="@drawable/player_controls_background"
+        android:src="@drawable/ic_baseline_skip_next_24"
+        app:layout_constraintBottom_toBottomOf="@+id/btnPlayPause"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btnPlayPause"
+        app:layout_constraintTop_toTopOf="@+id/btnPlayPause" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

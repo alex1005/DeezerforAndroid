@@ -14,4 +14,7 @@ interface IDeezerDataSource {
 
     fun getSearchHistory(): Observable<List<SearchHistoryResultApiData>>
     fun getSearchResultsForQuery(query: String): Observable<List<TrackApiData>>
+
+    fun getTrackInfo(id: Int): Observable<TrackApiData>
+    fun getAlbumInfo(id: Int): Observable<AlbumApiData>
 }

@@ -14,7 +14,6 @@ import androidx.navigation.fragment.findNavController
 import com.alexjprog.deezerforandroid.app.DeezerApplication
 import com.alexjprog.deezerforandroid.databinding.FragmentSearchBinding
 import com.alexjprog.deezerforandroid.domain.model.SearchSuggestionModel
-import com.alexjprog.deezerforandroid.presenter.SearchPresenter
 import com.alexjprog.deezerforandroid.ui.adapter.search.SearchSuggestionListAdapter
 import com.alexjprog.deezerforandroid.ui.mvp.contract.SearchContract
 import com.alexjprog.deezerforandroid.util.SEARCH_SUGGESTIONS_LIST_STATE_KEY
@@ -24,7 +23,7 @@ import javax.inject.Inject
 class SearchFragment : Fragment(), SearchContract.View {
 
     @Inject
-    lateinit var presenter: SearchPresenter
+    lateinit var presenter: SearchContract.Presenter
 
     private var _binding: FragmentSearchBinding? = null
     private val binding: FragmentSearchBinding get() = _binding!!

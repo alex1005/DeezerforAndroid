@@ -5,12 +5,19 @@
       <map>
         <entry key="..\:/Users/fazbe/Documents/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/ic_baseline_auto_awesome_24.xml" value="0.2265" />
         <entry key="..\:/Users/fazbe/Documents/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/ic_baseline_home_24.xml" value="0.2265" />
+        <entry key="..\:/Users/fazbe/Documents/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/ic_baseline_pause_24.xml" value="0.2355" />
+        <entry key="..\:/Users/fazbe/Documents/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/ic_baseline_play_arrow_24.xml" value="0.2355" />
+        <entry key="..\:/Users/fazbe/Documents/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/ic_baseline_skip_next_24.xml" value="0.2355" />
+        <entry key="..\:/Users/fazbe/Documents/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/ic_baseline_skip_previous_24.xml" value="0.2355" />
         <entry key="..\:/Users/fazbe/Documents/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/ic_outline_auto_awesome_24.xml" value="0.2265" />
         <entry key="..\:/Users/fazbe/Documents/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/ic_outline_home_24.xml" value="0.2265" />
         <entry key="..\:/Users/fazbe/Documents/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/menu_editorial.xml" value="0.2265" />
         <entry key="..\:/Users/fazbe/Documents/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/menu_home.xml" value="0.2265" />
+        <entry key="..\:/Users/fazbe/Documents/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/play_pause_button.xml" value="0.2355" />
+        <entry key="..\:/Users/fazbe/Documents/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/player_controls_background.xml" value="0.2355" />
         <entry key="..\:/Users/fazbe/Documents/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/search_form_background.xml" value="0.2265" />
         <entry key="..\:/Users/fazbe/Documents/AndroidProj/DeezerforAndroid/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/Users/fazbe/Documents/AndroidProj/DeezerforAndroid/app/src/main/res/layout/fragment_player.xml" value="0.25" />
         <entry key="..\:/Users/fazbe/Documents/AndroidProj/DeezerforAndroid/app/src/main/res/layout/title_item.xml" value="0.24895833333333334" />
         <entry key="..\:/Users/fazbe/Documents/AndroidProj/DeezerforAndroid/app/src/main/res/layout/title_item_with_more_action.xml" value="0.25" />
         <entry key="..\:/Users/fazbe/Documents/AndroidProj/DeezerforAndroid/app/src/main/res/menu/bottom_nav_menu.xml" value="0.25" />

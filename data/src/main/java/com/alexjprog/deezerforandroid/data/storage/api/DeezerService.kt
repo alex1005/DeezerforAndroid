@@ -7,6 +7,7 @@ import com.alexjprog.deezerforandroid.data.storage.api.model.TrackApiData
 import io.reactivex.rxjava3.core.Single
 import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface DeezerService {
@@ -33,4 +34,10 @@ interface DeezerService {
     @GET("search")
     fun getSearchResultsForQuery(@Query("q") query: String):
             Single<ResultPageApiData<TrackApiData>>
+
+    @GET("track/{id}")
+    fun getTrackInfo(@Path("id") id: Int): Single<TrackApiData>
+
+    @GET("album/{id}")
+    fun getAlbumInfo(@Path("id") id: Int): Single<AlbumApiData>
 }

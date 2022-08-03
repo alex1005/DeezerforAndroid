@@ -18,7 +18,9 @@ class DefaultApiMapper @Inject constructor() : IApiMapper {
             rank = track.rank,
             duration = track.duration,
             artist = mapArtist(track.artist),
-            album = mapAlbum(track.album)
+            album = mapAlbum(track.album),
+            deezerLink = track.deezerLink,
+            trackLink = track.trackLink
         )
 
     override fun mapArtist(artist: ArtistApiData): ArtistModel =

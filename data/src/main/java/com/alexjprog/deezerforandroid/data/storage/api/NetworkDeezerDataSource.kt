@@ -63,4 +63,10 @@ class NetworkDeezerDataSource @Inject constructor(
         api.getSearchResultsForQuery(query).map { it.data }
             .onErrorReturn { listOf() }
             .toObservable()
+
+    override fun getTrackInfo(id: Int): Observable<TrackApiData> =
+        api.getTrackInfo(id).toObservable()
+
+    override fun getAlbumInfo(id: Int): Observable<AlbumApiData> =
+        api.getAlbumInfo(id).toObservable()
 }

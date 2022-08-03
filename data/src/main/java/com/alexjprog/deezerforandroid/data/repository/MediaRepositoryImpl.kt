@@ -48,4 +48,10 @@ class MediaRepositoryImpl @Inject constructor(
     override fun getSearchResultsForQuery(query: String): Observable<List<SearchSuggestionModel>> =
         deezerSource.getSearchResultsForQuery(query)
             .map { list -> list.map { apiMapper.mapSearchResult(it) } }
+
+    override fun getTrackInfo(id: Int): Observable<TrackModel> =
+        deezerSource.getTrackInfo(id).map { apiMapper.mapTrack(it) }
+
+    override fun getAlbumInfo(id: Int): Observable<AlbumModel> =
+        deezerSource.getAlbumInfo(id).map { apiMapper.mapAlbum(it) }
 }
