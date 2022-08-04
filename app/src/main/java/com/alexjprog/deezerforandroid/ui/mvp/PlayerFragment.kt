@@ -26,12 +26,6 @@ class PlayerFragment : Fragment(), PlayerContract.View {
     private var _binding: FragmentPlayerBinding? = null
     private val binding: FragmentPlayerBinding get() = _binding!!
 
-    override var isPlaying: Boolean? = null
-        set(value) {
-            field = value
-            setPlayButtonState(value)
-        }
-
     private val args: PlayerFragmentArgs by navArgs()
 
     override fun onAttach(context: Context) {
@@ -60,13 +54,18 @@ class PlayerFragment : Fragment(), PlayerContract.View {
 
         with(binding) {
             btnPlayPause.setOnClickListener {
-                when (isPlaying) {
-                    true -> presenter.pauseMedia()
-                    false -> presenter.playMedia()
-                    null -> {}
-                }
+                presenter.playOrPauseMedia()
             }
-            setPlayButtonState(isPlaying)
+            btnNext.setOnClickListener {
+                presenter.nextTrack()
+            }
+            btnPrevious.setOnClickListener {
+                presenter.previousTrack()
+            }
+
+            setNextButtonAvailability(false)
+            setPreviousButtonAvailability(false)
+            setPlayButtonState(null)
         }
 
         (requireActivity() as MainActivity).setBottomNavigationVisibility(false)
@@ -85,7 +84,7 @@ class PlayerFragment : Fragment(), PlayerContract.View {
         presenter.onDetach()
     }
 
-    private fun setPlayButtonState(playing: Boolean?) {
+    override fun setPlayButtonState(playing: Boolean?) {
         try {
             with(binding) {
                 if (playing == null) {
@@ -110,5 +109,13 @@ class PlayerFragment : Fragment(), PlayerContract.View {
             }
         } catch (e: NullPointerException) {
         }
+    }
+
+    override fun setPreviousButtonAvailability(enabled: Boolean) {
+        binding.btnPrevious.isEnabled = enabled
+    }
+
+    override fun setNextButtonAvailability(enabled: Boolean) {
+        binding.btnNext.isEnabled = enabled
     }
 }

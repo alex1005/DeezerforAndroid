@@ -13,6 +13,6 @@
     <color name="color_secondary_variant">#B7193C</color>
     <color name="color_text_primary">#FFE0FBFC</color>
     <color name="color_text_secondary">#88E0FBFC</color>
-    <color name="color_primary_light">#1998C1D9</color>
+    <color name="color_primary_light">#2598C1D9</color>
     <color name="disabled_color">#717171</color>
 </resources>

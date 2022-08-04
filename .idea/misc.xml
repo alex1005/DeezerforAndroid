@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/fazbe/Documents/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/default_track_cover.xml" value="0.2355" />
+        <entry key="..\:/Users/fazbe/Documents/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/ic_baseline_audiotrack_24.xml" value="0.121" />
         <entry key="..\:/Users/fazbe/Documents/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/ic_baseline_auto_awesome_24.xml" value="0.2265" />
         <entry key="..\:/Users/fazbe/Documents/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/ic_baseline_home_24.xml" value="0.2265" />
         <entry key="..\:/Users/fazbe/Documents/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/ic_baseline_pause_24.xml" value="0.2355" />

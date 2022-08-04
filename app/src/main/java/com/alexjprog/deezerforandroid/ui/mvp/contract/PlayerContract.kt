@@ -6,12 +6,15 @@ import com.alexjprog.deezerforandroid.ui.mvp.BaseView
 
 interface PlayerContract {
     interface View : BaseView {
-        var isPlaying: Boolean?
+        fun setPlayButtonState(playing: Boolean?)
+        fun setPreviousButtonAvailability(enabled: Boolean)
+        fun setNextButtonAvailability(enabled: Boolean)
     }
 
     interface Presenter : MVPPresenter<View> {
-        fun playMedia()
-        fun pauseMedia()
+        fun playOrPauseMedia()
+        fun nextTrack()
+        fun previousTrack()
 
         val playerConnection: ServiceConnection
     }

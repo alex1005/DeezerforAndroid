@@ -16,6 +16,7 @@ import com.alexjprog.deezerforandroid.domain.usecase.GetTrackInfoUseCase
 import com.alexjprog.deezerforandroid.model.MediaTypeParam
 import com.alexjprog.deezerforandroid.util.MEDIA_ID_KEY
 import com.alexjprog.deezerforandroid.util.MEDIA_TYPE_KEY
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 import kotlin.properties.Delegates
@@ -31,9 +32,20 @@ class MediaPlayerService : Service() {
     @Inject
     lateinit var getAlbumInfoUseCase: GetAlbumInfoUseCase
 
+    val isPlaying: Boolean?
+        get() = try {
+            player.isPlaying
+        } catch (e: UninitializedPropertyAccessException) {
+            null
+        }
+    private val hasNextTrack: Boolean
+        get() = currentTrackIndex < playlist.lastIndex
+    private val hasPreviousTrack: Boolean
+        get() = currentTrackIndex > 0
+
     private lateinit var player: MediaPlayer
     private val playlist: MutableList<TrackModel> = mutableListOf()
-    private var currentTrackIndex = 0
+    private var currentTrackIndex = INITIAL_PLAYLIST_INDEX
 
     override fun onCreate() {
         super.onCreate()
@@ -43,21 +55,23 @@ class MediaPlayerService : Service() {
     private var playlistSource: MediaItemModel? by Delegates.observable(null) { _, _, newValue ->
         when (newValue) {
             is TrackModel -> getTrackInfoUseCase(newValue.id)
-                .observeOn(Schedulers.io())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { track ->
                     playlist.clear()
                     playlist += track
-                    currentTrackIndex = 0
+                    currentTrackIndex = INITIAL_PLAYLIST_INDEX
                     nextTrack()
                 }
             is AlbumModel -> getAlbumInfoUseCase(newValue.id)
-                .observeOn(Schedulers.io())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { album ->
                     album.trackList?.let { tracks ->
                         playlist.clear()
                         playlist += tracks.map { it }
                     }
-                    currentTrackIndex = 0
+                    currentTrackIndex = INITIAL_PLAYLIST_INDEX
                     nextTrack()
                 }
             null -> {}
@@ -80,18 +94,21 @@ class MediaPlayerService : Service() {
         pushOnPauseEvent()
     }
 
-    fun stopMedia() {
+    private fun stopMedia() {
         try {
             player.stop()
             player.release()
         } catch (e: UninitializedPropertyAccessException) {
         }
+        pushOnPauseEvent()
     }
 
     private fun changeTrack(goBackwards: Boolean) {
-        val nextIndex = if (goBackwards) currentTrackIndex-- else currentTrackIndex++
-        val previousTrackUrl = playlist.getOrNull(nextIndex)
-        previousTrackUrl?.let { track ->
+        val nextIndex = if (goBackwards) --currentTrackIndex else ++currentTrackIndex
+        val nextTrack = playlist.getOrNull(nextIndex)
+        stopMedia()
+        nextTrack?.let { track ->
+            pushOnUpdateCurrentTrackEvent()
             player = MediaPlayer().also { newPlayer ->
                 newPlayer.setAudioAttributes(
                     AudioAttributes.Builder()
@@ -101,6 +118,7 @@ class MediaPlayerService : Service() {
                 newPlayer.setDataSource(track.trackLink)
                 newPlayer.prepareAsync()
                 newPlayer.setOnPreparedListener { playMedia() }
+                newPlayer.setOnCompletionListener { pushOnPauseEvent() }
             }
         }
     }
@@ -118,6 +136,16 @@ class MediaPlayerService : Service() {
     private fun pushOnPauseEvent() {
         mediaPlayerListeners.forEach { listener ->
             listener.onPause()
+        }
+    }
+
+    private fun pushOnUpdateCurrentTrackEvent() {
+        mediaPlayerListeners.forEach { listener ->
+            listener.updateCurrentTrack(
+                hasPreviousTrack,
+                hasNextTrack,
+                playlist[currentTrackIndex]
+            )
         }
     }
 
@@ -156,5 +184,11 @@ class MediaPlayerService : Service() {
     interface MediaPlayerListener {
         fun onPlay()
         fun onPause()
+
+        fun updateCurrentTrack(hasPrevious: Boolean, hasNext: Boolean, currentTrack: TrackModel)
+    }
+
+    companion object {
+        const val INITIAL_PLAYLIST_INDEX = -1
     }
 }

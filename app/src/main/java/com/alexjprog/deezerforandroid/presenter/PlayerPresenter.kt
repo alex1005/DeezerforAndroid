@@ -3,6 +3,7 @@ package com.alexjprog.deezerforandroid.presenter
 import android.content.ComponentName
 import android.content.ServiceConnection
 import android.os.IBinder
+import com.alexjprog.deezerforandroid.domain.model.TrackModel
 import com.alexjprog.deezerforandroid.service.MediaPlayerService
 import com.alexjprog.deezerforandroid.ui.mvp.contract.PlayerContract
 import javax.inject.Inject
@@ -27,19 +28,37 @@ class PlayerPresenter @Inject constructor(
         }
     }
 
-    override fun playMedia() {
-        mediaPlayerService?.playMedia()
+    override fun playOrPauseMedia() {
+        when (mediaPlayerService?.isPlaying) {
+            true -> mediaPlayerService?.pauseMedia()
+            false -> mediaPlayerService?.playMedia()
+            null -> {}
+        }
     }
 
-    override fun pauseMedia() {
-        mediaPlayerService?.pauseMedia()
+    override fun nextTrack() {
+        mediaPlayerService?.nextTrack()
+    }
+
+    override fun previousTrack() {
+        mediaPlayerService?.previousTrack()
     }
 
     override fun onPlay() {
-        view?.isPlaying = true
+        view?.setPlayButtonState(true)
     }
 
     override fun onPause() {
-        view?.isPlaying = false
+        view?.setPlayButtonState(false)
+    }
+
+    override fun updateCurrentTrack(
+        hasPrevious: Boolean,
+        hasNext: Boolean,
+        currentTrack: TrackModel
+    ) {
+        view?.setPlayButtonState(null)
+        view?.setPreviousButtonAvailability(hasPrevious)
+        view?.setNextButtonAvailability(hasNext)
     }
 }
