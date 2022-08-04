@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import com.alexjprog.deezerforandroid.app.DeezerApplication
 import com.alexjprog.deezerforandroid.databinding.FragmentSearchBinding
 import com.alexjprog.deezerforandroid.domain.model.SearchSuggestionModel
+import com.alexjprog.deezerforandroid.ui.MainActivity
 import com.alexjprog.deezerforandroid.ui.adapter.search.SearchSuggestionListAdapter
 import com.alexjprog.deezerforandroid.ui.mvp.contract.SearchContract
 import com.alexjprog.deezerforandroid.util.SEARCH_SUGGESTIONS_LIST_STATE_KEY
@@ -85,6 +86,7 @@ class SearchFragment : Fragment(), SearchContract.View {
                 })
             }
         }
+        (requireActivity() as MainActivity).setBottomNavigationVisibility(false)
         return binding.root
     }
 
@@ -138,6 +140,7 @@ class SearchFragment : Fragment(), SearchContract.View {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        (requireActivity() as MainActivity).setBottomNavigationVisibility(true)
     }
 
     override fun onDetach() {
