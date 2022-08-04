@@ -46,8 +46,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun setBottomNavigationVisibility(visible: Boolean) {
-        binding.bottomNavigationView.visibility =
-            if (visible) View.VISIBLE else View.GONE
+    fun showAllNavigation() {
+        binding.bottomNavigationView.visibility = View.VISIBLE
+        supportActionBar?.show()
+    }
+
+    fun hideAllNavigation() {
+        binding.bottomNavigationView.visibility = View.GONE
+        supportActionBar?.hide()
     }
 }

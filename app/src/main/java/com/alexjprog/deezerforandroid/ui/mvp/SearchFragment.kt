@@ -8,7 +8,6 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.alexjprog.deezerforandroid.app.DeezerApplication
@@ -86,13 +85,12 @@ class SearchFragment : Fragment(), SearchContract.View {
                 })
             }
         }
-        (requireActivity() as MainActivity).setBottomNavigationVisibility(false)
         return binding.root
     }
 
     override fun onStart() {
         super.onStart()
-        (requireActivity() as AppCompatActivity).supportActionBar?.hide()
+        (requireActivity() as MainActivity).hideAllNavigation()
         binding.inputField.etSearch.requestFocus()
     }
 
@@ -133,14 +131,13 @@ class SearchFragment : Fragment(), SearchContract.View {
 
     override fun onStop() {
         super.onStop()
-        (requireActivity() as AppCompatActivity).supportActionBar?.show()
+        (requireActivity() as MainActivity).showAllNavigation()
         binding.inputField.etSearch.clearFocus()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        (requireActivity() as MainActivity).setBottomNavigationVisibility(true)
     }
 
     override fun onDetach() {

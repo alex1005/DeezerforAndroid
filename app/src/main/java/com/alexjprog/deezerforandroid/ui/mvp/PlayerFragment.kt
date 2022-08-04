@@ -68,14 +68,22 @@ class PlayerFragment : Fragment(), PlayerContract.View {
             setPlayButtonState(null)
         }
 
-        (requireActivity() as MainActivity).setBottomNavigationVisibility(false)
         return binding.root
+    }
+
+    override fun onStart() {
+        super.onStart()
+        (requireActivity() as MainActivity).hideAllNavigation()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        (requireActivity() as MainActivity).showAllNavigation()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        (requireActivity() as MainActivity).setBottomNavigationVisibility(true)
     }
 
     override fun onDetach() {
