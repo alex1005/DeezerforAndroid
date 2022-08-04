@@ -26,7 +26,7 @@ class PlayerFragment : Fragment(), PlayerContract.View {
     private var _binding: FragmentPlayerBinding? = null
     private val binding: FragmentPlayerBinding get() = _binding!!
 
-    override var isPlaying: Boolean = false
+    override var isPlaying: Boolean? = null
         set(value) {
             field = value
             setPlayButtonState(value)
@@ -60,9 +60,13 @@ class PlayerFragment : Fragment(), PlayerContract.View {
 
         with(binding) {
             btnPlayPause.setOnClickListener {
-                if (isPlaying) presenter.pauseMedia()
-                else presenter.playMedia()
+                when (isPlaying) {
+                    true -> presenter.pauseMedia()
+                    false -> presenter.playMedia()
+                    null -> {}
+                }
             }
+            setPlayButtonState(isPlaying)
         }
 
         (requireActivity() as MainActivity).setBottomNavigationVisibility(false)
@@ -81,16 +85,29 @@ class PlayerFragment : Fragment(), PlayerContract.View {
         presenter.onDetach()
     }
 
-    private fun setPlayButtonState(playing: Boolean) {
+    private fun setPlayButtonState(playing: Boolean?) {
         try {
-            val drawableState =
-                if (playing) R.drawable.ic_baseline_pause_24 else R.drawable.ic_baseline_play_arrow_24
-            binding.btnPlayPause.setImageDrawable(
-                ContextCompat.getDrawable(
-                    requireContext(),
-                    drawableState
-                )
-            )
+            with(binding) {
+                if (playing == null) {
+                    btnPlayPause.setImageDrawable(
+                        ContextCompat.getDrawable(
+                            requireContext(),
+                            R.drawable.ic_baseline_play_arrow_24
+                        )
+                    )
+                    btnPlayPause.isEnabled = false
+                } else {
+                    val drawableState =
+                        if (playing) R.drawable.ic_baseline_pause_24 else R.drawable.ic_baseline_play_arrow_24
+                    btnPlayPause.setImageDrawable(
+                        ContextCompat.getDrawable(
+                            requireContext(),
+                            drawableState
+                        )
+                    )
+                    btnPlayPause.isEnabled = true
+                }
+            }
         } catch (e: NullPointerException) {
         }
     }

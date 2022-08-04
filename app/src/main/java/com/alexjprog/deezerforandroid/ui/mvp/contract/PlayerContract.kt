@@ -6,7 +6,7 @@ import com.alexjprog.deezerforandroid.ui.mvp.BaseView
 
 interface PlayerContract {
     interface View : BaseView {
-        var isPlaying: Boolean
+        var isPlaying: Boolean?
     }
 
     interface Presenter : MVPPresenter<View> {
