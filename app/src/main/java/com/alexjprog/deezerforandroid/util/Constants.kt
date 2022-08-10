@@ -8,5 +8,4 @@ const val RECOMMENDATIONS_PREVIEW_SIZE = 10
 
 const val CONTENT_PAGE_SIZE = 20
 
-const val MEDIA_TYPE_KEY = "media_type"
-const val MEDIA_ID_KEY = "media_id"
+const val MEDIA_PLAYER_COMMAND = "media_player_command"

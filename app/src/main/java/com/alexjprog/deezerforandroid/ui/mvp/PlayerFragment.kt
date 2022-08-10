@@ -12,11 +12,14 @@ import androidx.navigation.fragment.navArgs
 import com.alexjprog.deezerforandroid.R
 import com.alexjprog.deezerforandroid.app.DeezerApplication
 import com.alexjprog.deezerforandroid.databinding.FragmentPlayerBinding
+import com.alexjprog.deezerforandroid.domain.model.AlbumModel
+import com.alexjprog.deezerforandroid.domain.model.MediaItemModel
+import com.alexjprog.deezerforandroid.domain.model.TrackModel
+import com.alexjprog.deezerforandroid.model.MediaTypeParam
 import com.alexjprog.deezerforandroid.service.MediaPlayerService
 import com.alexjprog.deezerforandroid.ui.MainActivity
 import com.alexjprog.deezerforandroid.ui.mvp.contract.PlayerContract
-import com.alexjprog.deezerforandroid.util.MEDIA_ID_KEY
-import com.alexjprog.deezerforandroid.util.MEDIA_TYPE_KEY
+import com.alexjprog.deezerforandroid.util.ImageHelper
 import javax.inject.Inject
 
 class PlayerFragment : Fragment(), PlayerContract.View {
@@ -33,15 +36,8 @@ class PlayerFragment : Fragment(), PlayerContract.View {
         (context.applicationContext as DeezerApplication).appComponent.inject(this)
         presenter.onAttach(this)
 
-        Intent(requireContext(), MediaPlayerService::class.java).apply {
-            putExtra(MEDIA_TYPE_KEY, args.playableMediaType)
-            putExtra(MEDIA_ID_KEY, args.playableMediaId)
-
-            requireActivity().bindService(
-                this,
-                presenter.playerConnection,
-                Context.BIND_AUTO_CREATE
-            )
+        Intent(context, MediaPlayerService::class.java).apply {
+            requireActivity().startService(this)
         }
     }
 
@@ -71,6 +67,17 @@ class PlayerFragment : Fragment(), PlayerContract.View {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        Intent(requireContext(), MediaPlayerService::class.java).apply {
+            requireActivity().bindService(
+                this,
+                presenter.playerConnection,
+                Context.BIND_AUTO_CREATE
+            )
+        }
+    }
+
     override fun onStart() {
         super.onStart()
         (requireActivity() as MainActivity).hideAllNavigation()
@@ -84,11 +91,11 @@ class PlayerFragment : Fragment(), PlayerContract.View {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        requireActivity().unbindService(presenter.playerConnection)
     }
 
     override fun onDetach() {
         super.onDetach()
-        requireActivity().unbindService(presenter.playerConnection)
         presenter.onDetach()
     }
 
@@ -125,5 +132,21 @@ class PlayerFragment : Fragment(), PlayerContract.View {
 
     override fun setNextButtonAvailability(enabled: Boolean) {
         binding.btnNext.isEnabled = enabled
+    }
+
+    override fun setTrackData(data: TrackModel) {
+        with(binding) {
+            tvTitle.text = data.title ?: resources.getString(R.string.unknown)
+            ImageHelper.loadSimplePicture(tvCover, data.pictureLink)
+        }
+    }
+
+    override fun getPlaylistSource(): MediaItemModel? {
+        val id = args.playableMediaId
+        return when (args.playableMediaType) {
+            MediaTypeParam.TRACK -> TrackModel(id = id)
+            MediaTypeParam.ALBUM -> AlbumModel(id = id)
+            else -> null
+        }
     }
 }

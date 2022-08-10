@@ -11,7 +11,9 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.alexjprog.deezerforandroid.R
 import com.alexjprog.deezerforandroid.databinding.ActivityMainBinding
+import com.alexjprog.deezerforandroid.service.MediaPlayerService
 import com.alexjprog.deezerforandroid.ui.mvp.LoginActivity
+import com.alexjprog.deezerforandroid.util.MEDIA_PLAYER_COMMAND
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -54,5 +56,15 @@ class MainActivity : AppCompatActivity() {
     fun hideAllNavigation() {
         binding.bottomNavigationView.visibility = View.GONE
         supportActionBar?.hide()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (isFinishing) {
+            Intent(this, MediaPlayerService::class.java).apply {
+                putExtra(MEDIA_PLAYER_COMMAND, true)
+                startService(this)
+            }
+        }
     }
 }

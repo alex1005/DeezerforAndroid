@@ -17,4 +17,9 @@ object ImageHelper {
             .load(uri)
             .circleCrop()
             .into(destPicture)
+
+    fun loadSimplePicture(destPicture: ImageView, uri: String?) =
+        Glide.with(destPicture)
+            .load(uri)
+            .into(destPicture)
 }

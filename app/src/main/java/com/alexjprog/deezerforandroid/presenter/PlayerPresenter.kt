@@ -20,6 +20,7 @@ class PlayerPresenter @Inject constructor(
             mediaPlayerService = (service as MediaPlayerService.MediaPlayerBinder)
                 .getMediaPlayerService()
             mediaPlayerService?.addMediaPlayerListener(this@PlayerPresenter)
+            mediaPlayerService?.playlistSource = view?.getPlaylistSource()
         }
 
         override fun onServiceDisconnected(name: ComponentName?) {
@@ -60,5 +61,7 @@ class PlayerPresenter @Inject constructor(
         view?.setPlayButtonState(null)
         view?.setPreviousButtonAvailability(hasPrevious)
         view?.setNextButtonAvailability(hasNext)
+
+        view?.setTrackData(currentTrack)
     }
 }

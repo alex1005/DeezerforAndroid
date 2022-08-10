@@ -13,9 +13,8 @@ import com.alexjprog.deezerforandroid.domain.model.MediaItemModel
 import com.alexjprog.deezerforandroid.domain.model.TrackModel
 import com.alexjprog.deezerforandroid.domain.usecase.GetAlbumInfoUseCase
 import com.alexjprog.deezerforandroid.domain.usecase.GetTrackInfoUseCase
-import com.alexjprog.deezerforandroid.model.MediaTypeParam
-import com.alexjprog.deezerforandroid.util.MEDIA_ID_KEY
-import com.alexjprog.deezerforandroid.util.MEDIA_TYPE_KEY
+import com.alexjprog.deezerforandroid.util.MEDIA_PLAYER_COMMAND
+import com.alexjprog.deezerforandroid.util.MediaPlayerNotificationHelper
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
@@ -37,6 +36,8 @@ class MediaPlayerService : Service() {
             player.isPlaying
         } catch (e: UninitializedPropertyAccessException) {
             null
+        } catch (e: IllegalStateException) {
+            false
         }
     private val hasNextTrack: Boolean
         get() = currentTrackIndex < playlist.lastIndex
@@ -44,15 +45,35 @@ class MediaPlayerService : Service() {
         get() = currentTrackIndex > 0
 
     private lateinit var player: MediaPlayer
+    private lateinit var notificationHelper: MediaPlayerNotificationHelper
     private val playlist: MutableList<TrackModel> = mutableListOf()
     private var currentTrackIndex = INITIAL_PLAYLIST_INDEX
 
     override fun onCreate() {
         super.onCreate()
         (applicationContext as DeezerApplication).appComponent.inject(this)
+        notificationHelper = MediaPlayerNotificationHelper(this)
+
+        startForeground(
+            MediaPlayerNotificationHelper.NOTIFICATION_ID,
+            notificationHelper.getNotification()
+        )
     }
 
-    private var playlistSource: MediaItemModel? by Delegates.observable(null) { _, _, newValue ->
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        val isStopping = intent?.getBooleanExtra(MEDIA_PLAYER_COMMAND, false) ?: false
+        if (isStopping) {
+            stopForeground(true)
+            stopSelf()
+        }
+        return super.onStartCommand(intent, flags, startId)
+    }
+
+    var playlistSource: MediaItemModel? by Delegates.observable(null) { _, oldValue, newValue ->
+        if (newValue?.id == oldValue?.id) {
+            pushState()
+            return@observable
+        }
         when (newValue) {
             is TrackModel -> getTrackInfoUseCase(newValue.id)
                 .subscribeOn(Schedulers.io())
@@ -100,7 +121,6 @@ class MediaPlayerService : Service() {
             player.release()
         } catch (e: UninitializedPropertyAccessException) {
         }
-        pushOnPauseEvent()
     }
 
     private fun changeTrack(goBackwards: Boolean) {
@@ -126,6 +146,15 @@ class MediaPlayerService : Service() {
     fun previousTrack() = changeTrack(true)
 
     fun nextTrack() = changeTrack(false)
+
+    private fun pushState() {
+        pushOnUpdateCurrentTrackEvent()
+        when (isPlaying) {
+            true -> pushOnPlayEvent()
+            false -> pushOnPauseEvent()
+            null -> {}
+        }
+    }
 
     private fun pushOnPlayEvent() {
         mediaPlayerListeners.forEach { listener ->
@@ -157,16 +186,7 @@ class MediaPlayerService : Service() {
         mediaPlayerListeners.remove(listener)
     }
 
-    override fun onBind(intent: Intent): IBinder {
-        val type = intent.getSerializableExtra(MEDIA_TYPE_KEY) as? MediaTypeParam
-        val id = intent.getIntExtra(MEDIA_ID_KEY, -1)
-        when (type) {
-            MediaTypeParam.TRACK -> TrackModel(id = id)
-            MediaTypeParam.ALBUM -> AlbumModel(id = id)
-            else -> null
-        }?.let { playlistSource = it }
-        return binder
-    }
+    override fun onBind(intent: Intent): IBinder = binder
 
     override fun onDestroy() {
         super.onDestroy()
@@ -184,7 +204,6 @@ class MediaPlayerService : Service() {
     interface MediaPlayerListener {
         fun onPlay()
         fun onPause()
-
         fun updateCurrentTrack(hasPrevious: Boolean, hasNext: Boolean, currentTrack: TrackModel)
     }
 
