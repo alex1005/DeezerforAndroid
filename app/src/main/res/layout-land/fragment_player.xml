@@ -24,14 +24,14 @@
         android:id="@+id/btnPrevious"
         android:layout_width="@dimen/small_controls_size"
         android:layout_height="@dimen/small_controls_size"
+        android:background="@drawable/player_controls_background"
         android:padding="@dimen/small_controls_padding"
+        android:src="@drawable/ic_baseline_skip_previous_24"
         android:tint="@color/player_controls_foreground"
         android:tintMode="multiply"
-        android:background="@drawable/player_controls_background"
-        android:src="@drawable/ic_baseline_skip_previous_24"
         app:layout_constraintBottom_toBottomOf="@+id/btnPlayPause"
         app:layout_constraintEnd_toStartOf="@+id/btnPlayPause"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tvCover"
         app:layout_constraintTop_toTopOf="@+id/btnPlayPause" />
 
     <androidx.appcompat.widget.AppCompatImageButton
@@ -52,26 +52,27 @@
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="Title"
-        android:textSize="@dimen/big_text"
-        android:layout_marginVertical="@dimen/default_margin"
         android:layout_marginHorizontal="@dimen/default_margin"
-        android:maxLines="1"
+        android:layout_marginVertical="@dimen/default_margin"
         android:ellipsize="end"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/tvCover"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:maxLines="1"
+        android:textSize="@dimen/big_text"
+        app:layout_constraintBottom_toTopOf="@+id/btnPlayPause"
+        app:layout_constraintEnd_toEndOf="@+id/btnPlayPause"
+        app:layout_constraintStart_toStartOf="@+id/btnPlayPause"
+        tools:text="Title" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/tvCover"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="@dimen/big_picture_margin"
+        android:layout_marginStart="96dp"
+        android:layout_marginTop="8dp"
         android:src="@drawable/default_track_cover"
         app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
