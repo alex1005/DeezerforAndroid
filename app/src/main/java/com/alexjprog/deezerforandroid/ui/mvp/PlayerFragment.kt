@@ -1,6 +1,5 @@
 package com.alexjprog.deezerforandroid.ui.mvp
 
-import android.app.Service
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -93,7 +92,7 @@ class PlayerFragment : Fragment(), PlayerContract.View, MediaPlayerService.Media
             requireActivity().bindService(
                 this,
                 playerConnection,
-                Service.BIND_AUTO_CREATE
+                0
             )
         }
     }

@@ -13,7 +13,6 @@ import com.alexjprog.deezerforandroid.domain.model.MediaItemModel
 import com.alexjprog.deezerforandroid.domain.model.TrackModel
 import com.alexjprog.deezerforandroid.domain.usecase.GetAlbumInfoUseCase
 import com.alexjprog.deezerforandroid.domain.usecase.GetTrackInfoUseCase
-import com.alexjprog.deezerforandroid.util.MEDIA_PLAYER_COMMAND
 import com.alexjprog.deezerforandroid.util.MediaPlayerNotificationHelper
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -54,15 +53,6 @@ class MediaPlayerService : Service() {
         (applicationContext as DeezerApplication).appComponent.inject(this)
         notificationHelper = MediaPlayerNotificationHelper(this)
 
-    }
-
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        val isStopping = intent?.getBooleanExtra(MEDIA_PLAYER_COMMAND, false) ?: false
-        if (isStopping) {
-            stopForeground(true)
-            stopSelf()
-        }
-        return super.onStartCommand(intent, flags, startId)
     }
 
     var playlistSource: MediaItemModel? by Delegates.observable(null) { _, oldValue, newValue ->
@@ -187,6 +177,12 @@ class MediaPlayerService : Service() {
     }
 
     override fun onBind(intent: Intent): IBinder = binder
+
+    override fun onTaskRemoved(rootIntent: Intent?) {
+        super.onTaskRemoved(rootIntent)
+        stopForeground(true)
+        stopSelf()
+    }
 
     override fun onDestroy() {
         super.onDestroy()

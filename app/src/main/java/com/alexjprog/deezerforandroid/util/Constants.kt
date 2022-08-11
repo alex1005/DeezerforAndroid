@@ -7,5 +7,3 @@ const val FLOW_PREVIEW_SIZE = 10
 const val RECOMMENDATIONS_PREVIEW_SIZE = 10
 
 const val CONTENT_PAGE_SIZE = 20
-
-const val MEDIA_PLAYER_COMMAND = "media_player_command"
