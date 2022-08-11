@@ -31,7 +31,7 @@ class MediaPlayerService : Service() {
     @Inject
     lateinit var getAlbumInfoUseCase: GetAlbumInfoUseCase
 
-    val isPlaying: Boolean?
+    private val isPlaying: Boolean?
         get() = try {
             player.isPlaying
         } catch (e: UninitializedPropertyAccessException) {
@@ -54,10 +54,6 @@ class MediaPlayerService : Service() {
         (applicationContext as DeezerApplication).appComponent.inject(this)
         notificationHelper = MediaPlayerNotificationHelper(this)
 
-        startForeground(
-            MediaPlayerNotificationHelper.NOTIFICATION_ID,
-            notificationHelper.getNotification()
-        )
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -97,9 +93,13 @@ class MediaPlayerService : Service() {
                 }
             null -> {}
         }
+        startForeground(
+            MediaPlayerNotificationHelper.NOTIFICATION_ID,
+            notificationHelper.getNotification()
+        )
     }
 
-    fun playMedia() {
+    private fun playMedia() {
         try {
             player.start()
         } catch (e: UninitializedPropertyAccessException) {
@@ -107,7 +107,7 @@ class MediaPlayerService : Service() {
         pushOnPlayEvent()
     }
 
-    fun pauseMedia() {
+    private fun pauseMedia() {
         try {
             player.pause()
         } catch (e: UninitializedPropertyAccessException) {
@@ -158,13 +158,13 @@ class MediaPlayerService : Service() {
 
     private fun pushOnPlayEvent() {
         mediaPlayerListeners.forEach { listener ->
-            listener.onPlay()
+            listener.onPlayMedia()
         }
     }
 
     private fun pushOnPauseEvent() {
         mediaPlayerListeners.forEach { listener ->
-            listener.onPause()
+            listener.onPauseMedia()
         }
     }
 
@@ -191,7 +191,16 @@ class MediaPlayerService : Service() {
     override fun onDestroy() {
         super.onDestroy()
         stopMedia()
+        mediaPlayerListeners.clear()
         binder.releaseService()
+    }
+
+    fun playStopTrack() {
+        when (isPlaying) {
+            true -> pauseMedia()
+            false -> playMedia()
+            else -> {}
+        }
     }
 
     class MediaPlayerBinder(private var mediaPlayerService: MediaPlayerService?) : Binder() {
@@ -202,8 +211,8 @@ class MediaPlayerService : Service() {
     }
 
     interface MediaPlayerListener {
-        fun onPlay()
-        fun onPause()
+        fun onPlayMedia()
+        fun onPauseMedia()
         fun updateCurrentTrack(hasPrevious: Boolean, hasNext: Boolean, currentTrack: TrackModel)
     }
 

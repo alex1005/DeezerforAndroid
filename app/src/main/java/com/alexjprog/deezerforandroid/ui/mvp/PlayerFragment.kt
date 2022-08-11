@@ -1,8 +1,12 @@
 package com.alexjprog.deezerforandroid.ui.mvp
 
+import android.app.Service
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.ServiceConnection
 import android.os.Bundle
+import android.os.IBinder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,7 +26,7 @@ import com.alexjprog.deezerforandroid.ui.mvp.contract.PlayerContract
 import com.alexjprog.deezerforandroid.util.ImageHelper
 import javax.inject.Inject
 
-class PlayerFragment : Fragment(), PlayerContract.View {
+class PlayerFragment : Fragment(), PlayerContract.View, MediaPlayerService.MediaPlayerListener {
     @Inject
     lateinit var presenter: PlayerContract.Presenter
 
@@ -30,6 +34,21 @@ class PlayerFragment : Fragment(), PlayerContract.View {
     private val binding: FragmentPlayerBinding get() = _binding!!
 
     private val args: PlayerFragmentArgs by navArgs()
+
+    private var mediaPlayerService: MediaPlayerService? = null
+    private val playerConnection = object : ServiceConnection {
+        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+            mediaPlayerService = (service as MediaPlayerService.MediaPlayerBinder)
+                .getMediaPlayerService()
+            mediaPlayerService?.addMediaPlayerListener(this@PlayerFragment)
+            mediaPlayerService?.playlistSource = getPlaylistSource()
+        }
+
+        override fun onServiceDisconnected(name: ComponentName?) {
+            mediaPlayerService?.removeMediaPlayerListener(this@PlayerFragment)
+            mediaPlayerService = null
+        }
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -50,13 +69,13 @@ class PlayerFragment : Fragment(), PlayerContract.View {
 
         with(binding) {
             btnPlayPause.setOnClickListener {
-                presenter.playOrPauseMedia()
+                mediaPlayerService?.playStopTrack()
             }
             btnNext.setOnClickListener {
-                presenter.nextTrack()
+                mediaPlayerService?.nextTrack()
             }
             btnPrevious.setOnClickListener {
-                presenter.previousTrack()
+                mediaPlayerService?.previousTrack()
             }
 
             setNextButtonAvailability(false)
@@ -67,31 +86,32 @@ class PlayerFragment : Fragment(), PlayerContract.View {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        Intent(requireContext(), MediaPlayerService::class.java).apply {
-            requireActivity().bindService(
-                this,
-                presenter.playerConnection,
-                Context.BIND_AUTO_CREATE
-            )
-        }
-    }
-
     override fun onStart() {
         super.onStart()
         (requireActivity() as MainActivity).hideAllNavigation()
+        Intent(requireContext(), MediaPlayerService::class.java).apply {
+            requireActivity().bindService(
+                this,
+                playerConnection,
+                Service.BIND_AUTO_CREATE
+            )
+        }
     }
 
     override fun onStop() {
         super.onStop()
         (requireActivity() as MainActivity).showAllNavigation()
+        releaseBind()
+    }
+
+    private fun releaseBind() {
+        mediaPlayerService?.removeMediaPlayerListener(this)
+        requireActivity().unbindService(playerConnection)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        requireActivity().unbindService(presenter.playerConnection)
     }
 
     override fun onDetach() {
@@ -99,7 +119,7 @@ class PlayerFragment : Fragment(), PlayerContract.View {
         presenter.onDetach()
     }
 
-    override fun setPlayButtonState(playing: Boolean?) {
+    private fun setPlayButtonState(playing: Boolean?) {
         try {
             with(binding) {
                 if (playing == null) {
@@ -126,27 +146,46 @@ class PlayerFragment : Fragment(), PlayerContract.View {
         }
     }
 
-    override fun setPreviousButtonAvailability(enabled: Boolean) {
+    private fun setPreviousButtonAvailability(enabled: Boolean) {
         binding.btnPrevious.isEnabled = enabled
     }
 
-    override fun setNextButtonAvailability(enabled: Boolean) {
+    private fun setNextButtonAvailability(enabled: Boolean) {
         binding.btnNext.isEnabled = enabled
     }
 
-    override fun setTrackData(data: TrackModel) {
+    private fun setTrackData(data: TrackModel) {
         with(binding) {
             tvTitle.text = data.title ?: resources.getString(R.string.unknown)
             ImageHelper.loadSimplePicture(tvCover, data.pictureLink)
         }
     }
 
-    override fun getPlaylistSource(): MediaItemModel? {
+    fun getPlaylistSource(): MediaItemModel? {
         val id = args.playableMediaId
         return when (args.playableMediaType) {
             MediaTypeParam.TRACK -> TrackModel(id = id)
             MediaTypeParam.ALBUM -> AlbumModel(id = id)
             else -> null
         }
+    }
+
+    override fun onPlayMedia() {
+        setPlayButtonState(true)
+    }
+
+    override fun onPauseMedia() {
+        setPlayButtonState(false)
+    }
+
+    override fun updateCurrentTrack(
+        hasPrevious: Boolean,
+        hasNext: Boolean,
+        currentTrack: TrackModel
+    ) {
+        setPlayButtonState(null)
+        setPreviousButtonAvailability(hasPrevious)
+        setNextButtonAvailability(hasNext)
+        setTrackData(currentTrack)
     }
 }
