@@ -156,6 +156,11 @@ class PlayerFragment : Fragment(), PlayerContract.View, MediaPlayerService.Media
     private fun setTrackData(data: TrackModel) {
         with(binding) {
             tvTitle.text = data.title ?: resources.getString(R.string.unknown)
+            sbSeekBar.apply {
+                min = 0
+                max = data.duration ?: 0
+                progress = 0
+            }
             ImageHelper.loadSimplePicture(tvCover, data.pictureLink)
         }
     }
@@ -175,6 +180,10 @@ class PlayerFragment : Fragment(), PlayerContract.View, MediaPlayerService.Media
 
     override fun onPauseMedia() {
         setPlayButtonState(false)
+    }
+
+    override fun onProgressChanged(progress: Int) {
+        binding.sbSeekBar.progress = progress
     }
 
     override fun updateCurrentTrack(

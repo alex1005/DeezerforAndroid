@@ -10,12 +10,12 @@
         android:id="@+id/btnPlayPause"
         android:layout_width="@dimen/big_controls_size"
         android:layout_height="@dimen/big_controls_size"
+        android:layout_marginBottom="@dimen/player_controls_margin"
+        android:background="@drawable/player_controls_background"
         android:padding="@dimen/big_controls_padding"
         android:src="@drawable/ic_baseline_play_arrow_24"
         android:tint="@color/player_controls_foreground"
         android:tintMode="multiply"
-        android:background="@drawable/player_controls_background"
-        android:layout_marginBottom="@dimen/player_controls_margin"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btnNext"
         app:layout_constraintStart_toEndOf="@+id/btnPrevious" />
@@ -38,11 +38,11 @@
         android:id="@+id/btnNext"
         android:layout_width="@dimen/small_controls_size"
         android:layout_height="@dimen/small_controls_size"
+        android:background="@drawable/player_controls_background"
         android:padding="@dimen/small_controls_padding"
+        android:src="@drawable/ic_baseline_skip_next_24"
         android:tint="@color/player_controls_foreground"
         android:tintMode="multiply"
-        android:background="@drawable/player_controls_background"
-        android:src="@drawable/ic_baseline_skip_next_24"
         app:layout_constraintBottom_toBottomOf="@+id/btnPlayPause"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btnPlayPause"
@@ -57,9 +57,13 @@
         android:ellipsize="end"
         android:maxLines="1"
         android:textSize="@dimen/big_text"
-        app:layout_constraintBottom_toTopOf="@+id/btnPlayPause"
-        app:layout_constraintEnd_toEndOf="@+id/btnPlayPause"
-        app:layout_constraintStart_toStartOf="@+id/btnPlayPause"
+        app:layout_constraintBottom_toTopOf="@+id/sbSeekBar"
+        app:layout_constraintEnd_toEndOf="@+id/btnNext"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/btnPrevious"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintVertical_bias="0.9"
         tools:text="Title" />
 
     <androidx.appcompat.widget.AppCompatImageView
@@ -70,9 +74,18 @@
         android:layout_marginStart="96dp"
         android:layout_marginTop="8dp"
         android:src="@drawable/default_track_cover"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <SeekBar
+        android:id="@+id/sbSeekBar"
+        android:layout_width="272dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/btnPlayPause"
+        app:layout_constraintEnd_toEndOf="@+id/btnNext"
+        app:layout_constraintStart_toStartOf="@+id/btnPrevious"
+        app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,7 +6,9 @@ import android.media.AudioAttributes
 import android.media.AudioManager
 import android.media.MediaPlayer
 import android.os.Binder
+import android.os.Handler
 import android.os.IBinder
+import android.os.Looper
 import com.alexjprog.deezerforandroid.app.DeezerApplication
 import com.alexjprog.deezerforandroid.domain.model.AlbumModel
 import com.alexjprog.deezerforandroid.domain.model.MediaItemModel
@@ -23,6 +25,7 @@ class MediaPlayerService : Service() {
 
     private val binder = MediaPlayerBinder(this)
     private val mediaPlayerListeners: MutableList<MediaPlayerListener> = mutableListOf()
+    private val updater = Handler(Looper.getMainLooper())
 
     @Inject
     lateinit var getTrackInfoUseCase: GetTrackInfoUseCase
@@ -94,6 +97,7 @@ class MediaPlayerService : Service() {
             player.start()
         } catch (e: UninitializedPropertyAccessException) {
         }
+        startProgressUpdater()
         pushOnPlayEvent()
     }
 
@@ -118,7 +122,6 @@ class MediaPlayerService : Service() {
         val nextTrack = playlist.getOrNull(nextIndex)
         stopMedia()
         nextTrack?.let { track ->
-            pushOnUpdateCurrentTrackEvent()
             player = MediaPlayer().also { newPlayer ->
                 newPlayer.setAudioAttributes(
                     AudioAttributes.Builder()
@@ -127,8 +130,12 @@ class MediaPlayerService : Service() {
                 )
                 newPlayer.setDataSource(track.trackLink)
                 newPlayer.prepareAsync()
-                newPlayer.setOnPreparedListener { playMedia() }
+                newPlayer.setOnPreparedListener {
+                    pushOnUpdateCurrentTrackEvent()
+                    playMedia()
+                }
                 newPlayer.setOnCompletionListener { pushOnPauseEvent() }
+
             }
         }
     }
@@ -137,8 +144,12 @@ class MediaPlayerService : Service() {
 
     fun nextTrack() = changeTrack(false)
 
+    private fun pushEventForAll(eventAction: (MediaPlayerListener) -> Unit) =
+        mediaPlayerListeners.forEach(eventAction)
+
     private fun pushState() {
         pushOnUpdateCurrentTrackEvent()
+        pushProgressUpdateEvent()
         when (isPlaying) {
             true -> pushOnPlayEvent()
             false -> pushOnPauseEvent()
@@ -147,25 +158,38 @@ class MediaPlayerService : Service() {
     }
 
     private fun pushOnPlayEvent() {
-        mediaPlayerListeners.forEach { listener ->
-            listener.onPlayMedia()
-        }
+        pushEventForAll { listener -> updater.post { listener.onPlayMedia() } }
     }
 
     private fun pushOnPauseEvent() {
-        mediaPlayerListeners.forEach { listener ->
-            listener.onPauseMedia()
-        }
+        pushEventForAll { listener -> updater.post { listener.onPauseMedia() } }
     }
 
     private fun pushOnUpdateCurrentTrackEvent() {
-        mediaPlayerListeners.forEach { listener ->
-            listener.updateCurrentTrack(
-                hasPreviousTrack,
-                hasNextTrack,
-                playlist[currentTrackIndex]
-            )
+        pushEventForAll { listener ->
+            val currentTrack = playlist[currentTrackIndex].copy(duration = player.duration)
+            updater.post {
+                listener.updateCurrentTrack(
+                    hasPreviousTrack,
+                    hasNextTrack,
+                    currentTrack
+                )
+            }
         }
+    }
+
+    private fun pushProgressUpdateEvent() {
+        pushEventForAll { listener -> updater.post { listener.onProgressChanged(player.currentPosition) } }
+    }
+
+    private fun startProgressUpdater() {
+        val updateRunnable = object : Runnable {
+            override fun run() {
+                pushProgressUpdateEvent()
+                if (isPlaying == true) updater.postDelayed(this, PROGRESS_UPDATE_DELAY)
+            }
+        }
+        updater.postDelayed(updateRunnable, PROGRESS_UPDATE_DELAY)
     }
 
     fun addMediaPlayerListener(listener: MediaPlayerListener) {
@@ -209,10 +233,12 @@ class MediaPlayerService : Service() {
     interface MediaPlayerListener {
         fun onPlayMedia()
         fun onPauseMedia()
+        fun onProgressChanged(progress: Int)
         fun updateCurrentTrack(hasPrevious: Boolean, hasNext: Boolean, currentTrack: TrackModel)
     }
 
     companion object {
-        const val INITIAL_PLAYLIST_INDEX = -1
+        private const val INITIAL_PLAYLIST_INDEX = -1
+        private const val PROGRESS_UPDATE_DELAY = 100L
     }
 }
