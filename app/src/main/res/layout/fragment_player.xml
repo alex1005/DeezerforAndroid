@@ -50,17 +50,17 @@
 
     <TextView
         android:id="@+id/tvTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/default_margin"
-        android:layout_marginTop="@dimen/player_controls_margin"
         android:ellipsize="end"
         android:maxLines="1"
+        android:textAlignment="center"
         android:textSize="@dimen/big_text"
-        app:layout_constraintBottom_toTopOf="@+id/tvCover"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/sbSeekBar"
+        app:layout_constraintEnd_toEndOf="@+id/sbSeekBar"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/sbSeekBar"
+        app:layout_constraintTop_toBottomOf="@+id/tvCover"
         tools:text="Title" />
 
     <androidx.appcompat.widget.AppCompatImageView
@@ -69,19 +69,24 @@
         android:layout_height="0dp"
         android:layout_margin="@dimen/big_picture_margin"
         android:src="@drawable/default_track_cover"
-        app:layout_constraintBottom_toTopOf="@+id/sbSeekBar"
+        app:layout_constraintBottom_toTopOf="@+id/tvTitle"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
 
     <SeekBar
         android:id="@+id/sbSeekBar"
         android:layout_width="0dp"
+        android:progress="0"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/btnPlayPause"
         app:layout_constraintEnd_toEndOf="@+id/btnNext"
+        app:layout_constraintHorizontal_bias="0.5"
+        android:layout_marginTop="@dimen/default_margin"
         app:layout_constraintStart_toStartOf="@+id/btnPrevious"
-        app:layout_constraintTop_toBottomOf="@+id/tvCover" />
+        app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

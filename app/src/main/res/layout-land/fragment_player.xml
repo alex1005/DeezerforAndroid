@@ -50,11 +50,11 @@
 
     <TextView
         android:id="@+id/tvTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/default_margin"
         android:layout_marginVertical="@dimen/default_margin"
         android:ellipsize="end"
+        android:textAlignment="center"
         android:maxLines="1"
         android:textSize="@dimen/big_text"
         app:layout_constraintBottom_toTopOf="@+id/sbSeekBar"
@@ -81,7 +81,8 @@
 
     <SeekBar
         android:id="@+id/sbSeekBar"
-        android:layout_width="272dp"
+        android:layout_width="0dp"
+        android:progress="0"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/btnPlayPause"
         app:layout_constraintEnd_toEndOf="@+id/btnNext"
