@@ -9,6 +9,7 @@ import android.os.Binder
 import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
+import android.util.Log
 import com.alexjprog.deezerforandroid.app.DeezerApplication
 import com.alexjprog.deezerforandroid.domain.model.AlbumModel
 import com.alexjprog.deezerforandroid.domain.model.MediaItemModel
@@ -29,7 +30,8 @@ class MediaPlayerService : Service() {
     private val updateProgressRunnable = object : Runnable {
         override fun run() {
             pushProgressUpdateEvent()
-            if (isPlaying == true) updater.postDelayed(this, PROGRESS_UPDATE_DELAY)
+            updater.postDelayed(this, PROGRESS_UPDATE_DELAY)
+            Log.d("serviceDebug", "updateProgress")
         }
     }
 
@@ -39,7 +41,7 @@ class MediaPlayerService : Service() {
     @Inject
     lateinit var getAlbumInfoUseCase: GetAlbumInfoUseCase
 
-    private val isPlaying: Boolean?
+    val isPlaying: Boolean?
         get() = try {
             player.isPlaying
         } catch (e: UninitializedPropertyAccessException) {
@@ -150,7 +152,10 @@ class MediaPlayerService : Service() {
                     pushOnUpdateCurrentTrackEvent()
                     playMedia()
                 }
-                newPlayer.setOnCompletionListener { pushOnPauseEvent() }
+                newPlayer.setOnCompletionListener {
+                    pauseMedia()
+                    pushProgressUpdateEvent()
+                }
                 newPlayer.setOnSeekCompleteListener { startProgressUpdater() }
             }
         }
@@ -195,7 +200,15 @@ class MediaPlayerService : Service() {
     }
 
     private fun pushProgressUpdateEvent() {
-        pushEventForAll { listener -> updater.post { listener.onProgressChanged(player.currentPosition) } }
+        pushEventForAll { listener ->
+            updater.post {
+                listener.onProgressChanged(
+                    if (player.duration - player.currentPosition < PROGRESS_TAIL)
+                        player.duration
+                    else player.currentPosition
+                )
+            }
+        }
     }
 
     private fun startProgressUpdater() {
@@ -248,11 +261,12 @@ class MediaPlayerService : Service() {
         fun onPlayMedia()
         fun onPauseMedia()
         fun onProgressChanged(progress: Int)
-        fun updateCurrentTrack(hasPrevious: Boolean, hasNext: Boolean, currentTrack: TrackModel)
+        fun updateCurrentTrack(hasPrevious: Boolean, hasNext: Boolean, currentTrack: TrackModel?)
     }
 
     companion object {
         private const val INITIAL_PLAYLIST_INDEX = -1
         private const val PROGRESS_UPDATE_DELAY = 100L
+        private const val PROGRESS_TAIL = 300L
     }
 }

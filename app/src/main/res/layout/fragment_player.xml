@@ -89,4 +89,20 @@
         app:layout_constraintStart_toStartOf="@+id/btnPrevious"
         app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
 
+    <TextView
+        android:id="@+id/tvElapsedTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="0:00"
+        app:layout_constraintStart_toStartOf="@+id/sbSeekBar"
+        app:layout_constraintTop_toBottomOf="@+id/sbSeekBar" />
+
+    <TextView
+        android:id="@+id/tvDuration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="0:30"
+        app:layout_constraintEnd_toEndOf="@+id/sbSeekBar"
+        app:layout_constraintTop_toBottomOf="@+id/sbSeekBar" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

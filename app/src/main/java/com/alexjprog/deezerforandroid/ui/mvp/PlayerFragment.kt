@@ -24,6 +24,8 @@ import com.alexjprog.deezerforandroid.service.MediaPlayerService
 import com.alexjprog.deezerforandroid.ui.MainActivity
 import com.alexjprog.deezerforandroid.ui.mvp.contract.PlayerContract
 import com.alexjprog.deezerforandroid.util.ImageHelper
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 
 class PlayerFragment : Fragment(), PlayerContract.View, MediaPlayerService.MediaPlayerListener {
@@ -34,6 +36,7 @@ class PlayerFragment : Fragment(), PlayerContract.View, MediaPlayerService.Media
     private val binding: FragmentPlayerBinding get() = _binding!!
 
     private val args: PlayerFragmentArgs by navArgs()
+    private val timeFormatter = SimpleDateFormat("m:ss")
 
     private var mediaPlayerService: MediaPlayerService? = null
     private val playerConnection = object : ServiceConnection {
@@ -83,6 +86,7 @@ class PlayerFragment : Fragment(), PlayerContract.View, MediaPlayerService.Media
                     progress: Int,
                     fromUser: Boolean
                 ) {
+                    tvElapsedTime.text = timeFormatter.format(Date(progress.toLong()))
                 }
 
                 override fun onStartTrackingTouch(seekBar: SeekBar?) {
@@ -94,9 +98,8 @@ class PlayerFragment : Fragment(), PlayerContract.View, MediaPlayerService.Media
                 }
             })
 
-            setNextButtonAvailability(false)
-            setPreviousButtonAvailability(false)
-            setPlayButtonState(null)
+            updateCurrentTrack(hasPrevious = false, hasNext = false, currentTrack = null)
+            onProgressChanged(0)
         }
 
         return binding.root
@@ -170,15 +173,16 @@ class PlayerFragment : Fragment(), PlayerContract.View, MediaPlayerService.Media
         binding.btnNext.isEnabled = enabled
     }
 
-    private fun setTrackData(data: TrackModel) {
+    private fun setTrackData(data: TrackModel?) {
         with(binding) {
-            tvTitle.text = data.title ?: resources.getString(R.string.unknown)
+            tvTitle.text = data?.title ?: ""
             sbSeekBar.apply {
                 min = 0
-                max = data.duration ?: 0
+                max = data?.duration ?: 0
                 progress = 0
             }
-            ImageHelper.loadSimplePicture(tvCover, data.pictureLink)
+            tvDuration.text = timeFormatter.format(Date(data?.duration?.toLong() ?: 0L))
+            ImageHelper.loadSimplePicture(tvCover, data?.pictureLink)
         }
     }
 
@@ -200,6 +204,7 @@ class PlayerFragment : Fragment(), PlayerContract.View, MediaPlayerService.Media
     }
 
     override fun onProgressChanged(progress: Int) {
+        if (mediaPlayerService?.isPlaying == null) return
         try {
             binding.sbSeekBar.progress = progress
         } catch (e: NullPointerException) {
@@ -209,7 +214,7 @@ class PlayerFragment : Fragment(), PlayerContract.View, MediaPlayerService.Media
     override fun updateCurrentTrack(
         hasPrevious: Boolean,
         hasNext: Boolean,
-        currentTrack: TrackModel
+        currentTrack: TrackModel?
     ) {
         setPlayButtonState(null)
         setPreviousButtonAvailability(hasPrevious)
