@@ -9,6 +9,7 @@ import android.os.IBinder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SeekBar
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
@@ -76,6 +77,22 @@ class PlayerFragment : Fragment(), PlayerContract.View, MediaPlayerService.Media
             btnPrevious.setOnClickListener {
                 mediaPlayerService?.previousTrack()
             }
+            sbSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+                override fun onProgressChanged(
+                    seekBar: SeekBar?,
+                    progress: Int,
+                    fromUser: Boolean
+                ) {
+                }
+
+                override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                    mediaPlayerService?.startSeek()
+                }
+
+                override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                    seekBar?.progress?.let { mediaPlayerService?.endSeek(it) }
+                }
+            })
 
             setNextButtonAvailability(false)
             setPreviousButtonAvailability(false)
@@ -183,7 +200,10 @@ class PlayerFragment : Fragment(), PlayerContract.View, MediaPlayerService.Media
     }
 
     override fun onProgressChanged(progress: Int) {
-        binding.sbSeekBar.progress = progress
+        try {
+            binding.sbSeekBar.progress = progress
+        } catch (e: NullPointerException) {
+        }
     }
 
     override fun updateCurrentTrack(

@@ -26,6 +26,12 @@ class MediaPlayerService : Service() {
     private val binder = MediaPlayerBinder(this)
     private val mediaPlayerListeners: MutableList<MediaPlayerListener> = mutableListOf()
     private val updater = Handler(Looper.getMainLooper())
+    private val updateProgressRunnable = object : Runnable {
+        override fun run() {
+            pushProgressUpdateEvent()
+            if (isPlaying == true) updater.postDelayed(this, PROGRESS_UPDATE_DELAY)
+        }
+    }
 
     @Inject
     lateinit var getTrackInfoUseCase: GetTrackInfoUseCase
@@ -106,6 +112,7 @@ class MediaPlayerService : Service() {
             player.pause()
         } catch (e: UninitializedPropertyAccessException) {
         }
+        stopProgressUpdater()
         pushOnPauseEvent()
     }
 
@@ -115,6 +122,15 @@ class MediaPlayerService : Service() {
             player.release()
         } catch (e: UninitializedPropertyAccessException) {
         }
+        stopProgressUpdater()
+    }
+
+    fun startSeek() {
+        stopProgressUpdater()
+    }
+
+    fun endSeek(progress: Int) {
+        player.seekTo(progress)
     }
 
     private fun changeTrack(goBackwards: Boolean) {
@@ -135,7 +151,7 @@ class MediaPlayerService : Service() {
                     playMedia()
                 }
                 newPlayer.setOnCompletionListener { pushOnPauseEvent() }
-
+                newPlayer.setOnSeekCompleteListener { startProgressUpdater() }
             }
         }
     }
@@ -183,13 +199,11 @@ class MediaPlayerService : Service() {
     }
 
     private fun startProgressUpdater() {
-        val updateRunnable = object : Runnable {
-            override fun run() {
-                pushProgressUpdateEvent()
-                if (isPlaying == true) updater.postDelayed(this, PROGRESS_UPDATE_DELAY)
-            }
-        }
-        updater.postDelayed(updateRunnable, PROGRESS_UPDATE_DELAY)
+        updater.postDelayed(updateProgressRunnable, PROGRESS_UPDATE_DELAY)
+    }
+
+    private fun stopProgressUpdater() {
+        updater.removeCallbacks(updateProgressRunnable)
     }
 
     fun addMediaPlayerListener(listener: MediaPlayerListener) {
