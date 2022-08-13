@@ -59,7 +59,7 @@ class PlayerFragment : Fragment(), PlayerContract.View, MediaPlayerService.Media
         presenter.onAttach(this)
 
         Intent(context, MediaPlayerService::class.java).apply {
-            requireActivity().startForegroundService(this)
+            context.applicationContext.startService(this)
         }
     }
 

@@ -5,14 +5,38 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.Service
 import android.os.Build
+import android.support.v4.media.MediaDescriptionCompat
+import android.support.v4.media.MediaMetadataCompat
+import android.support.v4.media.session.MediaSessionCompat
+import android.support.v4.media.session.PlaybackStateCompat
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
+import androidx.media.session.MediaButtonReceiver
 import com.alexjprog.deezerforandroid.R
 import com.alexjprog.deezerforandroid.service.MediaPlayerService
+
 
 class MediaPlayerNotificationHelper(
     private val mediaPlayerService: MediaPlayerService
 ) {
+    private val pauseAction: NotificationCompat.Action = NotificationCompat.Action(
+        R.drawable.ic_baseline_pause_24,
+        "Pause",
+        MediaButtonReceiver.buildMediaButtonPendingIntent(
+            mediaPlayerService,
+            PlaybackStateCompat.ACTION_PAUSE
+        )
+    )
+    private val playAction: NotificationCompat.Action = NotificationCompat.Action(
+        R.drawable.ic_baseline_play_arrow_24,
+        "Play",
+        MediaButtonReceiver.buildMediaButtonPendingIntent(
+            mediaPlayerService,
+            PlaybackStateCompat.ACTION_PLAY
+        )
+    )
     private val notificationManager: NotificationManager =
         mediaPlayerService.getSystemService(Service.NOTIFICATION_SERVICE) as NotificationManager
 
@@ -20,23 +44,63 @@ class MediaPlayerNotificationHelper(
         notificationManager.cancelAll()
     }
 
-    fun getNotification(): Notification = notificationBuilder().build()
+    fun getNotification(
+        metadata: MediaMetadataCompat?,
+        state: PlaybackStateCompat,
+        token: MediaSessionCompat.Token?
+    ): Notification {
 
-    private fun notificationBuilder(): NotificationCompat.Builder {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) createChannel()
-        return NotificationCompat.Builder(mediaPlayerService, CHANNEL_ID)
-            .setSmallIcon(R.mipmap.ic_launcher)
-            .setContentTitle("Demo")
-            .setContentText("DemoText")
-            .setPriority(NotificationCompat.PRIORITY_MIN)
+        val isPlaying = state.state == PlaybackStateCompat.STATE_PLAYING
+        val description = metadata?.description
+        return notificationBuilder(token, isPlaying, description).build()
     }
+
+    private fun notificationBuilder(
+        token: MediaSessionCompat.Token?,
+        isPlaying: Boolean,
+        description: MediaDescriptionCompat?
+    ): NotificationCompat.Builder {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) createChannel()
+        if (token == null) Log.d("serviceDebug", "notificationBuilder")
+        return NotificationCompat.Builder(mediaPlayerService, CHANNEL_ID)
+            .setStyle(
+                androidx.media.app.NotificationCompat.MediaStyle()
+                    .setMediaSession(token)
+                    .setShowActionsInCompactView(0)
+                    .setShowCancelButton(true)
+                    .setCancelButtonIntent(
+                        MediaButtonReceiver.buildMediaButtonPendingIntent(
+                            mediaPlayerService,
+                            PlaybackStateCompat.ACTION_STOP
+                        )
+                    )
+            )
+            .setSmallIcon(R.mipmap.ic_launcher)
+            .setColor(ContextCompat.getColor(mediaPlayerService, R.color.color_primary))
+            //.setContentIntent(createContentIntent())
+            .setContentTitle(description?.title)
+            .setContentText(description?.subtitle)
+            .setDeleteIntent(
+                MediaButtonReceiver.buildMediaButtonPendingIntent(
+                    mediaPlayerService, PlaybackStateCompat.ACTION_PAUSE
+                )
+            )
+            .addAction(if (isPlaying) pauseAction else playAction)
+    }
+
+    fun updateNotification(
+        metadata: MediaMetadataCompat?,
+        state: PlaybackStateCompat,
+        token: MediaSessionCompat.Token?
+    ) =
+        notificationManager.notify(NOTIFICATION_ID, getNotification(metadata, state, token))
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createChannel() {
         if (notificationManager.getNotificationChannel(CHANNEL_ID) != null) return
         val name: CharSequence = "DeezerPlayer"
         val description = "Deezer's media player notification channel"
-        val importance = NotificationManager.IMPORTANCE_MIN
+        val importance = NotificationManager.IMPORTANCE_LOW
         val mChannel = NotificationChannel(CHANNEL_ID, name, importance)
         mChannel.description = description
         notificationManager.createNotificationChannel(mChannel)

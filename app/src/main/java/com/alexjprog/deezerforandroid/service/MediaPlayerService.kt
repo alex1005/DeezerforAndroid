@@ -5,11 +5,11 @@ import android.content.Intent
 import android.media.AudioAttributes
 import android.media.AudioManager
 import android.media.MediaPlayer
-import android.os.Binder
-import android.os.Handler
-import android.os.IBinder
-import android.os.Looper
-import android.util.Log
+import android.os.*
+import android.support.v4.media.MediaMetadataCompat
+import android.support.v4.media.session.MediaSessionCompat
+import android.support.v4.media.session.PlaybackStateCompat
+import android.view.KeyEvent
 import com.alexjprog.deezerforandroid.app.DeezerApplication
 import com.alexjprog.deezerforandroid.domain.model.AlbumModel
 import com.alexjprog.deezerforandroid.domain.model.MediaItemModel
@@ -22,6 +22,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 import kotlin.properties.Delegates
 
+
 class MediaPlayerService : Service() {
 
     private val binder = MediaPlayerBinder(this)
@@ -31,7 +32,6 @@ class MediaPlayerService : Service() {
         override fun run() {
             pushProgressUpdateEvent()
             updater.postDelayed(this, PROGRESS_UPDATE_DELAY)
-            Log.d("serviceDebug", "updateProgress")
         }
     }
 
@@ -49,13 +49,39 @@ class MediaPlayerService : Service() {
         } catch (e: IllegalStateException) {
             false
         }
+
+    private val metadata: MediaMetadataCompat
+        get() = MediaMetadataCompat.Builder()
+            .putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_TITLE, currentTrack?.title)
+            .putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_SUBTITLE, currentTrack?.subtitle)
+            .build()
+
+    private val state: PlaybackStateCompat
+        get() {
+            val actions =
+                if (player.isPlaying) PlaybackStateCompat.ACTION_PAUSE else PlaybackStateCompat.ACTION_PLAY
+            val state =
+                if (player.isPlaying) PlaybackStateCompat.STATE_PLAYING else PlaybackStateCompat.STATE_PAUSED
+
+            return PlaybackStateCompat.Builder()
+                .setActions(actions)
+                .setState(
+                    state,
+                    player.currentPosition.toLong(),
+                    1.0f,
+                    SystemClock.elapsedRealtime()
+                ).build()
+        }
     private val hasNextTrack: Boolean
         get() = currentTrackIndex < playlist.lastIndex
     private val hasPreviousTrack: Boolean
         get() = currentTrackIndex > 0
+    private val currentTrack: TrackModel?
+        get() = playlist.getOrNull(currentTrackIndex)
 
     private lateinit var player: MediaPlayer
     private lateinit var notificationHelper: MediaPlayerNotificationHelper
+    private lateinit var mediaSession: MediaSessionCompat
     private val playlist: MutableList<TrackModel> = mutableListOf()
     private var currentTrackIndex = INITIAL_PLAYLIST_INDEX
 
@@ -64,6 +90,35 @@ class MediaPlayerService : Service() {
         (applicationContext as DeezerApplication).appComponent.inject(this)
         notificationHelper = MediaPlayerNotificationHelper(this)
 
+        mediaSession = MediaSessionCompat(this, MEDIA_PLAYER_SESSION_TOKEN).apply {
+            setFlags(
+                MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS
+                        or MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS
+            )
+            setCallback(object : MediaSessionCompat.Callback() {
+                override fun onPlay() {
+                    playMedia()
+                }
+
+                override fun onPause() {
+                    pauseMedia()
+                }
+            })
+            isActive = true
+        }
+    }
+
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        if (intent?.action == "android.intent.action.MEDIA_BUTTON") {
+            val keyEvent: KeyEvent? =
+                intent.extras?.get("android.intent.extra.KEY_EVENT") as KeyEvent?
+            if (keyEvent?.keyCode == KeyEvent.KEYCODE_MEDIA_PAUSE) {
+                pauseMedia()
+            } else {
+                playMedia()
+            }
+        }
+        return super.onStartCommand(intent, flags, startId)
     }
 
     var playlistSource: MediaItemModel? by Delegates.observable(null) { _, oldValue, newValue ->
@@ -94,10 +149,6 @@ class MediaPlayerService : Service() {
                 }
             null -> {}
         }
-        startForeground(
-            MediaPlayerNotificationHelper.NOTIFICATION_ID,
-            notificationHelper.getNotification()
-        )
     }
 
     private fun playMedia() {
@@ -107,6 +158,7 @@ class MediaPlayerService : Service() {
         }
         startProgressUpdater()
         pushOnPlayEvent()
+        notificationHelper.updateNotification(metadata, state, mediaSession.sessionToken)
     }
 
     private fun pauseMedia() {
@@ -116,6 +168,7 @@ class MediaPlayerService : Service() {
         }
         stopProgressUpdater()
         pushOnPauseEvent()
+        notificationHelper.updateNotification(metadata, state, mediaSession.sessionToken)
     }
 
     private fun stopMedia() {
@@ -125,6 +178,7 @@ class MediaPlayerService : Service() {
         } catch (e: UninitializedPropertyAccessException) {
         }
         stopProgressUpdater()
+        stopForeground(false)
     }
 
     fun startSeek() {
@@ -149,6 +203,15 @@ class MediaPlayerService : Service() {
                 newPlayer.setDataSource(track.trackLink)
                 newPlayer.prepareAsync()
                 newPlayer.setOnPreparedListener {
+                    mediaSession.setMetadata(metadata)
+                    startForeground(
+                        MediaPlayerNotificationHelper.NOTIFICATION_ID,
+                        notificationHelper.getNotification(
+                            metadata,
+                            state,
+                            mediaSession.sessionToken
+                        )
+                    )
                     pushOnUpdateCurrentTrackEvent()
                     playMedia()
                 }
@@ -268,5 +331,7 @@ class MediaPlayerService : Service() {
         private const val INITIAL_PLAYLIST_INDEX = -1
         private const val PROGRESS_UPDATE_DELAY = 100L
         private const val PROGRESS_TAIL = 300L
+
+        private const val MEDIA_PLAYER_SESSION_TOKEN = "media_session_token"
     }
 }
