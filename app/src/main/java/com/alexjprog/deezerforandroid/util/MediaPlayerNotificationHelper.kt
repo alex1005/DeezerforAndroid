@@ -9,13 +9,14 @@ import android.support.v4.media.MediaDescriptionCompat
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.media.session.MediaButtonReceiver
+import androidx.navigation.NavDeepLinkBuilder
 import com.alexjprog.deezerforandroid.R
 import com.alexjprog.deezerforandroid.service.MediaPlayerService
+import com.alexjprog.deezerforandroid.ui.MainActivity
 
 
 class MediaPlayerNotificationHelper(
@@ -23,7 +24,7 @@ class MediaPlayerNotificationHelper(
 ) {
     private val pauseAction: NotificationCompat.Action = NotificationCompat.Action(
         R.drawable.ic_baseline_pause_24,
-        "Pause",
+        mediaPlayerService.getString(R.string.pause),
         MediaButtonReceiver.buildMediaButtonPendingIntent(
             mediaPlayerService,
             PlaybackStateCompat.ACTION_PAUSE
@@ -31,7 +32,7 @@ class MediaPlayerNotificationHelper(
     )
     private val playAction: NotificationCompat.Action = NotificationCompat.Action(
         R.drawable.ic_baseline_play_arrow_24,
-        "Play",
+        mediaPlayerService.getString(R.string.play),
         MediaButtonReceiver.buildMediaButtonPendingIntent(
             mediaPlayerService,
             PlaybackStateCompat.ACTION_PLAY
@@ -39,6 +40,12 @@ class MediaPlayerNotificationHelper(
     )
     private val notificationManager: NotificationManager =
         mediaPlayerService.getSystemService(Service.NOTIFICATION_SERVICE) as NotificationManager
+
+    private val playerDeepLink = NavDeepLinkBuilder(mediaPlayerService)
+        .setComponentName(MainActivity::class.java)
+        .setGraph(R.navigation.nav_graph)
+        .setDestination(R.id.playerFragment)
+        .createPendingIntent()
 
     init {
         notificationManager.cancelAll()
@@ -61,7 +68,6 @@ class MediaPlayerNotificationHelper(
         description: MediaDescriptionCompat?
     ): NotificationCompat.Builder {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) createChannel()
-        if (token == null) Log.d("serviceDebug", "notificationBuilder")
         return NotificationCompat.Builder(mediaPlayerService, CHANNEL_ID)
             .setStyle(
                 androidx.media.app.NotificationCompat.MediaStyle()
@@ -77,7 +83,7 @@ class MediaPlayerNotificationHelper(
             )
             .setSmallIcon(R.mipmap.ic_launcher)
             .setColor(ContextCompat.getColor(mediaPlayerService, R.color.color_primary))
-            //.setContentIntent(createContentIntent())
+            .setContentIntent(playerDeepLink)
             .setContentTitle(description?.title)
             .setContentText(description?.subtitle)
             .setDeleteIntent(

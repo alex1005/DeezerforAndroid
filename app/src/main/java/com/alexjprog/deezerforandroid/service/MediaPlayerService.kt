@@ -122,7 +122,7 @@ class MediaPlayerService : Service() {
     }
 
     var playlistSource: MediaItemModel? by Delegates.observable(null) { _, oldValue, newValue ->
-        if (newValue?.id == oldValue?.id) {
+        if (newValue?.id == oldValue?.id || newValue == null) {
             pushState()
             return@observable
         }

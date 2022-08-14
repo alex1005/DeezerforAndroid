@@ -186,7 +186,7 @@ class PlayerFragment : Fragment(), PlayerContract.View, MediaPlayerService.Media
         }
     }
 
-    fun getPlaylistSource(): MediaItemModel? {
+    private fun getPlaylistSource(): MediaItemModel? {
         val id = args.playableMediaId
         return when (args.playableMediaType) {
             MediaTypeParam.TRACK -> TrackModel(id = id)
