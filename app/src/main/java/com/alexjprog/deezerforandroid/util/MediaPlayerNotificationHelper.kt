@@ -60,13 +60,24 @@ class MediaPlayerNotificationHelper(
     ): Notification {
 
         val isPlaying = state.state == PlaybackStateCompat.STATE_PLAYING
+        val hasNextTrack = state.extras?.getBoolean(HAS_NEXT_TRACK_KEY) ?: false
+        val hasPreviousTrack = state.extras?.getBoolean(HAS_PREVIOUS_TRACK_KEY) ?: false
         val description = metadata?.description
-        return notificationBuilder(token, isPlaying, description, bitmap).build()
+        return notificationBuilder(
+            token,
+            isPlaying,
+            hasNextTrack,
+            hasPreviousTrack,
+            description,
+            bitmap
+        ).build()
     }
 
     private fun notificationBuilder(
         token: MediaSessionCompat.Token?,
         isPlaying: Boolean,
+        hasNextTrack: Boolean,
+        hasPreviousTrack: Boolean,
         description: MediaDescriptionCompat?,
         bitmap: Bitmap
     ): NotificationCompat.Builder {
@@ -75,7 +86,7 @@ class MediaPlayerNotificationHelper(
             .setStyle(
                 androidx.media.app.NotificationCompat.MediaStyle()
                     .setMediaSession(token)
-                    .setShowActionsInCompactView(0)
+                    .setShowActionsInCompactView(0, 1, 2)
                     .setShowCancelButton(true)
                     .setCancelButtonIntent(
                         MediaButtonReceiver.buildMediaButtonPendingIntent(
@@ -95,7 +106,9 @@ class MediaPlayerNotificationHelper(
                     mediaPlayerService, PlaybackStateCompat.ACTION_PAUSE
                 )
             )
+            .addAction(previousTrackAction(hasPreviousTrack))
             .addAction(if (isPlaying) pauseAction else playAction)
+            .addAction(nextTrackAction(hasNextTrack))
     }
 
     fun updateNotification(
@@ -117,8 +130,29 @@ class MediaPlayerNotificationHelper(
         notificationManager.createNotificationChannel(mChannel)
     }
 
+    private fun nextTrackAction(hasNextTrack: Boolean) = NotificationCompat.Action(
+        R.drawable.skip_next,
+        mediaPlayerService.getString(R.string.skip_next),
+        MediaButtonReceiver.buildMediaButtonPendingIntent(
+            mediaPlayerService,
+            if (hasNextTrack) PlaybackStateCompat.ACTION_SKIP_TO_NEXT else 0
+        )
+    )
+
+    private fun previousTrackAction(hasPreviousTrack: Boolean) = NotificationCompat.Action(
+        R.drawable.skip_previous,
+        mediaPlayerService.getString(R.string.skip_previous),
+        MediaButtonReceiver.buildMediaButtonPendingIntent(
+            mediaPlayerService,
+            if (hasPreviousTrack) PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS else 0
+        )
+    )
+
     companion object {
         const val NOTIFICATION_ID = 1001
         private const val CHANNEL_ID = "com.alexjprog.deezerforandroid.mediachannel"
+
+        const val HAS_NEXT_TRACK_KEY = "has_next_track"
+        const val HAS_PREVIOUS_TRACK_KEY = "has_prev_track"
     }
 }

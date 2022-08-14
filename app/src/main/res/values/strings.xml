@@ -16,4 +16,6 @@
     <string name="cover">Cover</string>
     <string name="play">Play</string>
     <string name="pause">Pause</string>
+    <string name="skip_next">Skip next</string>
+    <string name="skip_previous">Skip previous</string>
 </resources>

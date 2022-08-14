@@ -60,9 +60,15 @@ class MediaPlayerService : Service() {
     private val state: PlaybackStateCompat
         get() {
             val actions =
-                if (player.isPlaying) PlaybackStateCompat.ACTION_PAUSE else PlaybackStateCompat.ACTION_PLAY
+                if (isPlaying == true) PlaybackStateCompat.ACTION_PAUSE else PlaybackStateCompat.ACTION_PLAY
             val state =
-                if (player.isPlaying) PlaybackStateCompat.STATE_PLAYING else PlaybackStateCompat.STATE_PAUSED
+                if (isPlaying == true) PlaybackStateCompat.STATE_PLAYING else PlaybackStateCompat.STATE_PAUSED
+            val extras = Bundle()
+            extras.putBoolean(MediaPlayerNotificationHelper.HAS_NEXT_TRACK_KEY, hasNextTrack)
+            extras.putBoolean(
+                MediaPlayerNotificationHelper.HAS_PREVIOUS_TRACK_KEY,
+                hasPreviousTrack
+            )
 
             return PlaybackStateCompat.Builder()
                 .setActions(actions)
@@ -71,7 +77,8 @@ class MediaPlayerService : Service() {
                     player.currentPosition.toLong(),
                     1.0f,
                     SystemClock.elapsedRealtime()
-                ).build()
+                ).setExtras(extras)
+                .build()
         }
     private val hasNextTrack: Boolean
         get() = currentTrackIndex < playlist.lastIndex
@@ -96,15 +103,6 @@ class MediaPlayerService : Service() {
                 MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS
                         or MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS
             )
-            setCallback(object : MediaSessionCompat.Callback() {
-                override fun onPlay() {
-                    playMedia()
-                }
-
-                override fun onPause() {
-                    pauseMedia()
-                }
-            })
             isActive = true
         }
     }
@@ -113,10 +111,11 @@ class MediaPlayerService : Service() {
         if (intent?.action == "android.intent.action.MEDIA_BUTTON") {
             val keyEvent: KeyEvent? =
                 intent.extras?.get("android.intent.extra.KEY_EVENT") as KeyEvent?
-            if (keyEvent?.keyCode == KeyEvent.KEYCODE_MEDIA_PAUSE) {
-                pauseMedia()
-            } else {
-                playMedia()
+            when (keyEvent?.keyCode) {
+                KeyEvent.KEYCODE_MEDIA_PAUSE -> pauseMedia()
+                KeyEvent.KEYCODE_MEDIA_PLAY -> playMedia()
+                KeyEvent.KEYCODE_MEDIA_NEXT -> nextTrack()
+                KeyEvent.KEYCODE_MEDIA_PREVIOUS -> previousTrack()
             }
         }
         return super.onStartCommand(intent, flags, startId)
@@ -179,7 +178,6 @@ class MediaPlayerService : Service() {
         } catch (e: UninitializedPropertyAccessException) {
         }
         stopProgressUpdater()
-        stopForegroundMedia()
     }
 
     fun startSeek() {
@@ -194,6 +192,7 @@ class MediaPlayerService : Service() {
         val iconUri = currentTrack?.pictureLink
         ImageHelper.loadLargeIconForNotification(this, iconUri) { bitmap ->
             mediaSession.setMetadata(metadata)
+            mediaSession.setPlaybackState(state)
             startForeground(
                 MediaPlayerNotificationHelper.NOTIFICATION_ID,
                 notificationHelper.getNotification(
@@ -325,6 +324,7 @@ class MediaPlayerService : Service() {
     override fun onDestroy() {
         super.onDestroy()
         stopMedia()
+        stopForegroundMedia()
         mediaSession.isActive = false
         mediaPlayerListeners.clear()
         binder.releaseService()
