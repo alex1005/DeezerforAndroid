@@ -16,7 +16,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/tvSuggestion"
         app:layout_constraintEnd_toStartOf="@+id/tvSuggestion"
         app:layout_constraintStart_toStartOf="parent"
-        tools:src="@drawable/ic_baseline_history_24" />
+        tools:src="@drawable/history" />
 
     <TextView
         android:id="@+id/tvSuggestion"

@@ -24,7 +24,7 @@ class MediaPlayerNotificationHelper(
     private val mediaPlayerService: MediaPlayerService
 ) {
     private val pauseAction: NotificationCompat.Action = NotificationCompat.Action(
-        R.drawable.ic_baseline_pause_24,
+        R.drawable.pause,
         mediaPlayerService.getString(R.string.pause),
         MediaButtonReceiver.buildMediaButtonPendingIntent(
             mediaPlayerService,
@@ -32,7 +32,7 @@ class MediaPlayerNotificationHelper(
         )
     )
     private val playAction: NotificationCompat.Action = NotificationCompat.Action(
-        R.drawable.ic_baseline_play_arrow_24,
+        R.drawable.play,
         mediaPlayerService.getString(R.string.play),
         MediaButtonReceiver.buildMediaButtonPendingIntent(
             mediaPlayerService,

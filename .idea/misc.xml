@@ -6,7 +6,9 @@
         <entry key="..\:/Users/fazbe/Documents/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/default_track_cover.xml" value="0.2355" />
         <entry key="..\:/Users/fazbe/Documents/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/ic_baseline_audiotrack_24.xml" value="0.121" />
         <entry key="..\:/Users/fazbe/Documents/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/ic_baseline_auto_awesome_24.xml" value="0.2265" />
+        <entry key="..\:/Users/fazbe/Documents/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/ic_baseline_brightness_1_24.xml" value="0.2355" />
         <entry key="..\:/Users/fazbe/Documents/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/ic_baseline_home_24.xml" value="0.2265" />
+        <entry key="..\:/Users/fazbe/Documents/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/ic_baseline_keyboard_arrow_right_24.xml" value="0.2355" />
         <entry key="..\:/Users/fazbe/Documents/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/ic_baseline_pause_24.xml" value="0.2355" />
         <entry key="..\:/Users/fazbe/Documents/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/ic_baseline_play_arrow_24.xml" value="0.2355" />
         <entry key="..\:/Users/fazbe/Documents/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/ic_baseline_skip_next_24.xml" value="0.2355" />
@@ -15,12 +17,17 @@
         <entry key="..\:/Users/fazbe/Documents/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/ic_outline_home_24.xml" value="0.2265" />
         <entry key="..\:/Users/fazbe/Documents/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/menu_editorial.xml" value="0.2265" />
         <entry key="..\:/Users/fazbe/Documents/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/menu_home.xml" value="0.2265" />
+        <entry key="..\:/Users/fazbe/Documents/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/pause.xml" value="0.2355" />
+        <entry key="..\:/Users/fazbe/Documents/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/pause_notification.xml" value="0.2355" />
+        <entry key="..\:/Users/fazbe/Documents/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/play.xml" value="0.2355" />
         <entry key="..\:/Users/fazbe/Documents/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/play_pause_button.xml" value="0.2355" />
         <entry key="..\:/Users/fazbe/Documents/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/player_controls_background.xml" value="0.2355" />
         <entry key="..\:/Users/fazbe/Documents/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/player_controls_background_disabled.xml" value="0.2355" />
         <entry key="..\:/Users/fazbe/Documents/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/player_controls_background_enabled.xml" value="0.2355" />
         <entry key="..\:/Users/fazbe/Documents/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/player_controls_foreground.xml" value="0.2355" />
         <entry key="..\:/Users/fazbe/Documents/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/search_form_background.xml" value="0.2265" />
+        <entry key="..\:/Users/fazbe/Documents/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/skip_next.xml" value="0.2355" />
+        <entry key="..\:/Users/fazbe/Documents/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/skip_previous.xml" value="0.2355" />
         <entry key="..\:/Users/fazbe/Documents/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/tile_ripple_rect.xml" value="0.2355" />
         <entry key="..\:/Users/fazbe/Documents/AndroidProj/DeezerforAndroid/app/src/main/res/drawable/tile_ripple_round.xml" value="0.2355" />
         <entry key="..\:/Users/fazbe/Documents/AndroidProj/DeezerforAndroid/app/src/main/res/layout-land/fragment_player.xml" value="0.21164021164021163" />

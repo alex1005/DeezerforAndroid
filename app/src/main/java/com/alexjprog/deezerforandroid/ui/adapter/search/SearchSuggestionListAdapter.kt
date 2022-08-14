@@ -18,8 +18,8 @@ class SearchSuggestionListAdapter(
         fun onBindView(item: SearchSuggestionModel) {
             with(binding) {
                 tvSuggestion.text = item.title
-                val typeImage = if(item.isInHistory) R.drawable.ic_baseline_history_24
-                else R.drawable.ic_baseline_search_24
+                val typeImage = if (item.isInHistory) R.drawable.history
+                else R.drawable.search
                 ivSuggestionType.setImageResource(typeImage)
             }
         }

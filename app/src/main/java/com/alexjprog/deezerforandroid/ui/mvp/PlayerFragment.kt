@@ -145,13 +145,13 @@ class PlayerFragment : Fragment(), PlayerContract.View, MediaPlayerService.Media
                     btnPlayPause.setImageDrawable(
                         ContextCompat.getDrawable(
                             requireContext(),
-                            R.drawable.ic_baseline_play_arrow_24
+                            R.drawable.play
                         )
                     )
                     btnPlayPause.isEnabled = false
                 } else {
                     val drawableState =
-                        if (playing) R.drawable.ic_baseline_pause_24 else R.drawable.ic_baseline_play_arrow_24
+                        if (playing) R.drawable.pause else R.drawable.play
                     btnPlayPause.setImageDrawable(
                         ContextCompat.getDrawable(
                             requireContext(),
