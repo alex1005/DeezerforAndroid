@@ -4,6 +4,7 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.Service
+import android.graphics.Bitmap
 import android.os.Build
 import android.support.v4.media.MediaDescriptionCompat
 import android.support.v4.media.MediaMetadataCompat
@@ -54,18 +55,20 @@ class MediaPlayerNotificationHelper(
     fun getNotification(
         metadata: MediaMetadataCompat?,
         state: PlaybackStateCompat,
-        token: MediaSessionCompat.Token?
+        token: MediaSessionCompat.Token?,
+        bitmap: Bitmap
     ): Notification {
 
         val isPlaying = state.state == PlaybackStateCompat.STATE_PLAYING
         val description = metadata?.description
-        return notificationBuilder(token, isPlaying, description).build()
+        return notificationBuilder(token, isPlaying, description, bitmap).build()
     }
 
     private fun notificationBuilder(
         token: MediaSessionCompat.Token?,
         isPlaying: Boolean,
-        description: MediaDescriptionCompat?
+        description: MediaDescriptionCompat?,
+        bitmap: Bitmap
     ): NotificationCompat.Builder {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) createChannel()
         return NotificationCompat.Builder(mediaPlayerService, CHANNEL_ID)
@@ -82,6 +85,7 @@ class MediaPlayerNotificationHelper(
                     )
             )
             .setSmallIcon(R.mipmap.ic_launcher)
+            .setLargeIcon(bitmap)
             .setColor(ContextCompat.getColor(mediaPlayerService, R.color.color_primary))
             .setContentIntent(playerDeepLink)
             .setContentTitle(description?.title)
@@ -97,9 +101,10 @@ class MediaPlayerNotificationHelper(
     fun updateNotification(
         metadata: MediaMetadataCompat?,
         state: PlaybackStateCompat,
-        token: MediaSessionCompat.Token?
+        token: MediaSessionCompat.Token?,
+        bitmap: Bitmap
     ) =
-        notificationManager.notify(NOTIFICATION_ID, getNotification(metadata, state, token))
+        notificationManager.notify(NOTIFICATION_ID, getNotification(metadata, state, token, bitmap))
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createChannel() {

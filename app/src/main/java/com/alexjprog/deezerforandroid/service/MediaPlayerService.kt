@@ -16,6 +16,7 @@ import com.alexjprog.deezerforandroid.domain.model.MediaItemModel
 import com.alexjprog.deezerforandroid.domain.model.TrackModel
 import com.alexjprog.deezerforandroid.domain.usecase.GetAlbumInfoUseCase
 import com.alexjprog.deezerforandroid.domain.usecase.GetTrackInfoUseCase
+import com.alexjprog.deezerforandroid.util.ImageHelper
 import com.alexjprog.deezerforandroid.util.MediaPlayerNotificationHelper
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -121,10 +122,10 @@ class MediaPlayerService : Service() {
         return super.onStartCommand(intent, flags, startId)
     }
 
-    var playlistSource: MediaItemModel? by Delegates.observable(null) { _, oldValue, newValue ->
+    var playlistSource: MediaItemModel? by Delegates.vetoable(null) { _, oldValue, newValue ->
         if (newValue?.id == oldValue?.id || newValue == null) {
             pushState()
-            return@observable
+            return@vetoable false
         }
         when (newValue) {
             is TrackModel -> getTrackInfoUseCase(newValue.id)
@@ -147,8 +148,8 @@ class MediaPlayerService : Service() {
                     currentTrackIndex = INITIAL_PLAYLIST_INDEX
                     nextTrack()
                 }
-            null -> {}
         }
+        return@vetoable true
     }
 
     private fun playMedia() {
@@ -158,7 +159,7 @@ class MediaPlayerService : Service() {
         }
         startProgressUpdater()
         pushOnPlayEvent()
-        notificationHelper.updateNotification(metadata, state, mediaSession.sessionToken)
+        updateForegroundMedia()
     }
 
     private fun pauseMedia() {
@@ -168,7 +169,7 @@ class MediaPlayerService : Service() {
         }
         stopProgressUpdater()
         pushOnPauseEvent()
-        notificationHelper.updateNotification(metadata, state, mediaSession.sessionToken)
+        updateForegroundMedia()
     }
 
     private fun stopMedia() {
@@ -178,7 +179,7 @@ class MediaPlayerService : Service() {
         } catch (e: UninitializedPropertyAccessException) {
         }
         stopProgressUpdater()
-        stopForeground(false)
+        stopForegroundMedia()
     }
 
     fun startSeek() {
@@ -187,6 +188,38 @@ class MediaPlayerService : Service() {
 
     fun endSeek(progress: Int) {
         player.seekTo(progress)
+    }
+
+    private fun startForegroundMedia() {
+        val iconUri = currentTrack?.pictureLink
+        ImageHelper.loadLargeIconForNotification(this, iconUri) { bitmap ->
+            mediaSession.setMetadata(metadata)
+            startForeground(
+                MediaPlayerNotificationHelper.NOTIFICATION_ID,
+                notificationHelper.getNotification(
+                    metadata,
+                    state,
+                    mediaSession.sessionToken,
+                    bitmap
+                )
+            )
+        }
+    }
+
+    private fun updateForegroundMedia() {
+        val iconUri = currentTrack?.pictureLink
+        ImageHelper.loadLargeIconForNotification(this, iconUri) { bitmap ->
+            notificationHelper.updateNotification(
+                metadata,
+                state,
+                mediaSession.sessionToken,
+                bitmap
+            )
+        }
+    }
+
+    private fun stopForegroundMedia() {
+        stopForeground(true)
     }
 
     private fun changeTrack(goBackwards: Boolean) {
@@ -203,15 +236,7 @@ class MediaPlayerService : Service() {
                 newPlayer.setDataSource(track.trackLink)
                 newPlayer.prepareAsync()
                 newPlayer.setOnPreparedListener {
-                    mediaSession.setMetadata(metadata)
-                    startForeground(
-                        MediaPlayerNotificationHelper.NOTIFICATION_ID,
-                        notificationHelper.getNotification(
-                            metadata,
-                            state,
-                            mediaSession.sessionToken
-                        )
-                    )
+                    startForegroundMedia()
                     pushOnUpdateCurrentTrackEvent()
                     playMedia()
                 }
@@ -294,13 +319,13 @@ class MediaPlayerService : Service() {
 
     override fun onTaskRemoved(rootIntent: Intent?) {
         super.onTaskRemoved(rootIntent)
-        stopForeground(true)
         stopSelf()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         stopMedia()
+        mediaSession.isActive = false
         mediaPlayerListeners.clear()
         binder.releaseService()
     }
