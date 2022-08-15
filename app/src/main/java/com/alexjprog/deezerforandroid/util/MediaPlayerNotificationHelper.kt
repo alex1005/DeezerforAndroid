@@ -56,7 +56,7 @@ class MediaPlayerNotificationHelper(
         metadata: MediaMetadataCompat?,
         state: PlaybackStateCompat,
         token: MediaSessionCompat.Token?,
-        bitmap: Bitmap
+        bitmap: Bitmap?
     ): Notification {
 
         val isPlaying = state.state == PlaybackStateCompat.STATE_PLAYING
@@ -79,7 +79,7 @@ class MediaPlayerNotificationHelper(
         hasNextTrack: Boolean,
         hasPreviousTrack: Boolean,
         description: MediaDescriptionCompat?,
-        bitmap: Bitmap
+        bitmap: Bitmap?
     ): NotificationCompat.Builder {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) createChannel()
         return NotificationCompat.Builder(mediaPlayerService, CHANNEL_ID)
@@ -96,7 +96,6 @@ class MediaPlayerNotificationHelper(
                     )
             )
             .setSmallIcon(R.mipmap.ic_launcher)
-            .setLargeIcon(bitmap)
             .setColor(ContextCompat.getColor(mediaPlayerService, R.color.color_primary))
             .setContentIntent(playerDeepLink)
             .setContentTitle(description?.title)
@@ -108,14 +107,16 @@ class MediaPlayerNotificationHelper(
             )
             .addAction(previousTrackAction(hasPreviousTrack))
             .addAction(if (isPlaying) pauseAction else playAction)
-            .addAction(nextTrackAction(hasNextTrack))
+            .addAction(nextTrackAction(hasNextTrack)).apply {
+                if (bitmap != null) setLargeIcon(bitmap)
+            }
     }
 
     fun updateNotification(
         metadata: MediaMetadataCompat?,
         state: PlaybackStateCompat,
         token: MediaSessionCompat.Token?,
-        bitmap: Bitmap
+        bitmap: Bitmap?
     ) =
         notificationManager.notify(NOTIFICATION_ID, getNotification(metadata, state, token, bitmap))
 

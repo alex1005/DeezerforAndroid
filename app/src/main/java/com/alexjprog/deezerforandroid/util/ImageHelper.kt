@@ -4,6 +4,8 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.widget.ImageView
+import androidx.core.graphics.drawable.toBitmap
+import com.alexjprog.deezerforandroid.R
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
@@ -11,30 +13,35 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 
 object ImageHelper {
-    fun loadRoundedCornersPicture(destPicture: ImageView, uri: String?, cornerRadius: Int) =
+    fun loadRoundedCornersCover(destPicture: ImageView, uri: String?, cornerRadius: Int) =
         Glide.with(destPicture)
             .load(uri)
+            .placeholder(R.drawable.default_track_cover)
             .apply(RequestOptions.bitmapTransform(RoundedCorners(cornerRadius)))
             .into(destPicture)
 
-    fun loadRoundPicture(destPicture: ImageView, uri: String?) =
+    fun loadRoundCover(destPicture: ImageView, uri: String?) =
         Glide.with(destPicture)
             .load(uri)
+            .placeholder(R.drawable.default_track_cover)
             .circleCrop()
             .into(destPicture)
 
-    fun loadSimplePicture(destPicture: ImageView, uri: String?) =
+    fun loadSimpleCover(destPicture: ImageView, uri: String?) =
         Glide.with(destPicture)
             .load(uri)
+            .placeholder(R.drawable.default_track_cover)
             .into(destPicture)
 
     fun loadLargeIconForNotification(
         context: Context,
         uri: String?,
-        onLoadComplete: (Bitmap) -> Unit
+        onLoadComplete: (Bitmap?) -> Unit
     ) =
         Glide.with(context)
             .asBitmap()
+            .placeholder(R.drawable.default_track_cover)
+            .error(R.drawable.default_track_cover)
             .load(uri)
             .into(object : CustomTarget<Bitmap>() {
                 override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
@@ -42,8 +49,11 @@ object ImageHelper {
                 }
 
                 override fun onLoadCleared(placeholder: Drawable?) {
-                    TODO("Not yet implemented")
                 }
 
+                override fun onLoadFailed(errorDrawable: Drawable?) {
+                    super.onLoadFailed(errorDrawable)
+                    onLoadComplete(errorDrawable?.toBitmap())
+                }
             })
 }

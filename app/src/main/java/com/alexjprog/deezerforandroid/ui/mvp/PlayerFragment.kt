@@ -182,7 +182,7 @@ class PlayerFragment : Fragment(), PlayerContract.View, MediaPlayerService.Media
                 progress = 0
             }
             tvDuration.text = timeFormatter.format(Date(data?.duration?.toLong() ?: 0L))
-            ImageHelper.loadSimplePicture(tvCover, data?.pictureLink)
+            ImageHelper.loadSimpleCover(tvCover, data?.pictureLink)
         }
     }
 

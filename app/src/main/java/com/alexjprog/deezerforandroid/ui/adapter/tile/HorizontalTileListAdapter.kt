@@ -26,7 +26,7 @@ class HorizontalTileListAdapter(
                 ivCover.also {
                     when (item) {
                         is TrackModel ->
-                            ImageHelper.loadRoundedCornersPicture(
+                            ImageHelper.loadRoundedCornersCover(
                                 it,
                                 item.pictureLink,
                                 it.resources.getDimensionPixelSize(R.dimen.tile_corner_radius)
@@ -34,7 +34,7 @@ class HorizontalTileListAdapter(
                         is AlbumModel -> {
                             it.foreground =
                                 ContextCompat.getDrawable(it.context, R.drawable.tile_ripple_round)
-                            ImageHelper.loadRoundPicture(
+                            ImageHelper.loadRoundCover(
                                 it,
                                 item.pictureLink
                             )
