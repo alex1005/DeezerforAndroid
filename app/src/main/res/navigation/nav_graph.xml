@@ -30,11 +30,6 @@
             app:destination="@id/playerFragment" />
     </fragment>
     <fragment
-        android:id="@+id/searchFragment"
-        android:name="com.alexjprog.deezerforandroid.ui.mvp.SearchFragment"
-        android:label="fragment_search"
-        tools:layout="@layout/fragment_search" />
-    <fragment
         android:id="@+id/editorialFragment"
         android:name="com.alexjprog.deezerforandroid.ui.mvvm.EditorialFragment"
         android:label="EditorialFragment">
@@ -59,4 +54,5 @@
             app:argType="com.alexjprog.deezerforandroid.model.MediaTypeParam"
             android:defaultValue="NONE" />
     </fragment>
+    <include app:graph="@navigation/search_nav_graph" />
 </navigation>

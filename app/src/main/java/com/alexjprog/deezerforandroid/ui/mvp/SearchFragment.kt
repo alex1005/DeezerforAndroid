@@ -10,14 +10,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.alexjprog.deezerforandroid.app.DeezerApplication
 import com.alexjprog.deezerforandroid.databinding.FragmentSearchBinding
 import com.alexjprog.deezerforandroid.domain.model.SearchSuggestionModel
 import com.alexjprog.deezerforandroid.ui.MainActivity
 import com.alexjprog.deezerforandroid.ui.adapter.search.SearchSuggestionListAdapter
 import com.alexjprog.deezerforandroid.ui.mvp.contract.SearchContract
-import com.alexjprog.deezerforandroid.util.SEARCH_SUGGESTIONS_LIST_STATE_KEY
-import com.alexjprog.deezerforandroid.util.SaveStateHelper
 import javax.inject.Inject
 
 class SearchFragment : Fragment(), SearchContract.View {
@@ -28,14 +27,24 @@ class SearchFragment : Fragment(), SearchContract.View {
     private var _binding: FragmentSearchBinding? = null
     private val binding: FragmentSearchBinding get() = _binding!!
 
+    private val args: SearchFragmentArgs by navArgs()
+
     private var searchSuggestionListState: Parcelable? = null
 
-    private val backAction: (View) -> Unit = {
+    private val backAction: View.OnClickListener = View.OnClickListener {
         findNavController().navigateUp()
     }
 
-    private val clearAction: (View) -> Unit = {
+    private val clearAction: View.OnClickListener = View.OnClickListener {
         binding.inputField.etSearch.text.clear()
+    }
+
+    private val openResultsAction: (String) -> Unit = { query ->
+        findNavController().navigate(
+            SearchFragmentDirections.actionOpenSearchResultsFragmentFromSearch(
+                query
+            )
+        )
     }
 
     override fun onAttach(context: Context) {
@@ -91,43 +100,46 @@ class SearchFragment : Fragment(), SearchContract.View {
     override fun onStart() {
         super.onStart()
         (requireActivity() as MainActivity).hideAllNavigation()
-        binding.inputField.etSearch.requestFocus()
-    }
-
-    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        super.onViewStateRestored(savedInstanceState)
-        if (savedInstanceState != null) {
-            with(binding) {
-                val restoredData =
-                    SaveStateHelper.restoreSearchSuggestionModelList(savedInstanceState)
-                rcSearchSuggestions.adapter = SearchSuggestionListAdapter(restoredData)
-                SaveStateHelper.restoreRecyclerViewState(
-                    savedInstanceState,
-                    SEARCH_SUGGESTIONS_LIST_STATE_KEY,
-                    rcSearchSuggestions
-                )
-            }
+        binding.inputField.etSearch.apply {
+            requestFocus()
+            setText(args.oldQuery ?: "")
         }
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        with(binding) {
-            val data = (rcSearchSuggestions.adapter as? SearchSuggestionListAdapter)?.data
-            SaveStateHelper.saveSearchSuggestionModelList(outState, data)
-            SaveStateHelper.saveRecyclerViewState(
-                outState,
-                SEARCH_SUGGESTIONS_LIST_STATE_KEY,
-                searchSuggestionListState
-            )
-        }
-        super.onSaveInstanceState(outState)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        searchSuggestionListState =
-            binding.rcSearchSuggestions.layoutManager?.onSaveInstanceState()
-    }
+//    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+//        super.onViewStateRestored(savedInstanceState)
+//        if (savedInstanceState != null) {
+//            with(binding) {
+//                val restoredData =
+//                    SaveStateHelper.restoreSearchSuggestionModelList(savedInstanceState)
+//                rcSearchSuggestions.adapter = SearchSuggestionListAdapter(restoredData, openResultsAction)
+//                SaveStateHelper.restoreRecyclerViewState(
+//                    savedInstanceState,
+//                    SEARCH_SUGGESTIONS_LIST_STATE_KEY,
+//                    rcSearchSuggestions
+//                )
+//            }
+//        }
+//    }
+//
+//    override fun onSaveInstanceState(outState: Bundle) {
+//        with(binding) {
+//            val data = (rcSearchSuggestions.adapter as? SearchSuggestionListAdapter)?.data
+//            SaveStateHelper.saveSearchSuggestionModelList(outState, data)
+//            SaveStateHelper.saveRecyclerViewState(
+//                outState,
+//                SEARCH_SUGGESTIONS_LIST_STATE_KEY,
+//                searchSuggestionListState
+//            )
+//        }
+//        super.onSaveInstanceState(outState)
+//    }
+//
+//    override fun onPause() {
+//        super.onPause()
+//        searchSuggestionListState =
+//            binding.rcSearchSuggestions.layoutManager?.onSaveInstanceState()
+//    }
 
     override fun onStop() {
         super.onStop()
@@ -146,7 +158,7 @@ class SearchFragment : Fragment(), SearchContract.View {
     }
 
     override fun updateSearchSuggestions(data: List<SearchSuggestionModel>) {
-        binding.rcSearchSuggestions.adapter = SearchSuggestionListAdapter(data)
+        binding.rcSearchSuggestions.adapter = SearchSuggestionListAdapter(data, openResultsAction)
     }
 
 }

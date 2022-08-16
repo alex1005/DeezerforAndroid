@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.alexjprog.deezerforandroid.viewmodel.EditorialViewModel
 import com.alexjprog.deezerforandroid.viewmodel.HomeViewModel
 import com.alexjprog.deezerforandroid.viewmodel.MoreContentViewModel
+import com.alexjprog.deezerforandroid.viewmodel.SearchResultsViewModel
 import dagger.Binds
 import dagger.MapKey
 import dagger.Module
@@ -26,6 +27,11 @@ interface ViewModelModule {
     @IntoMap
     @ViewModelKey(EditorialViewModel::class)
     fun bindEditorialViewModel(editorialViewModel: EditorialViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SearchResultsViewModel::class)
+    fun bindSearchResultsViewModel(searchResultsViewModel: SearchResultsViewModel): ViewModel
 }
 
 @Retention(AnnotationRetention.RUNTIME)

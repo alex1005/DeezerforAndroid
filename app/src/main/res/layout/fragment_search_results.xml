@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.mvp.SearchFragment">
+
+    <include
+        android:id="@+id/inputField"
+        layout="@layout/search_input_field" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcContent"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:paddingHorizontal="@dimen/small_margin"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/inputField"
+        app:spanCount="2"
+        tools:itemCount="8"
+        tools:listitem="@layout/tile_item_grid" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

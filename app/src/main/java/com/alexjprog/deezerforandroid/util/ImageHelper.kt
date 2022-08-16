@@ -56,4 +56,27 @@ object ImageHelper {
                     onLoadComplete(errorDrawable?.toBitmap())
                 }
             })
+
+    fun loadUserIcon(context: Context, uri: String?, onLoadComplete: (Drawable?) -> Unit) =
+        Glide.with(context)
+            .asDrawable()
+            .error(R.drawable.account_icon)
+            .load(uri)
+            .into(object : CustomTarget<Drawable>() {
+                override fun onResourceReady(
+                    resource: Drawable,
+                    transition: Transition<in Drawable>?
+                ) {
+                    onLoadComplete(resource)
+                }
+
+                override fun onLoadCleared(placeholder: Drawable?) {
+                }
+
+                override fun onLoadFailed(errorDrawable: Drawable?) {
+                    super.onLoadFailed(errorDrawable)
+                    onLoadComplete(errorDrawable)
+                }
+
+            })
 }

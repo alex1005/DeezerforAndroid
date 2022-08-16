@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when(item.itemId) {
             R.id.search_menu -> {
-                findNavController(R.id.navHostFragment).navigate(R.id.searchFragment)
+                findNavController(R.id.navHostFragment).navigate(R.id.search_nav_graph)
                 true
             }
             R.id.account_menu -> {

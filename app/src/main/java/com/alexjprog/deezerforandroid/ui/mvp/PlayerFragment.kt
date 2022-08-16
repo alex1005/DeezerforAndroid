@@ -125,6 +125,7 @@ class PlayerFragment : Fragment(), PlayerContract.View, MediaPlayerService.Media
 
     private fun releaseBind() {
         mediaPlayerService?.removeMediaPlayerListener(this)
+        mediaPlayerService = null
         requireActivity().unbindService(playerConnection)
     }
 

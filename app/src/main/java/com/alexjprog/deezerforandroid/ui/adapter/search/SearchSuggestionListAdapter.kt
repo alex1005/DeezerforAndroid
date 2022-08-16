@@ -8,7 +8,8 @@ import com.alexjprog.deezerforandroid.databinding.SearchSuggestionItemBinding
 import com.alexjprog.deezerforandroid.domain.model.SearchSuggestionModel
 
 class SearchSuggestionListAdapter(
-    val data: List<SearchSuggestionModel>
+    val data: List<SearchSuggestionModel>,
+    val openResultsAction: (String) -> Unit
 ):
     RecyclerView.Adapter<SearchSuggestionListAdapter.SearchSuggestionViewHolder>() {
 
@@ -21,6 +22,9 @@ class SearchSuggestionListAdapter(
                 val typeImage = if (item.isInHistory) R.drawable.history
                 else R.drawable.search
                 ivSuggestionType.setImageResource(typeImage)
+                root.setOnClickListener {
+                    openResultsAction(item.title)
+                }
             }
         }
     }

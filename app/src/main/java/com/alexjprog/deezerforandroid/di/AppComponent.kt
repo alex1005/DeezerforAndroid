@@ -9,6 +9,7 @@ import com.alexjprog.deezerforandroid.ui.mvp.SearchFragment
 import com.alexjprog.deezerforandroid.ui.mvvm.EditorialFragment
 import com.alexjprog.deezerforandroid.ui.mvvm.HomeFragment
 import com.alexjprog.deezerforandroid.ui.mvvm.MoreContentFragment
+import com.alexjprog.deezerforandroid.ui.mvvm.SearchResultsFragment
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -32,6 +33,7 @@ interface AppComponent {
     fun inject(homeFragment: EditorialFragment)
     fun inject(moreContentFragment: MoreContentFragment)
     fun inject(searchFragment: SearchFragment)
+    fun inject(searchResultsFragment: SearchResultsFragment)
     fun inject(playerFragment: PlayerFragment)
 
     fun inject(mediaPlayerService: MediaPlayerService)
