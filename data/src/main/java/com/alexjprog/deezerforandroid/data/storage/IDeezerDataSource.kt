@@ -13,7 +13,8 @@ interface IDeezerDataSource {
     fun getEditorialSelectionPage(): Flow<List<AlbumApiData>>
 
     fun getSearchHistory(): Observable<List<SearchHistoryResultApiData>>
-    fun getSearchResultsForQuery(query: String): Observable<List<TrackApiData>>
+    fun getSearchSuggestionsForQuery(query: String): Observable<List<TrackApiData>>
+    fun getSearchResultsForQuery(page: Int, pageSize: Int, query: String): Flow<List<TrackApiData>>
 
     fun getTrackInfo(id: Int): Observable<TrackApiData>
     fun getAlbumInfo(id: Int): Observable<AlbumApiData>

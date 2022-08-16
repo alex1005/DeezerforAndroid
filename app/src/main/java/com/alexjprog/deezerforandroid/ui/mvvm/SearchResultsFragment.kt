@@ -8,13 +8,23 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.alexjprog.deezerforandroid.app.DeezerApplication
 import com.alexjprog.deezerforandroid.databinding.FragmentSearchResultsBinding
+import com.alexjprog.deezerforandroid.domain.model.AlbumModel
+import com.alexjprog.deezerforandroid.domain.model.MediaItemModel
+import com.alexjprog.deezerforandroid.domain.model.TrackModel
+import com.alexjprog.deezerforandroid.model.MediaTypeParam
 import com.alexjprog.deezerforandroid.ui.MainActivity
+import com.alexjprog.deezerforandroid.ui.adapter.tile.MediaItemComparator
+import com.alexjprog.deezerforandroid.ui.adapter.tile.TileFlowAdapter
 import com.alexjprog.deezerforandroid.viewmodel.SearchResultsViewModel
 import com.alexjprog.deezerforandroid.viewmodel.ViewModelFactory
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class SearchResultsFragment : Fragment() {
@@ -38,6 +48,18 @@ class SearchResultsFragment : Fragment() {
 
     private val newSearchAction: View.OnClickListener = View.OnClickListener {
         openNewSearch((it as? TextView)?.text.toString())
+    }
+
+    private val openPlayerAction: (MediaItemModel) -> Unit = { mediaItem ->
+        findNavController().navigate(
+            SearchResultsFragmentDirections.actionOpenPlayerFragmentFromSearchResults(
+                mediaItem.id,
+                when (mediaItem) {
+                    is AlbumModel -> MediaTypeParam.ALBUM
+                    is TrackModel -> MediaTypeParam.TRACK
+                }
+            )
+        )
     }
 
     private fun openNewSearch(oldQuery: String?) {
@@ -69,6 +91,18 @@ class SearchResultsFragment : Fragment() {
                 etSearch.setOnClickListener(newSearchAction)
                 etSearch.setText(args.query)
                 etSearch.focusable = View.NOT_FOCUSABLE
+            }
+
+            with(viewModel) {
+                if (resultsFlow == null) loadResults(args.query)
+
+                val contentAdapter = TileFlowAdapter(MediaItemComparator, openPlayerAction)
+                rcContent.adapter = contentAdapter
+                viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
+                    resultsFlow?.collectLatest { pagingData ->
+                        contentAdapter.submitData(viewLifecycleOwner.lifecycle, pagingData)
+                    }
+                }
             }
         }
         return binding.root

@@ -18,7 +18,8 @@ interface MediaRepository {
     fun getCategoryContent(pageSize: Int, category: ContentCategoryParam):
             Flow<PagingData<MediaItemModel>>
 
-    fun getSearchResultsForQuery(query: String): Observable<List<SearchSuggestionModel>>
+    fun getSearchSuggestionsForQuery(query: String): Observable<List<SearchSuggestionModel>>
+    fun getSearchResultsForQuery(pageSize: Int, query: String): Flow<PagingData<MediaItemModel>>
 
     fun getTrackInfo(id: Int): Observable<TrackModel>
     fun getAlbumInfo(id: Int): Observable<AlbumModel>

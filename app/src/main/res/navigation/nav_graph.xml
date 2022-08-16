@@ -15,7 +15,16 @@
             app:destination="@id/moreContentFragment" />
         <action
             android:id="@+id/actionOpenPlayerFragmentFromHome"
-            app:destination="@id/playerFragment" />
+            app:destination="@id/player_nav_graph">
+            <argument
+                android:name="playableMediaId"
+                app:argType="integer"
+                android:defaultValue="-1" />
+            <argument
+                android:name="playableMediaType"
+                app:argType="com.alexjprog.deezerforandroid.model.MediaTypeParam"
+                android:defaultValue="NONE" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/moreContentFragment"
@@ -27,7 +36,16 @@
             app:argType="com.alexjprog.deezerforandroid.model.ContentCategory" />
         <action
             android:id="@+id/actionOpenPlayerFragmentFromMore"
-            app:destination="@id/playerFragment" />
+            app:destination="@id/player_nav_graph">
+            <argument
+                android:name="playableMediaId"
+                app:argType="integer"
+                android:defaultValue="-1" />
+            <argument
+                android:name="playableMediaType"
+                app:argType="com.alexjprog.deezerforandroid.model.MediaTypeParam"
+                android:defaultValue="NONE" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/editorialFragment"
@@ -38,21 +56,17 @@
             app:destination="@id/moreContentFragment" />
         <action
             android:id="@+id/actionOpenPlayerFragmentFromEditorial"
-            app:destination="@id/playerFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/playerFragment"
-        android:name="com.alexjprog.deezerforandroid.ui.mvp.PlayerFragment"
-        android:label="fragment_player"
-        tools:layout="@layout/fragment_player">
-        <argument
-            android:name="playableMediaId"
-            app:argType="integer"
-            android:defaultValue="-1" />
-        <argument
-            android:name="playableMediaType"
-            app:argType="com.alexjprog.deezerforandroid.model.MediaTypeParam"
-            android:defaultValue="NONE" />
+            app:destination="@id/player_nav_graph">
+            <argument
+                android:name="playableMediaId"
+                app:argType="integer"
+                android:defaultValue="-1" />
+            <argument
+                android:name="playableMediaType"
+                app:argType="com.alexjprog.deezerforandroid.model.MediaTypeParam"
+                android:defaultValue="NONE" />
+        </action>
     </fragment>
     <include app:graph="@navigation/search_nav_graph" />
+    <include app:graph="@navigation/player_nav_graph" />
 </navigation>

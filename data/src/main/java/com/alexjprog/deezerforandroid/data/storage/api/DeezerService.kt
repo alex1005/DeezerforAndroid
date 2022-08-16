@@ -32,8 +32,15 @@ interface DeezerService {
             Single<ResultPageApiData<SearchHistoryResultApiData>>
 
     @GET("search")
-    fun getSearchResultsForQuery(@Query("q") query: String):
+    fun getSearchSuggestionsForQuery(@Query("q") query: String):
             Single<ResultPageApiData<TrackApiData>>
+
+    @GET("search")
+    suspend fun getSearchResultsForQuery(
+        @Query("q") query: String,
+        @Query("index") pageIndex: Int,
+        @Query("limit") itemAmount: Int
+    ): Response<ResultPageApiData<TrackApiData>>
 
     @GET("track/{id}")
     fun getTrackInfo(@Path("id") id: Int): Single<TrackApiData>

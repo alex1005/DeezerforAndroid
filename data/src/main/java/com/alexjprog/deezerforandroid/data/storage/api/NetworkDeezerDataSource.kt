@@ -59,10 +59,20 @@ class NetworkDeezerDataSource @Inject constructor(
             .onErrorReturn { listOf() }
             .toObservable()
 
-    override fun getSearchResultsForQuery(query: String): Observable<List<TrackApiData>> =
-        api.getSearchResultsForQuery(query).map { it.data }
+    override fun getSearchSuggestionsForQuery(query: String): Observable<List<TrackApiData>> =
+        api.getSearchSuggestionsForQuery(query).map { it.data }
             .onErrorReturn { listOf() }
             .toObservable()
+
+    override fun getSearchResultsForQuery(page: Int, pageSize: Int, query: String) =
+        flow {
+            val pageOffset = page * pageSize
+            val response = api.getSearchResultsForQuery(query, pageOffset, pageSize)
+            if (!response.isSuccessful) emit(emptyList())
+            emit(response.body()?.data ?: emptyList())
+        }.catch { emit(emptyList()) }
+            .flowOn(apiCoroutineContext)
+
 
     override fun getTrackInfo(id: Int): Observable<TrackApiData> =
         api.getTrackInfo(id).toObservable()
