@@ -2,12 +2,12 @@ package com.alexjprog.deezerforandroid.ui.mvp
 
 import android.content.Context
 import android.os.Bundle
-import android.os.Parcelable
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -29,7 +29,7 @@ class SearchFragment : Fragment(), SearchContract.View {
 
     private val args: SearchFragmentArgs by navArgs()
 
-    private var searchSuggestionListState: Parcelable? = null
+    //private var searchSuggestionListState: Parcelable? = null
 
     private val backAction: View.OnClickListener = View.OnClickListener {
         findNavController().navigateUp()
@@ -68,6 +68,13 @@ class SearchFragment : Fragment(), SearchContract.View {
             with(inputField) {
                 btnBack.setOnClickListener(backAction)
                 btnClear.setOnClickListener(clearAction)
+
+                etSearch.setOnEditorActionListener { _, actionId, _ ->
+                    if (actionId == EditorInfo.IME_ACTION_DONE) {
+                        openResultsAction(etSearch.text.toString())
+                        true
+                    } else false
+                }
                 etSearch.addTextChangedListener(object : TextWatcher {
                     override fun beforeTextChanged(
                         s: CharSequence?,
