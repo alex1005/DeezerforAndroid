@@ -21,7 +21,7 @@ import javax.inject.Inject
 class MediaRepositoryImpl @Inject constructor(
     private val deezerSource: IDeezerDataSource,
     private val apiMapper: IApiMapper
-): MediaRepository {
+) : MediaRepository {
     override fun getChartsPreview(amount: Int): Flow<List<TrackModel>> =
         deezerSource.getChartsPage(0, amount)
             .map { list -> list.map { apiMapper.mapTrack(it) } }
@@ -48,7 +48,9 @@ class MediaRepositoryImpl @Inject constructor(
 
     override fun getSearchSuggestionsForQuery(query: String): Observable<List<SearchSuggestionModel>> =
         deezerSource.getSearchSuggestionsForQuery(query)
-            .map { list -> list.map { apiMapper.mapSearchResult(it) } }
+            .map { list ->
+                list.map { apiMapper.mapSearchResult(it) }.distinctBy { it.title.uppercase() }
+            }
 
     override fun getSearchResultsForQuery(
         pageSize: Int,
