@@ -103,7 +103,6 @@ class MediaPlayerService : Service() {
                 MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS
                         or MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS
             )
-            isActive = true
         }
     }
 
@@ -126,6 +125,7 @@ class MediaPlayerService : Service() {
             pushState()
             return@vetoable false
         }
+        stopMedia()
         when (newValue) {
             is TrackModel -> getTrackInfoUseCase(newValue.id)
                 .subscribeOn(Schedulers.io())
@@ -176,7 +176,9 @@ class MediaPlayerService : Service() {
             player.stop()
             player.release()
         } catch (e: UninitializedPropertyAccessException) {
+        } catch (e: IllegalStateException) {
         }
+        mediaSession.isActive = false
         stopProgressUpdater()
     }
 
@@ -235,6 +237,7 @@ class MediaPlayerService : Service() {
                 newPlayer.setDataSource(track.trackLink)
                 newPlayer.prepareAsync()
                 newPlayer.setOnPreparedListener {
+                    mediaSession.isActive = true
                     startForegroundMedia()
                     pushOnUpdateCurrentTrackEvent()
                     playMedia()
