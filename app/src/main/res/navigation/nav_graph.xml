@@ -14,9 +14,6 @@
             android:id="@+id/actionOpenMoreContentFromHome"
             app:destination="@id/moreContentFragment" />
         <action
-            android:id="@+id/actionOpenSearchFromHome"
-            app:destination="@id/searchFragment" />
-        <action
             android:id="@+id/actionOpenPlayerFragmentFromHome"
             app:destination="@id/playerFragment" />
     </fragment>
@@ -28,9 +25,6 @@
         <argument
             android:name="category"
             app:argType="com.alexjprog.deezerforandroid.model.ContentCategory" />
-        <action
-            android:id="@+id/actionOpenSearchFromMore"
-            app:destination="@id/searchFragment" />
         <action
             android:id="@+id/actionOpenPlayerFragmentFromMore"
             app:destination="@id/playerFragment" />
@@ -44,9 +38,6 @@
         android:id="@+id/editorialFragment"
         android:name="com.alexjprog.deezerforandroid.ui.mvvm.EditorialFragment"
         android:label="EditorialFragment">
-        <action
-            android:id="@+id/actionOpenSearchFromEditorial"
-            app:destination="@id/searchFragment" />
         <action
             android:id="@+id/actionOpenMoreContentFromEditorial"
             app:destination="@id/moreContentFragment" />
