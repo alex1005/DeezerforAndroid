@@ -12,7 +12,6 @@ import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
-import androidx.core.content.ContextCompat
 import androidx.media.session.MediaButtonReceiver
 import androidx.navigation.NavDeepLinkBuilder
 import com.alexjprog.deezerforandroid.R
@@ -96,7 +95,7 @@ class MediaPlayerNotificationHelper(
                     )
             )
             .setSmallIcon(R.mipmap.ic_launcher)
-            .setColor(ContextCompat.getColor(mediaPlayerService, R.color.color_primary))
+            //.setColor(ContextCompat.getColor(mediaPlayerService, R.color.color_primary))
             .setContentIntent(playerDeepLink)
             .setContentTitle(description?.title)
             .setContentText(description?.subtitle)

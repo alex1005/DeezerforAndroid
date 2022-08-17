@@ -178,7 +178,6 @@ class PlayerFragment : Fragment(), PlayerContract.View, MediaPlayerService.Media
         with(binding) {
             tvTitle.text = data?.title ?: ""
             sbSeekBar.apply {
-                min = 0
                 max = data?.duration ?: 0
                 progress = 0
             }
