@@ -90,7 +90,7 @@ class SearchResultsFragment : Fragment() {
 
                 etSearch.setOnClickListener(newSearchAction)
                 etSearch.setText(args.query)
-                etSearch.focusable = View.NOT_FOCUSABLE
+                etSearch.isFocusable = false
             }
 
             with(viewModel) {

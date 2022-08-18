@@ -1,5 +1,6 @@
 package com.alexjprog.deezerforandroid.presenter
 
+import com.alexjprog.deezerforandroid.domain.usecase.AddSearchQueryToLocalHistoryUseCase
 import com.alexjprog.deezerforandroid.domain.usecase.GetSearchSuggestionsUseCase
 import com.alexjprog.deezerforandroid.ui.mvp.contract.SearchContract
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -9,7 +10,8 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class SearchPresenter @Inject constructor(
-    private val getSearchSuggestionsUseCase: GetSearchSuggestionsUseCase
+    private val getSearchSuggestionsUseCase: GetSearchSuggestionsUseCase,
+    private val addSearchQueryToLocalHistoryUseCase: AddSearchQueryToLocalHistoryUseCase
 ): BasePresenter<SearchContract.View>(), SearchContract.Presenter {
     private val searchInputEvents = PublishSubject.create<String>()
 
@@ -27,6 +29,10 @@ class SearchPresenter @Inject constructor(
 
     override fun postSearchQuery(query: String) {
         searchInputEvents.onNext(query)
+    }
+
+    override fun saveQueryToHistory(query: String) {
+        addSearchQueryToLocalHistoryUseCase(query)
     }
 
     companion object {

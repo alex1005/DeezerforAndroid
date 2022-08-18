@@ -7,5 +7,6 @@ interface UserRepository {
     fun getUserAccessToken(): String?
     fun saveUserAccessToken(token: String)
 
-    fun getSearchHistory(): Observable<List<SearchSuggestionModel>>
+    fun getSearchHistory(query: String): Observable<List<SearchSuggestionModel>>
+    fun addSearchQueryToLocalHistory(query: String)
 }

@@ -1,11 +1,15 @@
 package com.alexjprog.deezerforandroid.di.module
 
 import com.alexjprog.deezerforandroid.data.mapper.DefaultApiMapper
+import com.alexjprog.deezerforandroid.data.mapper.DefaultDbMapper
 import com.alexjprog.deezerforandroid.data.mapper.IApiMapper
+import com.alexjprog.deezerforandroid.data.mapper.IDbMapper
 import com.alexjprog.deezerforandroid.data.repository.MediaRepositoryImpl
 import com.alexjprog.deezerforandroid.data.repository.UserRepositoryImpl
 import com.alexjprog.deezerforandroid.data.storage.IDeezerDataSource
+import com.alexjprog.deezerforandroid.data.storage.ILocalDeezerDataSource
 import com.alexjprog.deezerforandroid.data.storage.api.NetworkDeezerDataSource
+import com.alexjprog.deezerforandroid.data.storage.db.LocalDeezerDataSource
 import com.alexjprog.deezerforandroid.data.storage.sharedprefs.LoginStore
 import com.alexjprog.deezerforandroid.data.storage.sharedprefs.LoginStoreImpl
 import com.alexjprog.deezerforandroid.domain.repository.MediaRepository
@@ -20,11 +24,11 @@ class DataModule {
     interface DataBinds {
         @Singleton
         @Binds
-        fun bindMediaDataSource(networkDeezerDataSource: NetworkDeezerDataSource): IDeezerDataSource
+        fun bindDeezerDataSource(networkDeezerDataSource: NetworkDeezerDataSource): IDeezerDataSource
 
         @Singleton
         @Binds
-        fun bindMediaMapper(defaultApiMapper: DefaultApiMapper): IApiMapper
+        fun bindApiMapper(defaultApiMapper: DefaultApiMapper): IApiMapper
 
         @Singleton
         @Binds
@@ -37,5 +41,13 @@ class DataModule {
         @Singleton
         @Binds
         fun bindUserRepository(userRepositoryImpl: UserRepositoryImpl): UserRepository
+
+        @Singleton
+        @Binds
+        fun bindDbMapper(defaultDbMapper: DefaultDbMapper): IDbMapper
+
+        @Singleton
+        @Binds
+        fun bindLocalDeezerDataSource(localDeezerDataSource: LocalDeezerDataSource): ILocalDeezerDataSource
     }
 }

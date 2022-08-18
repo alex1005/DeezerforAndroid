@@ -11,7 +11,7 @@ class GetSearchSuggestionsUseCase @Inject constructor(
     private val mediaRepository: MediaRepository
 ) {
     operator fun invoke(query: String): Observable<List<SearchSuggestionModel>> {
-        val history = userRepository.getSearchHistory()
+        val history = userRepository.getSearchHistory(query)
             .map { list -> list.filter { it.title.contains(query) } }
         val search = mediaRepository.getSearchSuggestionsForQuery(query)
         return Observable.zip(

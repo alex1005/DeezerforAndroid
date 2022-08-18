@@ -40,6 +40,7 @@ class SearchFragment : Fragment(), SearchContract.View {
     }
 
     private val openResultsAction: (String) -> Unit = { query ->
+        presenter.saveQueryToHistory(query)
         findNavController().navigate(
             SearchFragmentDirections.actionOpenSearchResultsFragmentFromSearch(
                 query

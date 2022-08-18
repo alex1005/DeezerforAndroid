@@ -12,5 +12,6 @@ interface SearchContract {
     interface Presenter : MVPPresenter<View> {
         fun subscribeToSearchInput()
         fun postSearchQuery(query: String)
+        fun saveQueryToHistory(query: String)
     }
 }
