@@ -4,5 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class ResultPageApiData<out T>(
     @SerializedName("data")
-    val data: List<T>
+    val data: List<T>?,
+    @SerializedName("error")
+    val error: Map<String, String>?
 )

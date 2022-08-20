@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="Theme.DeezerForAndroid.TextView.Basic" parent="Widget.MaterialComponents.TextView">
         <item name="android:fontFamily">@font/poppins_500</item>
         <item name="android:textColor">?attr/colorOnPrimary</item>
+    </style>
+
+    <style name="Theme.DeezerForAndroid.DefaultButton" parent="Widget.MaterialComponents.Button">
+        <item name="android:backgroundTint">@color/color_text_primary</item>
+        <item name="android:textColor">@color/color_primary</item>
     </style>
 </resources>

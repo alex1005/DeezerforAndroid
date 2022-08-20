@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.alexjprog.deezerforandroid.app.DeezerApplication
@@ -16,17 +15,18 @@ import com.alexjprog.deezerforandroid.domain.model.TrackModel
 import com.alexjprog.deezerforandroid.model.ContentCategory
 import com.alexjprog.deezerforandroid.model.MediaTypeParam
 import com.alexjprog.deezerforandroid.ui.adapter.complex.ComplexListAdapter
+import com.alexjprog.deezerforandroid.ui.base.LoadableFragment
 import com.alexjprog.deezerforandroid.viewmodel.EditorialViewModel
 import com.alexjprog.deezerforandroid.viewmodel.ViewModelFactory
 import javax.inject.Inject
 
-class EditorialFragment : Fragment() {
+class EditorialFragment : LoadableFragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
     private var _binding: FragmentEditorialBinding? = null
     private val binding: FragmentEditorialBinding get() = _binding!!
-    private val viewModel: EditorialViewModel
+    override val viewModel: EditorialViewModel
             by viewModels(factoryProducer = { viewModelFactory })
 
     private val openMoreAction: (ContentCategory) -> Unit = { category ->
@@ -70,5 +70,9 @@ class EditorialFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onTryAgain() {
+        viewModel.loadFeed()
     }
 }
