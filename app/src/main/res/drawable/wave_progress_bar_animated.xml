@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/wave_progress_bar">
+    <target
+        android:name="box_1"
+        android:animation="@animator/quiet" />
+    <target
+        android:name="box_2"
+        android:animation="@animator/normal" />
+    <target
+        android:name="box_3"
+        android:animation="@animator/quiet" />
+    <target
+        android:name="box_4"
+        android:animation="@animator/loud" />
+    <target
+        android:name="box_5"
+        android:animation="@animator/quiet" />
+</animated-vector>

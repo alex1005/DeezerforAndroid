@@ -1,0 +1,46 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="88dp"
+    android:height="88dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+  <group
+      android:name="box_1"
+      android:pivotY="12"
+      android:scaleY=".4">
+    <path
+        android:pathData="M4.62,8.536C4.62,7.269 5.073,6.75 5.87,6.75L5.87,6.75C6.665,6.75 7.12,7.269 7.12,8.536L7.12,15.431C7.12,16.697 6.665,17.25 5.87,17.25L5.87,17.25C5.073,17.25 4.62,16.697 4.62,15.43z"
+        android:fillColor="@color/color_secondary" />
+  </group>
+  <group
+      android:name="box_2"
+      android:pivotY="12"
+      android:scaleY=".4">
+    <path
+        android:pathData="M7.69,8.536C7.69,7.269 8.143,6.75 8.94,6.75L8.94,6.75C9.735,6.75 10.19,7.269 10.19,8.536L10.19,15.431C10.19,16.697 9.735,17.25 8.94,17.25L8.94,17.25C8.144,17.25 7.69,16.697 7.69,15.43z"
+        android:fillColor="@color/color_secondary" />
+  </group>
+  <group
+      android:name="box_3"
+      android:pivotY="12"
+      android:scaleY=".4">
+    <path
+        android:pathData="M10.75,8.536C10.75,7.269 11.203,6.75 12,6.75L12,6.75C12.795,6.75 13.25,7.269 13.25,8.536L13.25,15.431C13.25,16.697 12.795,17.25 12,17.25L12,17.25C11.204,17.25 10.75,16.697 10.75,15.43z"
+        android:fillColor="@color/color_secondary" />
+  </group>
+  <group
+      android:name="box_4"
+      android:pivotY="12"
+      android:scaleY=".4">
+    <path
+        android:pathData="M13.81,8.536C13.81,7.269 14.263,6.75 15.06,6.75L15.06,6.75C15.855,6.75 16.31,7.269 16.31,8.536L16.31,15.431C16.31,16.697 15.855,17.25 15.06,17.25L15.06,17.25C14.264,17.25 13.81,16.697 13.81,15.43z"
+        android:fillColor="@color/color_secondary" />
+  </group>
+  <group
+      android:name="box_5"
+      android:pivotY="12"
+      android:scaleY=".4">
+    <path
+        android:pathData="M16.88,8.536C16.88,7.269 17.333,6.75 18.13,6.75L18.13,6.75C18.925,6.75 19.38,7.269 19.38,8.536L19.38,15.431C19.38,16.697 18.925,17.25 18.13,17.25L18.13,17.25C17.334,17.25 16.88,16.697 16.88,15.43z"
+        android:fillColor="@color/color_secondary" />
+  </group>
+</vector>
