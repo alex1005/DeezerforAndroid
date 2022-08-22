@@ -6,6 +6,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -15,16 +16,33 @@ import com.alexjprog.deezerforandroid.ui.mvp.LoginActivity
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val navController =
+        navController =
             (supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment)
                 .navController
-        binding.bottomNavigationView.setupWithNavController(navController)
+        with(binding) {
+            bottomNavigationView.setupWithNavController(navController)
+            bottomNavigationView.setOnItemSelectedListener { menuItem ->
+                if (menuItem.itemId !in setOf(R.id.homeFragment, R.id.editorialFragment)) false
+                else {
+                    if (!navController.popBackStack(menuItem.itemId, false)) {
+                        navController.navigate(menuItem.itemId)
+                    }
+                    true
+                }
+            }
+            bottomNavigationView.setOnItemReselectedListener { /* Do nothing */ }
+        }
+    }
+
+    override fun onBackPressed() {
+        if (!navController.navigateUp()) finishAfterTransition()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -33,7 +51,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when(item.itemId) {
+        return when (item.itemId) {
             R.id.search_menu -> {
                 findNavController(R.id.navHostFragment).navigate(R.id.search_nav_graph)
                 true
