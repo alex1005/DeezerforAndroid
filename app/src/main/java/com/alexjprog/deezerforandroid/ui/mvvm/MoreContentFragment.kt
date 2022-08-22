@@ -6,10 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.navigation.navGraphViewModels
+import com.alexjprog.deezerforandroid.R
 import com.alexjprog.deezerforandroid.app.DeezerApplication
 import com.alexjprog.deezerforandroid.databinding.FragmentMoreContentBinding
 import com.alexjprog.deezerforandroid.domain.model.AlbumModel
@@ -32,7 +33,7 @@ class MoreContentFragment : Fragment() {
     private var _binding: FragmentMoreContentBinding? = null
     private val binding: FragmentMoreContentBinding get() = _binding!!
     private val viewModel: MoreContentViewModel
-            by viewModels { viewModelFactory }
+            by navGraphViewModels(R.id.navGraph) { viewModelFactory }
 
     private val args: MoreContentFragmentArgs by navArgs()
 

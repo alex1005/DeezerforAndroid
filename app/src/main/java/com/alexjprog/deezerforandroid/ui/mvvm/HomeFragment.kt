@@ -5,8 +5,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.navGraphViewModels
+import com.alexjprog.deezerforandroid.R
 import com.alexjprog.deezerforandroid.app.DeezerApplication
 import com.alexjprog.deezerforandroid.databinding.FragmentHomeBinding
 import com.alexjprog.deezerforandroid.domain.model.AlbumModel
@@ -27,7 +28,7 @@ class HomeFragment : LoadableFragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding: FragmentHomeBinding get() = _binding!!
     override val viewModel: HomeViewModel
-            by viewModels(factoryProducer = { viewModelFactory })
+            by navGraphViewModels(R.id.navGraph) { viewModelFactory }
 
     private val openMoreAction: (ContentCategory) -> Unit = { category ->
         findNavController().navigate(HomeFragmentDirections.actionOpenMoreContentFromHome(category))
