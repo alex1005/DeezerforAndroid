@@ -13,8 +13,8 @@ import com.alexjprog.deezerforandroid.databinding.FragmentEditorialBinding
 import com.alexjprog.deezerforandroid.domain.model.AlbumModel
 import com.alexjprog.deezerforandroid.domain.model.MediaItemModel
 import com.alexjprog.deezerforandroid.domain.model.TrackModel
+import com.alexjprog.deezerforandroid.domain.model.params.MediaTypeParam
 import com.alexjprog.deezerforandroid.model.ContentCategory
-import com.alexjprog.deezerforandroid.model.MediaTypeParam
 import com.alexjprog.deezerforandroid.ui.adapter.complex.ComplexListAdapter
 import com.alexjprog.deezerforandroid.ui.base.LoadableFragment
 import com.alexjprog.deezerforandroid.viewmodel.EditorialViewModel

@@ -17,7 +17,7 @@ import com.alexjprog.deezerforandroid.databinding.FragmentSearchResultsBinding
 import com.alexjprog.deezerforandroid.domain.model.AlbumModel
 import com.alexjprog.deezerforandroid.domain.model.MediaItemModel
 import com.alexjprog.deezerforandroid.domain.model.TrackModel
-import com.alexjprog.deezerforandroid.model.MediaTypeParam
+import com.alexjprog.deezerforandroid.domain.model.params.MediaTypeParam
 import com.alexjprog.deezerforandroid.ui.MainActivity
 import com.alexjprog.deezerforandroid.ui.adapter.tile.MediaItemComparator
 import com.alexjprog.deezerforandroid.ui.adapter.tile.TileFlowAdapter

@@ -22,7 +22,7 @@ class SearchResultsPagingSource(
         return try {
             val page = params.key ?: FIRST_PAGE
             val trackPage = dataSource.getSearchResultsForQuery(page, params.loadSize, query)
-                .lastOrNull()?.map { apiMapper.mapTrack(it) } ?: emptyList()
+                .lastOrNull()?.map { apiMapper.fromTrackApiData(it) } ?: emptyList()
 
             LoadResult.Page(
                 trackPage,

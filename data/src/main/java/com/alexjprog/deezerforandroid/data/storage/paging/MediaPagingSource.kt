@@ -8,7 +8,7 @@ import com.alexjprog.deezerforandroid.domain.model.MediaItemModel
 import com.alexjprog.deezerforandroid.domain.model.params.ContentCategoryParam
 import kotlinx.coroutines.flow.lastOrNull
 
-class TrackPagingSource(
+class MediaPagingSource(
     private val categoryParam: ContentCategoryParam,
     private val dataSource: IDeezerDataSource,
     private val apiMapper: IApiMapper
@@ -24,12 +24,12 @@ class TrackPagingSource(
             val page = params.key ?: FIRST_PAGE
             val trackPage = when (categoryParam) {
                 ContentCategoryParam.CHARTS -> dataSource.getChartsPage(page, params.loadSize)
-                    .lastOrNull()?.map { apiMapper.mapTrack(it) } ?: listOf()
+                    .lastOrNull()?.map { apiMapper.fromTrackApiData(it) } ?: listOf()
                 ContentCategoryParam.FLOW -> dataSource.getFlowPage(page, params.loadSize)
-                    .lastOrNull()?.map { apiMapper.mapTrack(it) } ?: listOf()
+                    .lastOrNull()?.map { apiMapper.fromTrackApiData(it) } ?: listOf()
                 ContentCategoryParam.RECOMMENDATIONS ->
                     dataSource.getRecommendationsPage(page, params.loadSize)
-                        .lastOrNull()?.map { apiMapper.mapTrack(it) } ?: listOf()
+                        .lastOrNull()?.map { apiMapper.fromTrackApiData(it) } ?: listOf()
                 else -> throw IllegalArgumentException("Cannot page this category")
             }
 

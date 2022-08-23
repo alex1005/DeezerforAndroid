@@ -22,7 +22,7 @@
                 android:defaultValue="-1" />
             <argument
                 android:name="playableMediaType"
-                app:argType="com.alexjprog.deezerforandroid.model.MediaTypeParam"
+                app:argType="com.alexjprog.deezerforandroid.domain.model.params.MediaTypeParam"
                 android:defaultValue="NONE" />
         </action>
     </fragment>
@@ -43,7 +43,7 @@
                 android:defaultValue="-1" />
             <argument
                 android:name="playableMediaType"
-                app:argType="com.alexjprog.deezerforandroid.model.MediaTypeParam"
+                app:argType="com.alexjprog.deezerforandroid.domain.model.params.MediaTypeParam"
                 android:defaultValue="NONE" />
         </action>
     </fragment>
@@ -63,7 +63,7 @@
                 android:defaultValue="-1" />
             <argument
                 android:name="playableMediaType"
-                app:argType="com.alexjprog.deezerforandroid.model.MediaTypeParam"
+                app:argType="com.alexjprog.deezerforandroid.domain.model.params.MediaTypeParam"
                 android:defaultValue="NONE" />
         </action>
     </fragment>

@@ -10,10 +10,10 @@ import com.alexjprog.deezerforandroid.domain.model.SearchSuggestionModel
 import com.alexjprog.deezerforandroid.domain.model.TrackModel
 
 interface IApiMapper {
-    fun mapTrack(track: TrackApiData): TrackModel
-    fun mapArtist(artist: ArtistApiData): ArtistModel
-    fun mapAlbum(album: AlbumApiData): AlbumModel
+    fun fromTrackApiData(track: TrackApiData): TrackModel
+    fun fromArtistApiData(artist: ArtistApiData): ArtistModel
+    fun fromAlbumApiData(album: AlbumApiData): AlbumModel
 
-    fun mapSearchHistoryResult(result: SearchHistoryResultApiData): SearchSuggestionModel
-    fun mapSearchResult(result: TrackApiData): SearchSuggestionModel
+    fun fromSearchHistoryResultApiData(result: SearchHistoryResultApiData): SearchSuggestionModel
+    fun fromSearchResultApiData(result: TrackApiData): SearchSuggestionModel
 }

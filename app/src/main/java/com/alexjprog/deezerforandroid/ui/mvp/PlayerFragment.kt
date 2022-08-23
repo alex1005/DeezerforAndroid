@@ -19,7 +19,7 @@ import com.alexjprog.deezerforandroid.databinding.FragmentPlayerBinding
 import com.alexjprog.deezerforandroid.domain.model.AlbumModel
 import com.alexjprog.deezerforandroid.domain.model.MediaItemModel
 import com.alexjprog.deezerforandroid.domain.model.TrackModel
-import com.alexjprog.deezerforandroid.model.MediaTypeParam
+import com.alexjprog.deezerforandroid.domain.model.params.MediaTypeParam
 import com.alexjprog.deezerforandroid.service.MediaPlayerService
 import com.alexjprog.deezerforandroid.ui.MainActivity
 import com.alexjprog.deezerforandroid.ui.mvp.contract.PlayerContract

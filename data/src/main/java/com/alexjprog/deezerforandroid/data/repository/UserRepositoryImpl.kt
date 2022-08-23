@@ -25,10 +25,10 @@ class UserRepositoryImpl @Inject constructor(
 
     override fun getSearchHistory(query: String): Observable<List<SearchSuggestionModel>> {
         val liveHistory = deezerSource.getSearchHistory().map { list ->
-            list.map { apiMapper.mapSearchHistoryResult(it) }
+            list.map { apiMapper.fromSearchHistoryResultApiData(it) }
         }
         val localHistory = localDeezerSource.getLocalHistoryForQuery(query).map { list ->
-            list.map { dbMapper.mapQueryHistoryEntityToSuggestion(it) }
+            list.map { dbMapper.fromQueryHistoryEntity(it) }
         }
         return Observable.zip(liveHistory, localHistory) { liveList, localList ->
             liveList + localList
@@ -36,6 +36,6 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override fun addSearchQueryToLocalHistory(query: String) {
-        localDeezerSource.addSearchQueryToLocalHistory(dbMapper.mapStringQueryToEntity(query))
+        localDeezerSource.addSearchQueryToLocalHistory(dbMapper.toQueryHistoryEntity(query))
     }
 }

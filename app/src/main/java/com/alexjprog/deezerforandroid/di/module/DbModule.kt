@@ -21,4 +21,9 @@ class DbModule {
     @Provides
     fun provideQueryHistoryDao(db: DeezerLocalDb) =
         db.getQueryHistoryDao()
+
+    @Singleton
+    @Provides
+    fun provideMediaCacheDao(db: DeezerLocalDb) =
+        db.getMediaCacheDao()
 }
