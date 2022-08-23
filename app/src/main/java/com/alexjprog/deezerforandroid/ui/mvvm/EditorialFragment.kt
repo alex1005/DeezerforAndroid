@@ -59,10 +59,28 @@ class EditorialFragment : LoadableFragment() {
     ): View {
         _binding = FragmentEditorialBinding.inflate(inflater, container, false)
 
-        viewModel.feed.observe(viewLifecycleOwner) {
-            if (it != null) {
-                binding.rcHomeFeed.adapter =
-                    ComplexListAdapter(it, openMoreAction, openPlayerAction)
+        with(binding) {
+            with(viewModel) {
+                feed.observe(viewLifecycleOwner) {
+                    if (it != null) {
+                        rcHomeFeed.adapter =
+                            ComplexListAdapter(it, openMoreAction, openPlayerAction)
+                    }
+                    swipeRefresh.isRefreshing = false
+                }
+
+                isLoading.observe(viewLifecycleOwner) {
+                    if (it != true) {
+                        rcHomeFeed.visibility = View.VISIBLE
+                        swipeRefresh.isRefreshing = false
+                    } else {
+                        rcHomeFeed.visibility = View.GONE
+                    }
+                }
+
+                swipeRefresh.setOnRefreshListener {
+                    loadFeed()
+                }
             }
         }
         return binding.root

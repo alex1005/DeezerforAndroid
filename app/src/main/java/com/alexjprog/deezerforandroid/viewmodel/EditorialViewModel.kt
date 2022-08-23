@@ -1,5 +1,6 @@
 package com.alexjprog.deezerforandroid.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -20,6 +21,7 @@ class EditorialViewModel @Inject constructor(
 
     init {
         loadFeed()
+        Log.d("debugTag", "loadFeed()")
     }
 
     fun loadFeed() {

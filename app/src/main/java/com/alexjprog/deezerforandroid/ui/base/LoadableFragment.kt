@@ -8,16 +8,21 @@ import com.alexjprog.deezerforandroid.viewmodel.LoadableViewModel
 
 abstract class LoadableFragment : Fragment(), LoadingFragment.LoadingFragmentListener {
     protected abstract val viewModel: LoadableViewModel
-    private var loadingFragment: LoadingFragment? = null
+    private val loadingFragment: LoadingFragment?
+        get() = childFragmentManager.findFragmentById(R.id.loadingHost) as? LoadingFragment
 
-    private fun startLoading() {
+    private fun checkAndCreateLoadingFragment() {
         if (loadingFragment == null) {
-            loadingFragment = LoadingFragment().also {
+            LoadingFragment().also {
                 childFragmentManager.beginTransaction()
                     .add(R.id.loadingHost, it)
                     .commitNow()
             }
         }
+    }
+
+    private fun startLoading() {
+        checkAndCreateLoadingFragment()
         loadingFragment?.startLoading()
     }
 
@@ -27,10 +32,10 @@ abstract class LoadableFragment : Fragment(), LoadingFragment.LoadingFragmentLis
                 .remove(it)
                 .commitNow()
         }
-        loadingFragment = null
     }
 
     private fun onLoadFail() {
+        checkAndCreateLoadingFragment()
         loadingFragment?.showError()
     }
 

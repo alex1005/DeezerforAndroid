@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if (!navController.navigateUp()) finishAfterTransition()
+        if (!navController.popBackStack()) finishAfterTransition()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
