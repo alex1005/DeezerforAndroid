@@ -59,10 +59,26 @@ class HomeFragment : LoadableFragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
         with(viewModel) {
-            feed.observe(viewLifecycleOwner) {
-                if (it != null) {
-                    binding.rcHomeFeed.adapter =
-                        ComplexListAdapter(it, openMoreAction, openPlayerAction)
+            with(binding) {
+                feed.observe(viewLifecycleOwner) {
+                    if (it != null) {
+                        rcHomeFeed.adapter =
+                            ComplexListAdapter(it, openMoreAction, openPlayerAction)
+                    }
+                    swipeRefresh.isRefreshing = false
+                }
+
+                isLoading.observe(viewLifecycleOwner) {
+                    if (it != true) {
+                        rcHomeFeed.visibility = View.VISIBLE
+                        swipeRefresh.isRefreshing = false
+                    } else {
+                        rcHomeFeed.visibility = View.GONE
+                    }
+                }
+
+                swipeRefresh.setOnRefreshListener {
+                    loadFeed()
                 }
             }
         }
