@@ -39,6 +39,16 @@ class MediaPlayerNotificationHelper(
             PlaybackStateCompat.ACTION_PLAY
         )
     )
+
+    private val stopAction: NotificationCompat.Action = NotificationCompat.Action(
+        R.drawable.cancel,
+        mediaPlayerService.getString(R.string.stop),
+        MediaButtonReceiver.buildMediaButtonPendingIntent(
+            mediaPlayerService,
+            PlaybackStateCompat.ACTION_STOP
+        )
+    )
+
     private val notificationManager: NotificationManager =
         mediaPlayerService.getSystemService(Service.NOTIFICATION_SERVICE) as NotificationManager
 
@@ -86,7 +96,7 @@ class MediaPlayerNotificationHelper(
             .setStyle(
                 androidx.media.app.NotificationCompat.MediaStyle()
                     .setMediaSession(token)
-                    .setShowActionsInCompactView(0, 1, 2)
+                    .setShowActionsInCompactView(0, 1, 2, 4)
                     .setShowCancelButton(true)
                     .setCancelButtonIntent(
                         MediaButtonReceiver.buildMediaButtonPendingIntent(
@@ -99,14 +109,11 @@ class MediaPlayerNotificationHelper(
             .setContentIntent(playerDeepLink)
             .setContentTitle(description?.title)
             .setContentText(description?.subtitle)
-            .setDeleteIntent(
-                MediaButtonReceiver.buildMediaButtonPendingIntent(
-                    mediaPlayerService, PlaybackStateCompat.ACTION_PAUSE
-                )
-            )
             .addAction(previousTrackAction(hasPreviousTrack))
             .addAction(if (isPlaying) pauseAction else playAction)
-            .addAction(nextTrackAction(hasNextTrack)).apply {
+            .addAction(nextTrackAction(hasNextTrack))
+            .addAction(stopAction)
+            .apply {
                 if (bitmap != null) setLargeIcon(bitmap)
             }
     }

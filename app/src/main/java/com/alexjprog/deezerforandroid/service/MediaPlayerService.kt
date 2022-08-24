@@ -35,7 +35,6 @@ class MediaPlayerService : Service() {
             updater.postDelayed(this, PROGRESS_UPDATE_DELAY)
         }
     }
-
     @Inject
     lateinit var getTrackInfoUseCase: GetTrackInfoUseCase
 
@@ -49,6 +48,20 @@ class MediaPlayerService : Service() {
             null
         } catch (e: IllegalStateException) {
             false
+        }
+
+    private var isStopped: Boolean = true
+    private val duration: Int
+        get() = try {
+            player.duration
+        } catch (e: Exception) {
+            0
+        }
+    private val currentPosition: Int
+        get() = try {
+            player.currentPosition
+        } catch (e: Exception) {
+            0
         }
 
     private val metadata: MediaMetadataCompat
@@ -74,7 +87,7 @@ class MediaPlayerService : Service() {
                 .setActions(actions)
                 .setState(
                     state,
-                    player.currentPosition.toLong(),
+                    currentPosition.toLong(),
                     1.0f,
                     SystemClock.elapsedRealtime()
                 ).setExtras(extras)
@@ -98,12 +111,7 @@ class MediaPlayerService : Service() {
         (applicationContext as DeezerApplication).appComponent.inject(this)
         notificationHelper = MediaPlayerNotificationHelper(this)
 
-        mediaSession = MediaSessionCompat(this, MEDIA_PLAYER_SESSION_TOKEN).apply {
-            setFlags(
-                MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS
-                        or MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS
-            )
-        }
+        mediaSession = MediaSessionCompat(this, MEDIA_PLAYER_SESSION_TOKEN)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -115,13 +123,14 @@ class MediaPlayerService : Service() {
                 KeyEvent.KEYCODE_MEDIA_PLAY -> playMedia()
                 KeyEvent.KEYCODE_MEDIA_NEXT -> nextTrack()
                 KeyEvent.KEYCODE_MEDIA_PREVIOUS -> previousTrack()
+                KeyEvent.KEYCODE_MEDIA_STOP -> stopMedia()
             }
         }
         return super.onStartCommand(intent, flags, startId)
     }
 
     var playlistSource: MediaItemModel? by Delegates.vetoable(null) { _, oldValue, newValue ->
-        if (newValue?.id == oldValue?.id || newValue == null) {
+        if (!isStopped && (newValue?.id == oldValue?.id || newValue == null)) {
             pushState()
             return@vetoable false
         }
@@ -147,15 +156,23 @@ class MediaPlayerService : Service() {
                     currentTrackIndex = INITIAL_PLAYLIST_INDEX
                     nextTrack()
                 }
+            null -> {}
         }
         return@vetoable true
     }
 
     private fun playMedia() {
+        if (isStopped) {
+            startForegroundMedia()
+            loadTrack(currentTrack)
+            isStopped = false
+            return
+        }
         try {
             player.start()
         } catch (e: UninitializedPropertyAccessException) {
         }
+        mediaSession.isActive = true
         startProgressUpdater()
         pushOnPlayEvent()
         updateForegroundMedia()
@@ -166,6 +183,7 @@ class MediaPlayerService : Service() {
             player.pause()
         } catch (e: UninitializedPropertyAccessException) {
         }
+        mediaSession.isActive = false
         stopProgressUpdater()
         pushOnPauseEvent()
         updateForegroundMedia()
@@ -177,9 +195,13 @@ class MediaPlayerService : Service() {
             player.release()
         } catch (e: UninitializedPropertyAccessException) {
         } catch (e: IllegalStateException) {
+            return
         }
+        isStopped = true
         mediaSession.isActive = false
+        pushOnStopEvent()
         stopProgressUpdater()
+        stopForeground(true)
     }
 
     fun startSeek() {
@@ -219,13 +241,7 @@ class MediaPlayerService : Service() {
         }
     }
 
-    private fun stopForegroundMedia() {
-        stopForeground(true)
-    }
-
-    private fun changeTrack(goBackwards: Boolean) {
-        val nextIndex = if (goBackwards) --currentTrackIndex else ++currentTrackIndex
-        val nextTrack = playlist.getOrNull(nextIndex)
+    private fun loadTrack(nextTrack: TrackModel?) {
         stopMedia()
         nextTrack?.let { track ->
             player = MediaPlayer().also { newPlayer ->
@@ -237,8 +253,6 @@ class MediaPlayerService : Service() {
                 newPlayer.setDataSource(track.trackLink)
                 newPlayer.prepareAsync()
                 newPlayer.setOnPreparedListener {
-                    mediaSession.isActive = true
-                    startForegroundMedia()
                     pushOnUpdateCurrentTrackEvent()
                     playMedia()
                 }
@@ -251,9 +265,9 @@ class MediaPlayerService : Service() {
         }
     }
 
-    fun previousTrack() = changeTrack(true)
+    fun previousTrack() = loadTrack(playlist.getOrNull(--currentTrackIndex))
 
-    fun nextTrack() = changeTrack(false)
+    fun nextTrack() = loadTrack(playlist.getOrNull(++currentTrackIndex))
 
     private fun pushEventForAll(eventAction: (MediaPlayerListener) -> Unit) =
         mediaPlayerListeners.forEach(eventAction)
@@ -276,9 +290,13 @@ class MediaPlayerService : Service() {
         pushEventForAll { listener -> updater.post { listener.onPauseMedia() } }
     }
 
+    private fun pushOnStopEvent() {
+        pushEventForAll { listener -> updater.post { listener.onStopMedia() } }
+    }
+
     private fun pushOnUpdateCurrentTrackEvent() {
         pushEventForAll { listener ->
-            val currentTrack = playlist[currentTrackIndex].copy(duration = player.duration)
+            val currentTrack = playlist[currentTrackIndex].copy(duration = duration)
             updater.post {
                 listener.updateCurrentTrack(
                     hasPreviousTrack,
@@ -293,9 +311,9 @@ class MediaPlayerService : Service() {
         pushEventForAll { listener ->
             updater.post {
                 listener.onProgressChanged(
-                    if (player.duration - player.currentPosition < PROGRESS_TAIL)
-                        player.duration
-                    else player.currentPosition
+                    if (duration - currentPosition < PROGRESS_TAIL)
+                        duration
+                    else currentPosition
                 )
             }
         }
@@ -327,8 +345,6 @@ class MediaPlayerService : Service() {
     override fun onDestroy() {
         super.onDestroy()
         stopMedia()
-        stopForegroundMedia()
-        mediaSession.isActive = false
         mediaPlayerListeners.clear()
         binder.releaseService()
     }
@@ -353,6 +369,7 @@ class MediaPlayerService : Service() {
         fun onPauseMedia()
         fun onProgressChanged(progress: Int)
         fun updateCurrentTrack(hasPrevious: Boolean, hasNext: Boolean, currentTrack: TrackModel?)
+        fun onStopMedia()
     }
 
     companion object {

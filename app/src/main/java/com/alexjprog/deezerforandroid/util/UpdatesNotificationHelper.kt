@@ -48,8 +48,8 @@ class UpdatesNotificationHelper(private val context: Context) {
             .setSmallIcon(R.mipmap.ic_launcher)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setContentIntent(contentIntent)
+            .setStyle(NotificationCompat.BigTextStyle().bigText(content))
             .setContentTitle(title)
-            .setContentText(content)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

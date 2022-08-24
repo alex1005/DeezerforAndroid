@@ -197,6 +197,7 @@ class PlayerFragment : Fragment(), PlayerContract.View, MediaPlayerService.Media
 
     override fun onPlayMedia() {
         setPlayButtonState(true)
+        binding.sbSeekBar.isEnabled = true
     }
 
     override fun onPauseMedia() {
@@ -220,5 +221,13 @@ class PlayerFragment : Fragment(), PlayerContract.View, MediaPlayerService.Media
         setPreviousButtonAvailability(hasPrevious)
         setNextButtonAvailability(hasNext)
         setTrackData(currentTrack)
+    }
+
+    override fun onStopMedia() {
+        with(binding) {
+            sbSeekBar.progress = 0
+            sbSeekBar.isEnabled = false
+            setPlayButtonState(false)
+        }
     }
 }
