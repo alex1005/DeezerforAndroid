@@ -48,6 +48,10 @@ class MediaRepositoryImpl @Inject constructor(
                 })
             }
 
+    override fun getEditorialSelectionCache(): Flow<List<AlbumModel>> =
+        localDeezerSource.getEditorialSelectionCache()
+            .map { cacheList -> cacheList.map { dbMapper.fromMediaCacheEntity(it) as AlbumModel } }
+
     override fun getCategoryContent(
         pageSize: Int,
         category: ContentCategoryParam

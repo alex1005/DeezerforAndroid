@@ -20,4 +20,7 @@
     <string name="skip_previous">Skip previous</string>
     <string name="load_failed_message">Something went wrong!</string>
     <string name="try_again">Try again</string>
+    <string name="weekly_selection_update_title">Weekly selection</string>
+    <string name="weekly_selection_update_content">Check out new selected content: %1$s</string>
+    <string name="others">and others</string>
 </resources>

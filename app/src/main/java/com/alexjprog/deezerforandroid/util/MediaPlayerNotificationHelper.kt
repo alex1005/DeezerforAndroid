@@ -1,5 +1,6 @@
 package com.alexjprog.deezerforandroid.util
 
+import android.annotation.SuppressLint
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -95,7 +96,6 @@ class MediaPlayerNotificationHelper(
                     )
             )
             .setSmallIcon(R.mipmap.ic_launcher)
-            //.setColor(ContextCompat.getColor(mediaPlayerService, R.color.color_primary))
             .setContentIntent(playerDeepLink)
             .setContentTitle(description?.title)
             .setContentText(description?.subtitle)
@@ -121,7 +121,6 @@ class MediaPlayerNotificationHelper(
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createChannel() {
-        if (notificationManager.getNotificationChannel(CHANNEL_ID) != null) return
         val name: CharSequence = "DeezerPlayer"
         val description = "Deezer's media player notification channel"
         val importance = NotificationManager.IMPORTANCE_LOW
@@ -130,6 +129,7 @@ class MediaPlayerNotificationHelper(
         notificationManager.createNotificationChannel(mChannel)
     }
 
+    @SuppressLint("WrongConstant")
     private fun nextTrackAction(hasNextTrack: Boolean) = NotificationCompat.Action(
         R.drawable.skip_next,
         mediaPlayerService.getString(R.string.skip_next),
@@ -139,6 +139,7 @@ class MediaPlayerNotificationHelper(
         )
     )
 
+    @SuppressLint("WrongConstant")
     private fun previousTrackAction(hasPreviousTrack: Boolean) = NotificationCompat.Action(
         R.drawable.skip_previous,
         mediaPlayerService.getString(R.string.skip_previous),

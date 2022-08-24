@@ -23,4 +23,5 @@ interface MediaRepository {
 
     fun getTrackInfo(id: Int): Observable<TrackModel>
     fun getAlbumInfo(id: Int): Observable<AlbumModel>
+    fun getEditorialSelectionCache(): Flow<List<AlbumModel>>
 }
