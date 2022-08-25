@@ -10,14 +10,15 @@ import com.alexjprog.deezerforandroid.domain.model.AlbumModel
 import com.alexjprog.deezerforandroid.domain.model.MediaItemModel
 import com.alexjprog.deezerforandroid.domain.model.TrackModel
 import com.alexjprog.deezerforandroid.util.ImageHelper
+import com.alexjprog.deezerforandroid.util.OpenPlayerFragmentAction
 
 class HorizontalTileListAdapter(
     private val data: List<MediaItemModel>,
-    private val openPlayerAction: (MediaItemModel) -> Unit
+    private val openPlayerAction: OpenPlayerFragmentAction
 ) :
-    RecyclerView.Adapter<HorizontalTileListAdapter.LinearTileViewHolder>() {
+    RecyclerView.Adapter<HorizontalTileListAdapter.HorizontalTileViewHolder>() {
 
-    inner class LinearTileViewHolder(private val binding: TileItemLinearBinding) :
+    inner class HorizontalTileViewHolder(private val binding: TileItemLinearBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun onBindView(item: MediaItemModel) {
             with(binding) {
@@ -46,13 +47,13 @@ class HorizontalTileListAdapter(
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LinearTileViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HorizontalTileViewHolder {
         val binding = TileItemLinearBinding
             .inflate(LayoutInflater.from(parent.context), parent, false)
-        return LinearTileViewHolder(binding)
+        return HorizontalTileViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: LinearTileViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: HorizontalTileViewHolder, position: Int) {
         val item = data[position]
         holder.onBindView(item)
     }

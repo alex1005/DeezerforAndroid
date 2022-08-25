@@ -12,10 +12,11 @@ import com.alexjprog.deezerforandroid.domain.model.AlbumModel
 import com.alexjprog.deezerforandroid.domain.model.MediaItemModel
 import com.alexjprog.deezerforandroid.domain.model.TrackModel
 import com.alexjprog.deezerforandroid.util.ImageHelper
+import com.alexjprog.deezerforandroid.util.OpenPlayerFragmentAction
 
 class TileFlowAdapter(
     diffCallback: DiffUtil.ItemCallback<MediaItemModel>,
-    private val openPlayerAction: (MediaItemModel) -> Unit
+    private val openPlayerAction: OpenPlayerFragmentAction
 ) :
     PagingDataAdapter<MediaItemModel, TileFlowAdapter.GridTileViewHolder>(diffCallback) {
 

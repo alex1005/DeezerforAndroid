@@ -10,17 +10,17 @@
     <ImageView
         android:id="@+id/ivCover"
         android:layout_width="@dimen/default_image"
-        android:foreground="@drawable/tile_ripple_rect"
         android:layout_height="@dimen/default_image"
         android:layout_marginStart="@dimen/small_margin"
         android:layout_marginTop="@dimen/small_margin"
         android:layout_marginEnd="@dimen/small_margin"
+        android:contentDescription="@string/cover"
+        android:foreground="@drawable/tile_ripple_rect"
         android:src="@drawable/default_track_cover"
         app:layout_constraintBottom_toTopOf="@id/tvTitle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:contentDescription="@string/cover" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvTitle"

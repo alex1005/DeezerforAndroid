@@ -11,16 +11,16 @@
         android:id="@+id/ivCover"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:foreground="@drawable/tile_ripple_rect"
         android:layout_marginHorizontal="@dimen/small_margin"
         android:layout_marginTop="@dimen/default_margin"
+        android:contentDescription="@string/cover"
+        android:foreground="@drawable/tile_ripple_rect"
         android:src="@drawable/default_track_cover"
         app:layout_constraintBottom_toTopOf="@id/tvTitle"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:contentDescription="@string/cover" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvTitle"

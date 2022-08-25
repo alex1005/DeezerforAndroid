@@ -74,7 +74,7 @@ class HomeScreenNavInstrumentedTest {
         waitForVisibleView(withId(R.id.rcHomeFeed), 10000).perform(
             RecyclerViewActions.actionOnItem<ComplexListAdapter.HorizontalTrackListViewHolder>(
                 withId(R.id.rcHorizontalList),
-                RecyclerViewActions.actionOnItemAtPosition<HorizontalTileListAdapter.LinearTileViewHolder>(
+                RecyclerViewActions.actionOnItemAtPosition<HorizontalTileListAdapter.HorizontalTileViewHolder>(
                     0,
                     click()
                 )

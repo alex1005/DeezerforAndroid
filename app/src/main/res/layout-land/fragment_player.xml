@@ -54,16 +54,16 @@
         android:layout_height="wrap_content"
         android:layout_marginVertical="@dimen/default_margin"
         android:ellipsize="end"
-        android:textAlignment="center"
         android:maxLines="1"
+        android:textAlignment="center"
         android:textSize="@dimen/big_text"
         app:layout_constraintBottom_toTopOf="@+id/sbSeekBar"
         app:layout_constraintEnd_toEndOf="@+id/btnNext"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/btnPrevious"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed"
         app:layout_constraintVertical_bias="0.9"
+        app:layout_constraintVertical_chainStyle="packed"
         tools:text="Title" />
 
     <androidx.appcompat.widget.AppCompatImageView
@@ -82,9 +82,9 @@
     <SeekBar
         android:id="@+id/sbSeekBar"
         android:layout_width="0dp"
-        android:progress="0"
-        android:layout_marginBottom="@dimen/default_margin"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/default_margin"
+        android:progress="0"
         app:layout_constraintBottom_toTopOf="@+id/btnPlayPause"
         app:layout_constraintEnd_toEndOf="@+id/btnNext"
         app:layout_constraintStart_toStartOf="@+id/btnPrevious"
@@ -94,16 +94,16 @@
         android:id="@+id/tvElapsedTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="0:00"
         app:layout_constraintStart_toStartOf="@+id/sbSeekBar"
-        app:layout_constraintTop_toBottomOf="@+id/sbSeekBar" />
+        app:layout_constraintTop_toBottomOf="@+id/sbSeekBar"
+        tools:text="0:00" />
 
     <TextView
         android:id="@+id/tvDuration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="0:30"
         app:layout_constraintEnd_toEndOf="@+id/sbSeekBar"
-        app:layout_constraintTop_toBottomOf="@+id/sbSeekBar" />
+        app:layout_constraintTop_toBottomOf="@+id/sbSeekBar"
+        tools:text="0:30" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

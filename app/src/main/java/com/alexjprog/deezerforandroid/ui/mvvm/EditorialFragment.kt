@@ -10,13 +10,11 @@ import androidx.navigation.navGraphViewModels
 import com.alexjprog.deezerforandroid.R
 import com.alexjprog.deezerforandroid.app.DeezerApplication
 import com.alexjprog.deezerforandroid.databinding.FragmentEditorialBinding
-import com.alexjprog.deezerforandroid.domain.model.AlbumModel
-import com.alexjprog.deezerforandroid.domain.model.MediaItemModel
-import com.alexjprog.deezerforandroid.domain.model.TrackModel
-import com.alexjprog.deezerforandroid.domain.model.params.MediaTypeParam
-import com.alexjprog.deezerforandroid.model.ContentCategory
 import com.alexjprog.deezerforandroid.ui.adapter.complex.ComplexListAdapter
 import com.alexjprog.deezerforandroid.ui.base.LoadableFragment
+import com.alexjprog.deezerforandroid.util.OpenMoreContentFragmentAction
+import com.alexjprog.deezerforandroid.util.OpenPlayerFragmentAction
+import com.alexjprog.deezerforandroid.util.getSafeArgPlayerNavDirection
 import com.alexjprog.deezerforandroid.viewmodel.EditorialViewModel
 import com.alexjprog.deezerforandroid.viewmodel.ViewModelFactory
 import javax.inject.Inject
@@ -30,20 +28,16 @@ class EditorialFragment : LoadableFragment() {
     override val viewModel: EditorialViewModel
             by navGraphViewModels(R.id.navGraph) { viewModelFactory }
 
-    private val openMoreAction: (ContentCategory) -> Unit = { category ->
+    private val openMoreAction: OpenMoreContentFragmentAction = { category ->
         findNavController()
             .navigate(EditorialFragmentDirections.actionOpenMoreContentFromEditorial(category))
     }
 
-    private val openPlayerAction: (MediaItemModel) -> Unit = { mediaItem ->
+    private val openPlayerAction: OpenPlayerFragmentAction = { mediaItem ->
         findNavController().navigate(
-            EditorialFragmentDirections.actionOpenPlayerFragmentFromEditorial(
-                mediaItem.id,
-                when (mediaItem) {
-                    is AlbumModel -> MediaTypeParam.ALBUM
-                    is TrackModel -> MediaTypeParam.TRACK
-                }
-            )
+            mediaItem.getSafeArgPlayerNavDirection { id, mediaType ->
+                EditorialFragmentDirections.actionOpenPlayerFragmentFromEditorial(id, mediaType)
+            }
         )
     }
 

@@ -13,12 +13,10 @@ import androidx.navigation.navGraphViewModels
 import com.alexjprog.deezerforandroid.R
 import com.alexjprog.deezerforandroid.app.DeezerApplication
 import com.alexjprog.deezerforandroid.databinding.FragmentMoreContentBinding
-import com.alexjprog.deezerforandroid.domain.model.AlbumModel
-import com.alexjprog.deezerforandroid.domain.model.MediaItemModel
-import com.alexjprog.deezerforandroid.domain.model.TrackModel
-import com.alexjprog.deezerforandroid.domain.model.params.MediaTypeParam
 import com.alexjprog.deezerforandroid.ui.adapter.tile.MediaItemComparator
 import com.alexjprog.deezerforandroid.ui.adapter.tile.TileFlowAdapter
+import com.alexjprog.deezerforandroid.util.OpenPlayerFragmentAction
+import com.alexjprog.deezerforandroid.util.getSafeArgPlayerNavDirection
 import com.alexjprog.deezerforandroid.viewmodel.MoreContentViewModel
 import com.alexjprog.deezerforandroid.viewmodel.ViewModelFactory
 import kotlinx.coroutines.Dispatchers
@@ -37,15 +35,11 @@ class MoreContentFragment : Fragment() {
 
     private val args: MoreContentFragmentArgs by navArgs()
 
-    private val openPlayerAction: (MediaItemModel) -> Unit = { mediaItem ->
+    private val openPlayerAction: OpenPlayerFragmentAction = { mediaItem ->
         findNavController().navigate(
-            MoreContentFragmentDirections.actionOpenPlayerFragmentFromMore(
-                mediaItem.id,
-                when (mediaItem) {
-                    is AlbumModel -> MediaTypeParam.ALBUM
-                    is TrackModel -> MediaTypeParam.TRACK
-                }
-            )
+            mediaItem.getSafeArgPlayerNavDirection { id, mediaType ->
+                MoreContentFragmentDirections.actionOpenPlayerFragmentFromMore(id, mediaType)
+            }
         )
     }
 

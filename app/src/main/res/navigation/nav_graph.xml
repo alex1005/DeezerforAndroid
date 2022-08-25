@@ -12,10 +12,18 @@
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/actionOpenMoreContentFromHome"
-            app:destination="@id/moreContentFragment" />
+            app:destination="@id/moreContentFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
         <action
             android:id="@+id/actionOpenPlayerFragmentFromHome"
-            app:destination="@id/player_nav_graph">
+            app:destination="@id/player_nav_graph"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right">
             <argument
                 android:name="playableMediaId"
                 app:argType="integer"
@@ -36,7 +44,11 @@
             app:argType="com.alexjprog.deezerforandroid.model.ContentCategory" />
         <action
             android:id="@+id/actionOpenPlayerFragmentFromMore"
-            app:destination="@id/player_nav_graph">
+            app:destination="@id/player_nav_graph"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right">
             <argument
                 android:name="playableMediaId"
                 app:argType="integer"
@@ -53,18 +65,26 @@
         android:label="EditorialFragment">
         <action
             android:id="@+id/actionOpenMoreContentFromEditorial"
-            app:destination="@id/moreContentFragment" />
+            app:destination="@id/moreContentFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
         <action
             android:id="@+id/actionOpenPlayerFragmentFromEditorial"
-            app:destination="@id/player_nav_graph">
+            app:destination="@id/player_nav_graph"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right">
             <argument
                 android:name="playableMediaId"
-                app:argType="integer"
-                android:defaultValue="-1" />
+                android:defaultValue="-1"
+                app:argType="integer" />
             <argument
                 android:name="playableMediaType"
-                app:argType="com.alexjprog.deezerforandroid.domain.model.params.MediaTypeParam"
-                android:defaultValue="NONE" />
+                android:defaultValue="NONE"
+                app:argType="com.alexjprog.deezerforandroid.domain.model.params.MediaTypeParam" />
         </action>
     </fragment>
     <include app:graph="@navigation/search_nav_graph" />

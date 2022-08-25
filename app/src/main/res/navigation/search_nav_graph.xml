@@ -16,7 +16,11 @@
             app:destination="@id/searchFragment" />
         <action
             android:id="@+id/actionOpenPlayerFragmentFromSearchResults"
-            app:destination="@id/player_nav_graph">
+            app:destination="@id/player_nav_graph"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right">
             <argument
                 android:name="playableMediaId"
                 app:argType="integer"
