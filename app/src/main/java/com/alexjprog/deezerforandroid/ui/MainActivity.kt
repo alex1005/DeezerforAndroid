@@ -6,6 +6,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.forEach
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -26,23 +27,26 @@ class MainActivity : AppCompatActivity() {
         navController =
             (supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment)
                 .navController
-        with(binding) {
-            bottomNavigationView.setupWithNavController(navController)
-            bottomNavigationView.setOnItemSelectedListener { menuItem ->
-                if (menuItem.itemId !in setOf(R.id.homeFragment, R.id.editorialFragment)) false
-                else {
-                    if (!navController.popBackStack(menuItem.itemId, false)) {
-                        navController.navigate(menuItem.itemId)
+
+        binding.bottomNavigationView.also {
+            navController.addOnDestinationChangedListener { controller, destination, _ ->
+                if (destination.id != it.selectedItemId) {
+                    controller.backQueue.asReversed().drop(1).forEach { entry ->
+                        it.menu.forEach { item ->
+                            if (entry.destination.id == item.itemId) {
+                                item.isChecked = true
+                                return@addOnDestinationChangedListener
+                            }
+                        }
                     }
-                    true
                 }
             }
-            bottomNavigationView.setOnItemReselectedListener { /* Do nothing */ }
-        }
+        }.setupWithNavController(navController)
     }
 
     override fun onBackPressed() {
-        if (!navController.popBackStack()) finishAfterTransition()
+        if (navController.currentDestination?.id == R.id.homeFragment) finishAfterTransition()
+        else super.onBackPressed()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -66,11 +70,19 @@ class MainActivity : AppCompatActivity() {
 
     fun showAllNavigation() {
         binding.bottomNavigationView.visibility = View.VISIBLE
-        supportActionBar?.show()
+        showActionBar()
     }
 
     fun hideAllNavigation() {
         binding.bottomNavigationView.visibility = View.GONE
+        hideActionBar()
+    }
+
+    fun showActionBar() {
+        supportActionBar?.show()
+    }
+
+    fun hideActionBar() {
         supportActionBar?.hide()
     }
 }

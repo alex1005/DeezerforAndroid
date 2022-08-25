@@ -111,12 +111,12 @@ class SearchResultsFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        (requireActivity() as MainActivity).hideAllNavigation()
+        (requireActivity() as MainActivity).hideActionBar()
     }
 
     override fun onStop() {
         super.onStop()
-        (requireActivity() as MainActivity).showAllNavigation()
+        (requireActivity() as MainActivity).showActionBar()
     }
 
     override fun onDestroyView() {
