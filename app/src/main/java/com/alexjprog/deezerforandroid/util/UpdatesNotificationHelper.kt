@@ -23,7 +23,7 @@ class UpdatesNotificationHelper(private val context: Context) {
         .setDestination(R.id.editorialFragment)
         .createPendingIntent()
 
-    fun pushEditorialWeeklySelectionUpdateNotification(newMedia: List<AlbumModel>) {
+    fun sendEditorialWeeklySelectionUpdateNotification(newMedia: List<AlbumModel>) {
         val title = context.getString(R.string.weekly_selection_update_title)
         val longEnding = " " + context.getString(R.string.others)
         val contentMedia = newMedia.take(MAX_CONTENT_NAMES_IN_EDIT_SELECTION_UPDATE)
@@ -55,7 +55,7 @@ class UpdatesNotificationHelper(private val context: Context) {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createChannel() {
         val name: CharSequence = "DeezerUpdates"
-        val description = "Deezer's update notifications channel"
+        val description = "Deezer media updates notifications channel"
         val importance = NotificationManager.IMPORTANCE_HIGH
         val mChannel = NotificationChannel(CHANNEL_ID, name, importance)
         mChannel.description = description

@@ -20,6 +20,7 @@ import com.alexjprog.deezerforandroid.util.ImageHelper
 import com.alexjprog.deezerforandroid.util.MediaPlayerNotificationHelper
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
+import java.io.FileNotFoundException
 import javax.inject.Inject
 import kotlin.properties.Delegates
 
@@ -130,7 +131,7 @@ class MediaPlayerService : Service() {
     }
 
     var playlistSource: MediaItemModel? by Delegates.vetoable(null) { _, oldValue, newValue ->
-        if (!isStopped && (newValue?.id == oldValue?.id || newValue == null)) {
+        if (!isStopped && ((newValue == oldValue) || newValue == null)) {
             pushState()
             return@vetoable false
         }
@@ -139,23 +140,23 @@ class MediaPlayerService : Service() {
             is TrackModel -> getTrackInfoUseCase(newValue.id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { track ->
+                .subscribe(onSuccess@{ track ->
                     playlist.clear()
                     playlist += track
                     currentTrackIndex = INITIAL_PLAYLIST_INDEX
                     nextTrack()
-                }
+                }, onError@{})
             is AlbumModel -> getAlbumInfoUseCase(newValue.id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { album ->
+                .subscribe(onSuccess@{ album ->
                     album.trackList?.let { tracks ->
                         playlist.clear()
                         playlist += tracks.map { it }
                     }
                     currentTrackIndex = INITIAL_PLAYLIST_INDEX
                     nextTrack()
-                }
+                }, onError@{})
             null -> {}
         }
         return@vetoable true
@@ -250,7 +251,12 @@ class MediaPlayerService : Service() {
                         .setLegacyStreamType(AudioManager.STREAM_MUSIC)
                         .build()
                 )
-                newPlayer.setDataSource(track.trackLink)
+                try {
+                    newPlayer.setDataSource(track.trackLink)
+                } catch (e: FileNotFoundException) {
+                    stopMedia()
+                    return
+                }
                 newPlayer.prepareAsync()
                 newPlayer.setOnPreparedListener {
                     pushOnUpdateCurrentTrackEvent()

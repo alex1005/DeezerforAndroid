@@ -18,5 +18,7 @@ data class TrackApiData(
     @SerializedName("link")
     val deezerLink: String?,
     @SerializedName("preview")
-    val trackLink: String?
+    val trackLink: String?,
+    @SerializedName("error")
+    val error: Map<String, String>?
 )

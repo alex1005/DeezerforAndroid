@@ -8,5 +8,7 @@ data class ArtistApiData(
     @SerializedName("name")
     val name: String,
     @SerializedName("picture")
-    val picture: String?
+    val picture: String?,
+    @SerializedName("error")
+    val error: Map<String, String>?
 )

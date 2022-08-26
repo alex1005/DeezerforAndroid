@@ -1,5 +1,6 @@
 package com.alexjprog.deezerforandroid.util
 
+import android.os.Bundle
 import androidx.navigation.NavDirections
 import com.alexjprog.deezerforandroid.domain.model.AlbumModel
 import com.alexjprog.deezerforandroid.domain.model.MediaItemModel
@@ -38,3 +39,8 @@ fun MediaItemModel.getSafeArgPlayerNavDirection(
             is TrackModel -> MediaTypeParam.TRACK
         }
     )
+
+fun Bundle.putPlayerArgs(mediaId: Int, mediaType: MediaTypeParam) = apply {
+    putInt(MEDIA_ID_PLAYER_ARG_KEY, mediaId)
+    putSerializable(MEDIA_TYPE_PLAYER_ARG_KEY, mediaType)
+}

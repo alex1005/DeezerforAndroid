@@ -8,12 +8,15 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.forEach
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.alexjprog.deezerforandroid.R
 import com.alexjprog.deezerforandroid.databinding.ActivityMainBinding
+import com.alexjprog.deezerforandroid.service.DeezerFirebaseMessagingService
 import com.alexjprog.deezerforandroid.ui.mvp.LoginActivity
+import com.alexjprog.deezerforandroid.util.FIREBASE_MEDIA_ID_KEY
+import com.alexjprog.deezerforandroid.util.FIREBASE_MEDIA_TYPE_KEY
+import com.alexjprog.deezerforandroid.util.putPlayerArgs
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -42,6 +45,25 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }.setupWithNavController(navController)
+
+        openPlayerIfHasExtras()
+    }
+
+    private fun openPlayerIfHasExtras() {
+        val mediaId = DeezerFirebaseMessagingService.extractMediaIdArg(
+            intent.extras?.getString(
+                FIREBASE_MEDIA_ID_KEY
+            )
+        ) ?: return
+        val mediaType = DeezerFirebaseMessagingService.extractMediaTypeArg(
+            intent.extras?.getString(
+                FIREBASE_MEDIA_TYPE_KEY
+            )
+        )
+        navController.navigate(
+            R.id.player_nav_graph,
+            Bundle().putPlayerArgs(mediaId, mediaType)
+        )
     }
 
     override fun onBackPressed() {
@@ -57,7 +79,7 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.search_menu -> {
-                findNavController(R.id.navHostFragment).navigate(R.id.search_nav_graph)
+                navController.navigate(R.id.search_nav_graph)
                 true
             }
             R.id.account_menu -> {

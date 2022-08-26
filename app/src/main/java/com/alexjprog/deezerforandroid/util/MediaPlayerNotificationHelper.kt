@@ -129,7 +129,7 @@ class MediaPlayerNotificationHelper(
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createChannel() {
         val name: CharSequence = "DeezerPlayer"
-        val description = "Deezer's media player notification channel"
+        val description = "Deezer media player notification channel"
         val importance = NotificationManager.IMPORTANCE_LOW
         val mChannel = NotificationChannel(CHANNEL_ID, name, importance)
         mChannel.description = description

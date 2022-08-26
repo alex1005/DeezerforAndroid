@@ -84,10 +84,14 @@ class NetworkDeezerDataSource @Inject constructor(
 
 
     override fun getTrackInfo(id: Int): Observable<TrackApiData> =
-        api.getTrackInfo(id).toObservable()
+        api.getTrackInfo(id).doOnSuccess {
+            if (it.error != null) throw NoSuchElementException()
+        }.toObservable()
 
     override fun getAlbumInfo(id: Int): Observable<AlbumApiData> =
-        api.getAlbumInfo(id).toObservable()
+        api.getAlbumInfo(id).doOnSuccess {
+            if (it.error != null) throw NoSuchElementException()
+        }.toObservable()
 
     private fun isOAuthException(errorMap: Map<String, String>?) =
         errorMap?.get("type") == "OAuthException"

@@ -14,5 +14,7 @@ data class AlbumApiData(
     @SerializedName("cover_big")
     val coverBig: String?,
     @SerializedName("tracks")
-    val trackList: ResultPageApiData<TrackApiData>?
+    val trackList: ResultPageApiData<TrackApiData>?,
+    @SerializedName("error")
+    val error: Map<String, String>?
 )

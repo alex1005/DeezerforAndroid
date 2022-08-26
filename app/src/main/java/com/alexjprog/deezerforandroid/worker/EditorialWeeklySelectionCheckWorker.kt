@@ -14,7 +14,7 @@ class EditorialWeeklySelectionCheckWorker(
     private val checkForNewEditorialWeeklySelectionUseCase: CheckForNewEditorialWeeklySelectionUseCase
 ) : CoroutineWorker(context, workerParameters) {
 
-    private val updatesNotificationHelper = UpdatesNotificationHelper(context)
+    private val updatesNotificationHelper by lazy { UpdatesNotificationHelper(context) }
 
     override suspend fun doWork(): Result {
         var isError = false
@@ -22,7 +22,7 @@ class EditorialWeeklySelectionCheckWorker(
             .catch { isError = true }
             .collectLatest { newAlbums ->
                 if (newAlbums.isNotEmpty()) {
-                    updatesNotificationHelper.pushEditorialWeeklySelectionUpdateNotification(
+                    updatesNotificationHelper.sendEditorialWeeklySelectionUpdateNotification(
                         newAlbums
                     )
                 }
