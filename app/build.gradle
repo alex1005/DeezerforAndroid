@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-kapt'
     id 'androidx.navigation.safeargs.kotlin'
     id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
 }
 
 android {
@@ -49,6 +50,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
     implementation 'com.google.firebase:firebase-messaging-ktx:23.0.7'
+    implementation 'com.google.firebase:firebase-crashlytics-ktx:18.2.12'
     debugImplementation 'junit:junit:4.13.2'
     debugImplementation "androidx.test:core:1.4.0"
     debugImplementation "androidx.test:rules:1.4.0"
