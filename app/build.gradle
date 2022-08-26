@@ -48,6 +48,7 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
+    implementation 'com.google.firebase:firebase-messaging-ktx:23.0.7'
     debugImplementation 'junit:junit:4.13.2'
     debugImplementation "androidx.test:core:1.4.0"
     debugImplementation "androidx.test:rules:1.4.0"
