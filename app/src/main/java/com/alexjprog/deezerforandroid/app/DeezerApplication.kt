@@ -40,7 +40,7 @@ class DeezerApplication : Application(), Configuration.Provider {
         WorkManager.getInstance(this)
             .enqueueUniquePeriodicWork(
                 EditorialWeeklySelectionCheckWorker.UNIQUE_NAME,
-                ExistingPeriodicWorkPolicy.REPLACE,
+                ExistingPeriodicWorkPolicy.KEEP,
                 worker
             )
     }
