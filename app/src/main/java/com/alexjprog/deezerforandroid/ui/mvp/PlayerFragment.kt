@@ -76,7 +76,11 @@ class PlayerFragment : Fragment(), PlayerContract.View, MediaPlayerService.Media
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentPlayerBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         with(binding) {
             btnPlayPause.setOnClickListener {
                 mediaPlayerService?.playStopTrack()
@@ -108,8 +112,6 @@ class PlayerFragment : Fragment(), PlayerContract.View, MediaPlayerService.Media
             updateCurrentTrack(hasPrevious = false, hasNext = false, currentTrack = null)
             onProgressChanged(0)
         }
-
-        return binding.root
     }
 
     override fun onStart() {
