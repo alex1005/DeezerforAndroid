@@ -53,6 +53,11 @@ class MoreContentFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMoreContentBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         with(viewModel) {
 
             if (contentFlow == null) loadCategory(args.category)
@@ -67,7 +72,6 @@ class MoreContentFragment : Fragment() {
                 }
             }
         }
-        return binding.root
     }
 
     override fun onDestroyView() {

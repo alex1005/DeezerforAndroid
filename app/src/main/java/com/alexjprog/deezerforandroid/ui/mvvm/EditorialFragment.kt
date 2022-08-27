@@ -52,23 +52,24 @@ class EditorialFragment : LoadableFragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentEditorialBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         with(binding) {
             with(viewModel) {
                 feed.observe(viewLifecycleOwner) {
                     if (it != null) {
-                        rcHomeFeed.adapter =
+                        rcEditorialFeed.adapter =
                             ComplexListAdapter(it, openMoreAction, openPlayerAction)
-                    }
-                    swipeRefresh.isRefreshing = false
+                        rcEditorialFeed.visibility = View.VISIBLE
+                    } else rcEditorialFeed.visibility = View.GONE
                 }
 
                 isLoading.observe(viewLifecycleOwner) {
                     if (it != true) {
-                        rcHomeFeed.visibility = View.VISIBLE
                         swipeRefresh.isRefreshing = false
-                    } else {
-                        rcHomeFeed.visibility = View.GONE
                     }
                 }
 
@@ -77,7 +78,6 @@ class EditorialFragment : LoadableFragment() {
                 }
             }
         }
-        return binding.root
     }
 
     override fun onDestroyView() {

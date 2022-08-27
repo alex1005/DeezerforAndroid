@@ -1,6 +1,5 @@
 package com.alexjprog.deezerforandroid.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -12,21 +11,24 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import javax.inject.Named
+import kotlin.coroutines.CoroutineContext
 
 class EditorialViewModel @Inject constructor(
     private val getEditorialSelection: GetEditorialSelection,
+    @Named("data")
+    private val dataCoroutineContext: CoroutineContext
 ) : LoadableViewModel() {
-    private val _feed = MutableLiveData<List<ComplexListItem>>()
-    val feed: LiveData<List<ComplexListItem>> by this::_feed
+    private val _feed = MutableLiveData<List<ComplexListItem>?>()
+    val feed: LiveData<List<ComplexListItem>?> by this::_feed
 
     init {
         loadFeed()
-        Log.d("debugTag", "loadFeed()")
     }
 
     fun loadFeed() {
-        viewModelScope.launch {
-            _isLoading.postValue(true)
+        viewModelScope.launch(dataCoroutineContext) {
+            _feed.startLoading()
             var isError = false
             val newFeed = mutableListOf<ComplexListItem>()
             getEditorialSelection()

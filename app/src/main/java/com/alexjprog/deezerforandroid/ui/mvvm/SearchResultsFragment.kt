@@ -79,6 +79,11 @@ class SearchResultsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSearchResultsBinding.inflate(inflater)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         with(binding) {
             with(inputField) {
                 btnBack.setOnClickListener(backAction)
@@ -103,7 +108,6 @@ class SearchResultsFragment : Fragment() {
                 }
             }
         }
-        return binding.root
     }
 
     override fun onStart() {

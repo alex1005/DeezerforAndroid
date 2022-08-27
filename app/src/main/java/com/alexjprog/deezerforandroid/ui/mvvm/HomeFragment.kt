@@ -62,16 +62,13 @@ class HomeFragment : LoadableFragment() {
                     if (it != null) {
                         rcHomeFeed.adapter =
                             ComplexListAdapter(it, openMoreAction, openPlayerAction)
-                    }
-                    swipeRefresh.isRefreshing = false
+                        rcHomeFeed.visibility = View.VISIBLE
+                    } else rcHomeFeed.visibility = View.GONE
                 }
 
                 isLoading.observe(viewLifecycleOwner) {
                     if (it != true) {
-                        rcHomeFeed.visibility = View.VISIBLE
                         swipeRefresh.isRefreshing = false
-                    } else {
-                        rcHomeFeed.visibility = View.GONE
                     }
                 }
 

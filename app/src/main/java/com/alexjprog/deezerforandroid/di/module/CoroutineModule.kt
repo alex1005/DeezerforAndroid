@@ -13,4 +13,9 @@ class CoroutineModule {
     @Provides
     @Named("api")
     fun provideApiContext(): CoroutineContext = Dispatchers.IO
+
+    @Singleton
+    @Provides
+    @Named("data")
+    fun provideDataContext(): CoroutineContext = Dispatchers.IO
 }

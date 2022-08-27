@@ -43,7 +43,7 @@ class HomeScreenNavInstrumentedTest {
             }
         }
 
-        waitForVisibleView(withId(R.id.rcHomeFeed), 10000).perform(
+        waitForVisibleView(withId(R.id.rcEditorialFeed), 10000).perform(
             RecyclerViewActions.scrollTo<ComplexListAdapter.TitleWithMoreActionViewHolder>(
                 hasDescendant(withText("Charts"))
             )
@@ -71,7 +71,7 @@ class HomeScreenNavInstrumentedTest {
             }
         }
 
-        waitForVisibleView(withId(R.id.rcHomeFeed), 10000).perform(
+        waitForVisibleView(withId(R.id.rcEditorialFeed), 10000).perform(
             RecyclerViewActions.actionOnItem<ComplexListAdapter.HorizontalTrackListViewHolder>(
                 withId(R.id.rcHorizontalList),
                 RecyclerViewActions.actionOnItemAtPosition<HorizontalTileListAdapter.HorizontalTileViewHolder>(

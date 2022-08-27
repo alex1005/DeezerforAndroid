@@ -14,46 +14,59 @@ import com.alexjprog.deezerforandroid.util.RECOMMENDATIONS_PREVIEW_SIZE
 import com.alexjprog.deezerforandroid.util.addNewFeedCategoryWithMoreAction
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import javax.inject.Named
+import kotlin.coroutines.CoroutineContext
 
 class HomeViewModel @Inject constructor(
     private val getChartsUseCase: GetChartsUseCase,
     private val getFlowUseCase: GetFlowUseCase,
     private val getRecommendationsUseCase: GetRecommendationsUseCase,
+    @Named("data")
+    private val dataCoroutineContext: CoroutineContext
 ) : LoadableViewModel() {
-    private val _feed = MutableLiveData<List<ComplexListItem>>()
-    val feed: LiveData<List<ComplexListItem>> by this::_feed
+    private val _feed = MutableLiveData<List<ComplexListItem>?>()
+    val feed: LiveData<List<ComplexListItem>?> by this::_feed
 
     init {
         loadFeed()
     }
 
     fun loadFeed() {
-        viewModelScope.launch {
-            _isLoading.postValue(true)
+        viewModelScope.launch(dataCoroutineContext) {
+            _feed.startLoading()
             var isError = false
             val newFeed = mutableListOf<ComplexListItem>()
-            getRecommendationsUseCase(RECOMMENDATIONS_PREVIEW_SIZE).catch { isError = true }
-                .collectLatest { content ->
-                    newFeed.addNewFeedCategoryWithMoreAction(
-                        ContentCategory.RECOMMENDATIONS,
-                        content
-                    )
-                }
-            getChartsUseCase(CHARTS_PREVIEW_SIZE).catch { isError = true }
-                .collectLatest { content ->
-                    newFeed.addNewFeedCategoryWithMoreAction(
-                        ContentCategory.CHARTS,
-                        content
-                    )
-                }
-            getFlowUseCase(FLOW_PREVIEW_SIZE).catch { isError = true }.collectLatest { content ->
-                newFeed.addNewFeedCategoryWithMoreAction(
-                    ContentCategory.FLOW,
-                    content
-                )
+            val recommendationsJob = launch {
+                getRecommendationsUseCase(RECOMMENDATIONS_PREVIEW_SIZE).catch { isError = true }
+                    .collectLatest { content ->
+                        newFeed.addNewFeedCategoryWithMoreAction(
+                            ContentCategory.RECOMMENDATIONS,
+                            content
+                        )
+                    }
             }
+            val chartsJob = launch {
+                getChartsUseCase(CHARTS_PREVIEW_SIZE).catch { isError = true }
+                    .collectLatest { content ->
+                        newFeed.addNewFeedCategoryWithMoreAction(
+                            ContentCategory.CHARTS,
+                            content
+                        )
+                    }
+            }
+            val flowJob = launch {
+                getFlowUseCase(FLOW_PREVIEW_SIZE).catch { isError = true }
+                    .collectLatest { content ->
+                        newFeed.addNewFeedCategoryWithMoreAction(
+                            ContentCategory.FLOW,
+                            content
+                        )
+                    }
+            }
+            joinAll(recommendationsJob, chartsJob, flowJob)
             _feed.postDataOrError(isError, newFeed)
         }
     }
