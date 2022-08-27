@@ -20,10 +20,10 @@
         <action
             android:id="@+id/actionOpenPlayerFragmentFromHome"
             app:destination="@id/player_nav_graph"
-            app:enterAnim="@android:anim/slide_in_left"
-            app:exitAnim="@android:anim/slide_out_right"
-            app:popEnterAnim="@android:anim/slide_in_left"
-            app:popExitAnim="@android:anim/slide_out_right">
+            app:enterAnim="@anim/slide_in_bottom"
+            app:exitAnim="@anim/slide_out_bottom"
+            app:popEnterAnim="@anim/slide_in_bottom"
+            app:popExitAnim="@anim/slide_out_bottom">
             <argument
                 android:name="playableMediaId"
                 app:argType="integer"
@@ -45,10 +45,10 @@
         <action
             android:id="@+id/actionOpenPlayerFragmentFromMore"
             app:destination="@id/player_nav_graph"
-            app:enterAnim="@android:anim/slide_in_left"
-            app:exitAnim="@android:anim/slide_out_right"
-            app:popEnterAnim="@android:anim/slide_in_left"
-            app:popExitAnim="@android:anim/slide_out_right">
+            app:enterAnim="@anim/slide_in_bottom"
+            app:exitAnim="@anim/slide_out_bottom"
+            app:popEnterAnim="@anim/slide_in_bottom"
+            app:popExitAnim="@anim/slide_out_bottom">
             <argument
                 android:name="playableMediaId"
                 app:argType="integer"
@@ -73,10 +73,10 @@
         <action
             android:id="@+id/actionOpenPlayerFragmentFromEditorial"
             app:destination="@id/player_nav_graph"
-            app:enterAnim="@android:anim/slide_in_left"
-            app:exitAnim="@android:anim/slide_out_right"
-            app:popEnterAnim="@android:anim/slide_in_left"
-            app:popExitAnim="@android:anim/slide_out_right">
+            app:enterAnim="@anim/slide_in_bottom"
+            app:exitAnim="@anim/slide_out_bottom"
+            app:popEnterAnim="@anim/slide_in_bottom"
+            app:popExitAnim="@anim/slide_out_bottom">
             <argument
                 android:name="playableMediaId"
                 android:defaultValue="-1"
