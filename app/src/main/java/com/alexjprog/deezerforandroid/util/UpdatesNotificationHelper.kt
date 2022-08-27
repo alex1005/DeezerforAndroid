@@ -45,7 +45,7 @@ class UpdatesNotificationHelper(private val context: Context) {
     ): NotificationCompat.Builder {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) createChannel()
         return NotificationCompat.Builder(context, CHANNEL_ID)
-            .setSmallIcon(R.mipmap.ic_launcher)
+            .setSmallIcon(R.drawable.ic_small_notification)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setContentIntent(contentIntent)
             .setStyle(NotificationCompat.BigTextStyle().bigText(content))

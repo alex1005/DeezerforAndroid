@@ -105,7 +105,7 @@ class MediaPlayerNotificationHelper(
                         )
                     )
             )
-            .setSmallIcon(R.mipmap.ic_launcher)
+            .setSmallIcon(R.drawable.ic_small_notification)
             .setContentIntent(playerDeepLink)
             .setContentTitle(description?.title)
             .setContentText(description?.subtitle)
