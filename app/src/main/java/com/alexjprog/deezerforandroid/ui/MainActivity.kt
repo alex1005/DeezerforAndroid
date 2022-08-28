@@ -1,5 +1,6 @@
 package com.alexjprog.deezerforandroid.ui
 
+import android.animation.Animator
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -26,6 +27,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setSupportActionBar(binding.mainToolbar)
 
         navController =
             (supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment)
@@ -91,13 +93,53 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun showAllNavigation() {
-        binding.bottomNavigationView.visibility = View.VISIBLE
         showActionBar()
+        showBottomNavigation()
     }
 
     fun hideAllNavigation() {
-        binding.bottomNavigationView.visibility = View.GONE
         hideActionBar()
+        hideBottomNavigation()
+    }
+
+    private fun showBottomNavigation() {
+        binding.bottomNavigationView.apply {
+            animate()
+                .translationY(0.0f)
+                .setListener(object : Animator.AnimatorListener {
+                    override fun onAnimationStart(animation: Animator?) {
+                        visibility = View.VISIBLE
+                    }
+
+                    override fun onAnimationEnd(animation: Animator?) {
+                    }
+
+                    override fun onAnimationCancel(animation: Animator?) {
+                    }
+
+                    override fun onAnimationRepeat(animation: Animator?) {}
+                })
+        }
+    }
+
+    private fun hideBottomNavigation() {
+        binding.bottomNavigationView.apply {
+            animate()
+                .translationY(height.toFloat())
+                .setListener(object : Animator.AnimatorListener {
+                    override fun onAnimationStart(animation: Animator?) {}
+
+                    override fun onAnimationEnd(animation: Animator?) {
+                        visibility = View.GONE
+                    }
+
+                    override fun onAnimationCancel(animation: Animator?) {
+                        visibility = View.GONE
+                    }
+
+                    override fun onAnimationRepeat(animation: Animator?) {}
+                })
+        }
     }
 
     fun showActionBar() {
