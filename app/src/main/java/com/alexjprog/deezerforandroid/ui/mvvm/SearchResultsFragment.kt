@@ -7,11 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.navigation.navGraphViewModels
-import com.alexjprog.deezerforandroid.R
 import com.alexjprog.deezerforandroid.app.DeezerApplication
 import com.alexjprog.deezerforandroid.databinding.FragmentSearchResultsBinding
 import com.alexjprog.deezerforandroid.ui.MainActivity
@@ -33,7 +32,7 @@ class SearchResultsFragment : Fragment() {
     private var _binding: FragmentSearchResultsBinding? = null
     private val binding: FragmentSearchResultsBinding get() = _binding!!
     private val viewModel: SearchResultsViewModel
-            by navGraphViewModels(R.id.navGraph) { viewModelFactory }
+            by viewModels { viewModelFactory }
 
     private val args: SearchResultsFragmentArgs by navArgs()
 

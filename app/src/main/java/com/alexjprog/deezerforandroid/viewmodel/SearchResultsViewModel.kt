@@ -24,7 +24,7 @@ class SearchResultsViewModel @Inject constructor(
 
     fun loadResults(query: String) {
         _resultsFlow = getSearchResultsUseCase(SEARCH_PAGE_SIZE, query)
-            .map { pagingData -> pagingData.map { it as MediaItemModel } }
+            .map { pagingData -> pagingData.map { it } }
             .cachedIn(viewModelScope)
             .flowOn(Dispatchers.Default)
     }
