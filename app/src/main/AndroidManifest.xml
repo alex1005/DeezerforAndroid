@@ -16,6 +16,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DeezerForAndroid"
         tools:targetApi="31">
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_small_notification" />
+
         <provider
             android:name="androidx.startup.InitializationProvider"
             android:authorities="${applicationId}.androidx-startup"
