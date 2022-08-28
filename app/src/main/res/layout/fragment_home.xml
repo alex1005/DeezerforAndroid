@@ -15,6 +15,7 @@
             android:id="@+id/rcHomeFeed"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:paddingVertical="@dimen/small_rc_padding"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
