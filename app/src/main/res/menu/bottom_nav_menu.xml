@@ -3,9 +3,11 @@
     <item
         android:id="@+id/homeFragment"
         android:title="@string/home"
+        android:contentDescription="@string/home"
         android:icon="@drawable/menu_home" />
     <item
         android:id="@+id/editorialFragment"
         android:title="@string/editorial"
+        android:contentDescription="@string/editorial"
         android:icon="@drawable/menu_editorial" />
 </menu>
