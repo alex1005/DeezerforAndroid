@@ -2,7 +2,9 @@ package com.alexjprog.deezerforandroid.ui.base
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.alexjprog.deezerforandroid.R
 import com.alexjprog.deezerforandroid.viewmodel.LoadableViewModel
 
@@ -48,5 +50,18 @@ abstract class LoadableFragment : Fragment(), LoadingFragment.LoadingFragmentLis
                 null -> onLoadFail()
             }
         }
+    }
+
+    protected fun SwipeRefreshLayout.setDefaultColorPalette() {
+        setProgressBackgroundColorSchemeColor(
+            ContextCompat.getColor(
+                context,
+                R.color.color_primary_variant
+            )
+        )
+        setColorSchemeColors(
+            ContextCompat.getColor(context, R.color.color_secondary),
+            ContextCompat.getColor(context, R.color.color_text_primary),
+        )
     }
 }

@@ -52,6 +52,7 @@ class EditorialFragment : LoadableFragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentEditorialBinding.inflate(inflater, container, false)
+        binding.swipeRefresh.setDefaultColorPalette()
         return binding.root
     }
 

@@ -51,6 +51,7 @@ class HomeFragment : LoadableFragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        binding.swipeRefresh.setDefaultColorPalette()
         return binding.root
     }
 
