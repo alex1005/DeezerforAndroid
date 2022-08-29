@@ -1,6 +1,5 @@
 package com.alexjprog.deezerforandroid
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.lifecycle.ViewModelStore
 import androidx.navigation.Navigation
@@ -16,15 +15,11 @@ import com.alexjprog.deezerforandroid.ui.adapter.tile.HorizontalTileListAdapter
 import com.alexjprog.deezerforandroid.ui.mvvm.HomeFragment
 import com.alexjprog.deezerforandroid.util.waitForVisibleView
 import org.junit.Assert.assertEquals
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class HomeScreenNavInstrumentedTest {
-    @get:Rule
-    val instantTaskExecutorRule = InstantTaskExecutorRule()
-
     @Test
     fun openMoreChartsTest() {
         val navController = TestNavHostController(
@@ -43,7 +38,7 @@ class HomeScreenNavInstrumentedTest {
             }
         }
 
-        waitForVisibleView(withId(R.id.rcEditorialFeed), 10000).perform(
+        waitForVisibleView(withId(R.id.rcHomeFeed), 10000).perform(
             RecyclerViewActions.scrollTo<ComplexListAdapter.TitleWithMoreActionViewHolder>(
                 hasDescendant(withText("Charts"))
             )
@@ -71,7 +66,7 @@ class HomeScreenNavInstrumentedTest {
             }
         }
 
-        waitForVisibleView(withId(R.id.rcEditorialFeed), 10000).perform(
+        waitForVisibleView(withId(R.id.rcHomeFeed), 10000).perform(
             RecyclerViewActions.actionOnItem<ComplexListAdapter.HorizontalTrackListViewHolder>(
                 withId(R.id.rcHorizontalList),
                 RecyclerViewActions.actionOnItemAtPosition<HorizontalTileListAdapter.HorizontalTileViewHolder>(

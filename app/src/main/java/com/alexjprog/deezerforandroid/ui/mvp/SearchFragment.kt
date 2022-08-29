@@ -71,8 +71,8 @@ class SearchFragment : Fragment(), SearchContract.View {
                 etSearch.setOnEditorActionListener { _, actionId, _ ->
                     if (actionId == EditorInfo.IME_ACTION_DONE) {
                         openResultsAction(etSearch.text.toString())
-                        true
-                    } else false
+                    }
+                    false
                 }
                 etSearch.addTextChangedListener(object : TextWatcher {
                     override fun beforeTextChanged(

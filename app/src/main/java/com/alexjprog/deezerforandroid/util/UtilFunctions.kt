@@ -15,25 +15,31 @@ import com.alexjprog.deezerforandroid.ui.adapter.complex.ComplexListItem
 import com.google.android.material.navigation.NavigationBarView
 import java.lang.ref.WeakReference
 
-fun MutableList<ComplexListItem>.addNewFeedCategoryWithMoreAction(
-    category: ContentCategory,
-    content: List<MediaItemModel>
-) {
-    if (content.isEmpty()) return
-    val titleItem = ComplexListItem.TitleItemWithOpenMoreAction(category)
-    val contentItem = ComplexListItem.HorizontalTrackListItem(content)
-    addAll(listOf(titleItem, contentItem))
+fun MutableList<ComplexListItem>.addNewFeedCategory(vararg content: List<ComplexListItem>?) {
+    content.forEach {
+        if (!it.isNullOrEmpty()) addAll(it)
+    }
 }
 
-fun MutableList<ComplexListItem>.addNewFeedCategory(
+fun getNewFeedCategoryWithMoreAction(
     category: ContentCategory,
-    content: List<MediaItemModel>
-) {
-    if (content.isEmpty()) return
-    val titleItem = ComplexListItem.TitleItem(category)
-    val contentItem = ComplexListItem.HorizontalTrackListItem(content)
-    addAll(listOf(titleItem, contentItem))
-}
+    content: List<MediaItemModel>?
+) = if (content != null && content.isNotEmpty())
+    listOf(
+        ComplexListItem.TitleItemWithOpenMoreAction(category),
+        ComplexListItem.HorizontalTrackListItem(content)
+    )
+else null
+
+fun getNewFeedCategory(
+    category: ContentCategory,
+    content: List<MediaItemModel>?
+) = if (content != null && content.isNotEmpty())
+    listOf(
+        ComplexListItem.TitleItem(category),
+        ComplexListItem.HorizontalTrackListItem(content)
+    )
+else null
 
 fun MediaItemModel.getSafeArgPlayerNavDirection(
     playerNavDirectionBuilder: (Int, MediaTypeParam) -> NavDirections

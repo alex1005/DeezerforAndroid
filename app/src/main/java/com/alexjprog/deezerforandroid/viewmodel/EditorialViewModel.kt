@@ -7,8 +7,10 @@ import com.alexjprog.deezerforandroid.domain.usecase.GetEditorialSelection
 import com.alexjprog.deezerforandroid.model.ContentCategory
 import com.alexjprog.deezerforandroid.ui.adapter.complex.ComplexListItem
 import com.alexjprog.deezerforandroid.util.addNewFeedCategory
+import com.alexjprog.deezerforandroid.util.getNewFeedCategory
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.lastOrNull
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Named
@@ -31,10 +33,16 @@ class EditorialViewModel @Inject constructor(
             _feed.startLoading()
             var isError = false
             val newFeed = mutableListOf<ComplexListItem>()
-            getEditorialSelection()
-                .catch { isError = true }.collectLatest { content ->
-                    newFeed.addNewFeedCategory(ContentCategory.EDIT_SELECTION, content)
-                }
+            val weeklySelectionPart = async {
+                val content = getEditorialSelection()
+                    .catch { isError = true }
+                    .lastOrNull()
+                getNewFeedCategory(
+                    ContentCategory.CHARTS,
+                    content
+                )
+            }
+            newFeed.addNewFeedCategory(weeklySelectionPart.await())
             _feed.postDataOrError(isError, newFeed)
         }
     }

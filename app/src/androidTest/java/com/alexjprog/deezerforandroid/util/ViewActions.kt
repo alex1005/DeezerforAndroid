@@ -1,12 +1,12 @@
 package com.alexjprog.deezerforandroid.util
 
 import android.view.View
-import androidx.core.view.isVisible
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.NoMatchingViewException
 import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
 import androidx.test.espresso.ViewInteraction
+import androidx.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.isRoot
 import androidx.test.espresso.util.TreeIterables
 import org.hamcrest.Matcher
@@ -28,7 +28,7 @@ fun searchForVisibleView(matcher: Matcher<View>): ViewAction {
 
             childViews.forEach {
                 tries++
-                if (matcher.matches(it) && it.isVisible) {
+                if (matcher.matches(it) && isCompletelyDisplayed().matches(it)) {
                     return
                 }
             }
