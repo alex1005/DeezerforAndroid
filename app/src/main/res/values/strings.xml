@@ -22,7 +22,10 @@
     <string name="try_again">Try again</string>
     <string name="weekly_selection_update_title">Weekly selection</string>
     <string name="weekly_selection_update_content">Check out new selected content: %1$s</string>
-    <string name="others">and others</string>
+    <string name="and_others">and others</string>
     <string name="stop">Stop</string>
     <string name="edit_releases">Releases</string>
+    <string name="releases_update_content">Don\'t miss new releases: %1$s</string>
+    <string name="releases_update_title">Releases</string>
+    <string name="and_more">and more</string>
 </resources>

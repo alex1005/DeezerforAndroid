@@ -6,10 +6,12 @@ import android.app.PendingIntent
 import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.annotation.StringRes
 import androidx.core.app.NotificationCompat
 import androidx.navigation.NavDeepLinkBuilder
 import com.alexjprog.deezerforandroid.R
 import com.alexjprog.deezerforandroid.domain.model.AlbumModel
+import com.alexjprog.deezerforandroid.domain.model.MediaItemModel
 import com.alexjprog.deezerforandroid.ui.MainActivity
 
 class UpdatesNotificationHelper(private val context: Context) {
@@ -24,16 +26,45 @@ class UpdatesNotificationHelper(private val context: Context) {
         .createPendingIntent()
 
     fun sendEditorialWeeklySelectionUpdateNotification(newMedia: List<AlbumModel>) {
-        val title = context.getString(R.string.weekly_selection_update_title)
-        val longEnding = " " + context.getString(R.string.others)
-        val contentMedia = newMedia.take(MAX_CONTENT_NAMES_IN_EDIT_SELECTION_UPDATE)
+        sendCommonEditorialUpdateNotification(
+            R.string.weekly_selection_update_title,
+            R.string.and_others,
+            R.string.weekly_selection_update_content,
+            newMedia,
+            MAX_CONTENT_NAMES_IN_EDIT_SELECTION_UPDATE,
+            WEEKLY_SELECTION_NOTIFICATION_ID
+        )
+    }
+
+    fun sendEditorialReleasesUpdateNotification(newMedia: List<AlbumModel>) {
+        sendCommonEditorialUpdateNotification(
+            R.string.releases_update_title,
+            R.string.and_more,
+            R.string.releases_update_content,
+            newMedia,
+            MAX_CONTENT_NAMES_IN_EDIT_RELEASES_UPDATE,
+            RELEASES_NOTIFICATION_ID
+        )
+    }
+
+    private fun sendCommonEditorialUpdateNotification(
+        @StringRes titleRes: Int,
+        @StringRes longEndingRes: Int,
+        @StringRes updateContentRes: Int,
+        media: List<MediaItemModel>,
+        maxContent: Int,
+        notificationId: Int
+    ) {
+        val title = context.getString(titleRes)
+        val longEnding = " " + context.getString(longEndingRes)
+        val contentMedia = media.take(maxContent)
             .joinToString(
                 postfix =
-                if (newMedia.size > MAX_CONTENT_NAMES_IN_EDIT_SELECTION_UPDATE) longEnding else " "
+                if (media.size > maxContent) longEnding else " "
             ) { "${it.title} - ${it.subtitle}" }
-        val content = context.getString(R.string.weekly_selection_update_content, contentMedia)
+        val content = context.getString(updateContentRes, contentMedia)
         notificationManager.notify(
-            WEEKLY_SELECTION_NOTIFICATION_ID,
+            notificationId,
             notificationBuilder(title, content, openEditorialScreen).build()
         )
     }
@@ -64,6 +95,7 @@ class UpdatesNotificationHelper(private val context: Context) {
 
     companion object {
         private const val WEEKLY_SELECTION_NOTIFICATION_ID = 2001
+        private const val RELEASES_NOTIFICATION_ID = 2002
         private const val CHANNEL_ID = "com.alexjprog.deezerforandroid.updateschannel"
     }
 }

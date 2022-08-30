@@ -4,9 +4,9 @@ import android.app.Application
 import androidx.work.*
 import com.alexjprog.deezerforandroid.di.AppComponent
 import com.alexjprog.deezerforandroid.di.DaggerAppComponent
-import com.alexjprog.deezerforandroid.util.EDIT_SELECTION_UPDATE_INTERVAL
+import com.alexjprog.deezerforandroid.util.*
+import com.alexjprog.deezerforandroid.worker.EditorialReleasesCheckWorker
 import com.alexjprog.deezerforandroid.worker.EditorialWeeklySelectionCheckWorker
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class DeezerApplication : Application(), Configuration.Provider {
@@ -20,6 +20,7 @@ class DeezerApplication : Application(), Configuration.Provider {
         appComponent = DaggerAppComponent.builder().application(this).build()
         appComponent.inject(this)
         scheduleEditorialWeeklySelectionWorker()
+        scheduleEditorialReleasesWorker()
     }
 
     override fun getWorkManagerConfiguration(): Configuration =
@@ -32,14 +33,36 @@ class DeezerApplication : Application(), Configuration.Provider {
 
         val worker = PeriodicWorkRequestBuilder<EditorialWeeklySelectionCheckWorker>(
             EDIT_SELECTION_UPDATE_INTERVAL,
-            TimeUnit.DAYS
+            EDIT_SELECTION_UPDATE_INTERVAL_TIME_UNIT,
+            EDIT_SELECTION_UPDATE_FLEX_INTERVAL,
+            EDIT_SELECTION_UPDATE_FLEX_INTERVAL_TIME_UNIT
         ).setConstraints(constraints)
-            .setInitialDelay(EDIT_SELECTION_UPDATE_INTERVAL, TimeUnit.DAYS)
             .build()
 
         WorkManager.getInstance(this)
             .enqueueUniquePeriodicWork(
                 EditorialWeeklySelectionCheckWorker.UNIQUE_NAME,
+                ExistingPeriodicWorkPolicy.KEEP,
+                worker
+            )
+    }
+
+    private fun scheduleEditorialReleasesWorker() {
+        val constraints = Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .build()
+
+        val worker = PeriodicWorkRequestBuilder<EditorialReleasesCheckWorker>(
+            EDIT_RELEASES_UPDATE_INTERVAL,
+            EDIT_RELEASES_UPDATE_INTERVAL_TIME_UNIT,
+            EDIT_RELEASES_UPDATE_FLEX_INTERVAL,
+            EDIT_RELEASES_UPDATE_FLEX_INTERVAL_TIME_UNIT
+        ).setConstraints(constraints)
+            .build()
+
+        WorkManager.getInstance(this)
+            .enqueueUniquePeriodicWork(
+                EditorialReleasesCheckWorker.UNIQUE_NAME,
                 ExistingPeriodicWorkPolicy.KEEP,
                 worker
             )
