@@ -3,7 +3,8 @@ package com.alexjprog.deezerforandroid.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.alexjprog.deezerforandroid.domain.usecase.GetEditorialSelection
+import com.alexjprog.deezerforandroid.domain.usecase.GetEditorialReleasesUseCase
+import com.alexjprog.deezerforandroid.domain.usecase.GetEditorialSelectionUseCase
 import com.alexjprog.deezerforandroid.model.ContentCategory
 import com.alexjprog.deezerforandroid.ui.adapter.complex.ComplexListItem
 import com.alexjprog.deezerforandroid.util.addNewFeedCategory
@@ -17,7 +18,8 @@ import javax.inject.Named
 import kotlin.coroutines.CoroutineContext
 
 class EditorialViewModel @Inject constructor(
-    private val getEditorialSelection: GetEditorialSelection,
+    private val getEditorialSelectionUseCase: GetEditorialSelectionUseCase,
+    private val getEditorialReleasesUseCase: GetEditorialReleasesUseCase,
     @Named("data")
     private val dataCoroutineContext: CoroutineContext
 ) : LoadableViewModel() {
@@ -34,15 +36,27 @@ class EditorialViewModel @Inject constructor(
             var isError = false
             val newFeed = mutableListOf<ComplexListItem>()
             val weeklySelectionPart = async {
-                val content = getEditorialSelection()
+                val content = getEditorialSelectionUseCase()
                     .catch { isError = true }
                     .lastOrNull()
                 getNewFeedCategory(
-                    ContentCategory.CHARTS,
+                    ContentCategory.EDIT_SELECTION,
                     content
                 )
             }
-            newFeed.addNewFeedCategory(weeklySelectionPart.await())
+            val releasesPart = async {
+                val content = getEditorialReleasesUseCase()
+                    .catch { isError = true }
+                    .lastOrNull()
+                getNewFeedCategory(
+                    ContentCategory.EDIT_RELEASES,
+                    content
+                )
+            }
+            newFeed.addNewFeedCategory(
+                weeklySelectionPart.await(),
+                releasesPart.await()
+            )
             _feed.postDataOrError(isError, newFeed)
         }
     }

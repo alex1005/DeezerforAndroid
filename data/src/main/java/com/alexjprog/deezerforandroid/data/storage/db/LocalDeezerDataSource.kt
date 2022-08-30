@@ -6,6 +6,7 @@ import com.alexjprog.deezerforandroid.data.storage.db.model.QueryHistoryEntity
 import com.alexjprog.deezerforandroid.domain.model.params.ContentCategoryParam
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class LocalDeezerDataSource @Inject constructor(
@@ -22,6 +23,9 @@ class LocalDeezerDataSource @Inject constructor(
     override fun getEditorialSelectionCache() =
         mediaCacheDao.getCacheForCategory(ContentCategoryParam.EDIT_SELECTION)
 
-    override suspend fun rewriteEditorialSelectionCache(cache: List<MediaCacheEntity>) =
+    override suspend fun rewriteEditorialCategoryCache(cache: List<MediaCacheEntity>) =
         mediaCacheDao.rewriteCache(cache)
+
+    override fun getEditorialReleasesCache(): Flow<List<MediaCacheEntity>> =
+        mediaCacheDao.getCacheForCategory(ContentCategoryParam.EDIT_RELEASES)
 }

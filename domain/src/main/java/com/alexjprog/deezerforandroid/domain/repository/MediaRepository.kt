@@ -13,15 +13,18 @@ interface MediaRepository {
     fun getChartsPreview(amount: Int): Flow<List<TrackModel>>
     fun getFlowPreview(amount: Int): Flow<List<TrackModel>>
     fun getRecommendationsPreview(amount: Int): Flow<List<TrackModel>>
-    fun getEditorialSelectionPreview(): Flow<List<AlbumModel>>
+    fun getEditorialSelectionPage(): Flow<List<AlbumModel>>
+    fun getEditorialReleasesPage(): Flow<List<AlbumModel>>
 
     fun getCategoryContent(pageSize: Int, category: ContentCategoryParam):
             Flow<PagingData<MediaItemModel>>
 
     fun getSearchSuggestionsForQuery(query: String): Observable<List<SearchSuggestionModel>>
-    fun getSearchResultsForQuery(pageSize: Int, query: String): Flow<PagingData<MediaItemModel>>
 
+    fun getSearchResultsForQuery(pageSize: Int, query: String): Flow<PagingData<MediaItemModel>>
     fun getTrackInfo(id: Int): Observable<TrackModel>
     fun getAlbumInfo(id: Int): Observable<AlbumModel>
+
     fun getEditorialSelectionCache(): Flow<List<AlbumModel>>
+    fun getEditorialReleasesCache(): Flow<List<AlbumModel>>
 }

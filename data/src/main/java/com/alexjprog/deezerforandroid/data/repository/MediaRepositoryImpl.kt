@@ -39,17 +39,30 @@ class MediaRepositoryImpl @Inject constructor(
         deezerSource.getRecommendationsPage(0, amount)
             .map { list -> list.map { apiMapper.fromTrackApiData(it) } }
 
-    override fun getEditorialSelectionPreview(): Flow<List<AlbumModel>> =
+    override fun getEditorialSelectionPage(): Flow<List<AlbumModel>> =
         deezerSource.getEditorialSelectionPage()
             .map { list -> list.map { apiMapper.fromAlbumApiData(it) } }
             .onEach { newData ->
-                localDeezerSource.rewriteEditorialSelectionCache(newData.map {
+                localDeezerSource.rewriteEditorialCategoryCache(newData.map {
                     dbMapper.toMediaCacheEntity(it, ContentCategoryParam.EDIT_SELECTION)
+                })
+            }
+
+    override fun getEditorialReleasesPage(): Flow<List<AlbumModel>> =
+        deezerSource.getEditorialReleasesPreview()
+            .map { list -> list.map { apiMapper.fromAlbumApiData(it) } }
+            .onEach { newData ->
+                localDeezerSource.rewriteEditorialCategoryCache(newData.map {
+                    dbMapper.toMediaCacheEntity(it, ContentCategoryParam.EDIT_RELEASES)
                 })
             }
 
     override fun getEditorialSelectionCache(): Flow<List<AlbumModel>> =
         localDeezerSource.getEditorialSelectionCache()
+            .map { cacheList -> cacheList.map { dbMapper.fromMediaCacheEntity(it) as AlbumModel } }
+
+    override fun getEditorialReleasesCache(): Flow<List<AlbumModel>> =
+        localDeezerSource.getEditorialReleasesCache()
             .map { cacheList -> cacheList.map { dbMapper.fromMediaCacheEntity(it) as AlbumModel } }
 
     override fun getCategoryContent(

@@ -4,5 +4,6 @@ enum class ContentCategoryParam {
     CHARTS,
     FLOW,
     RECOMMENDATIONS,
-    EDIT_SELECTION
+    EDIT_SELECTION,
+    EDIT_RELEASES
 }

@@ -24,4 +24,5 @@
     <string name="weekly_selection_update_content">Check out new selected content: %1$s</string>
     <string name="others">and others</string>
     <string name="stop">Stop</string>
+    <string name="edit_releases">Releases</string>
 </resources>

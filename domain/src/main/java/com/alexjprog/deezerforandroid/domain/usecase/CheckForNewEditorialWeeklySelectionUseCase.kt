@@ -11,7 +11,7 @@ class CheckForNewEditorialWeeklySelectionUseCase @Inject constructor(
 ) {
     operator fun invoke() = flow {
         val cache = mediaRepository.getEditorialSelectionCache().firstOrNull()
-        val newData = mediaRepository.getEditorialSelectionPreview().firstOrNull()
+        val newData = mediaRepository.getEditorialSelectionPage().firstOrNull()
 
         emit(
             if (cache == null) {

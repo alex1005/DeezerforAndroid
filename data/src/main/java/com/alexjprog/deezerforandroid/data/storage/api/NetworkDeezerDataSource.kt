@@ -2,12 +2,14 @@ package com.alexjprog.deezerforandroid.data.storage.api
 
 import com.alexjprog.deezerforandroid.data.storage.IDeezerDataSource
 import com.alexjprog.deezerforandroid.data.storage.api.model.AlbumApiData
+import com.alexjprog.deezerforandroid.data.storage.api.model.ResultPageApiData
 import com.alexjprog.deezerforandroid.data.storage.api.model.SearchHistoryResultApiData
 import com.alexjprog.deezerforandroid.data.storage.api.model.TrackApiData
 import io.reactivex.rxjava3.core.Observable
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import retrofit2.Response
 import javax.inject.Inject
 import javax.inject.Named
 import kotlin.coroutines.CoroutineContext
@@ -21,45 +23,33 @@ class NetworkDeezerDataSource @Inject constructor(
     /* [pageSize] must be constant when changing [page] argument!!!
     * It happens because the API accepts queries with item offset and not page offset.
     * So to calculate page offset we multiply page number by page size where page size is constant */
-    override fun getChartsPage(page: Int, pageSize: Int): Flow<List<TrackApiData>> = flow {
-        val pageOffset = page * pageSize
-        val response = api.getCharts(pageOffset, pageSize)
-        val body = response.body()
-        if (!response.isSuccessful || body == null) throw NoSuchElementException()
-        if (isOAuthException(body.error)) emit(emptyList())
-        else if (body.data == null) throw NoSuchElementException()
-        else emit(body.data)
-    }.flowOn(apiCoroutineContext)
+    override fun getChartsPage(page: Int, pageSize: Int): Flow<List<TrackApiData>> =
+        createPreviewFlow {
+            val pageOffset = page * pageSize
+            api.getCharts(pageOffset, pageSize)
+        }
 
-    override fun getFlowPage(page: Int, pageSize: Int): Flow<List<TrackApiData>> = flow {
-        val pageOffset = page * pageSize
-        val response = api.getFlow(pageOffset, pageSize)
-        val body = response.body()
-        if (!response.isSuccessful || body == null) throw NoSuchElementException()
-        if (isOAuthException(body.error)) emit(emptyList())
-        else if (body.data == null) throw NoSuchElementException()
-        else emit(body.data)
-    }.flowOn(apiCoroutineContext)
+    override fun getFlowPage(page: Int, pageSize: Int): Flow<List<TrackApiData>> =
+        createPreviewFlow {
+            val pageOffset = page * pageSize
+            api.getFlow(pageOffset, pageSize)
+        }
 
-    override fun getRecommendationsPage(page: Int, pageSize: Int): Flow<List<TrackApiData>> = flow {
-        val pageOffset = page * pageSize
-        val response = api.getRecommendations(pageOffset, pageSize)
-        val body = response.body()
-        if (!response.isSuccessful || body == null) throw NoSuchElementException()
-        if (isOAuthException(body.error)) emit(emptyList())
-        else if (body.data == null) throw NoSuchElementException()
-        else emit(body.data)
-    }.flowOn(apiCoroutineContext)
+    override fun getRecommendationsPage(page: Int, pageSize: Int): Flow<List<TrackApiData>> =
+        createPreviewFlow {
+            val pageOffset = page * pageSize
+            api.getRecommendations(pageOffset, pageSize)
+        }
 
     override fun getEditorialSelectionPage(): Flow<List<AlbumApiData>> =
-        flow {
-            val response = api.getEditorialSelection()
-            val body = response.body()
-            if (!response.isSuccessful || body == null) throw NoSuchElementException()
-            if (isOAuthException(body.error)) emit(emptyList())
-            else if (body.data == null) throw NoSuchElementException()
-            else emit(body.data)
-        }.flowOn(apiCoroutineContext)
+        createPreviewFlow {
+            api.getEditorialSelection()
+        }
+
+    override fun getEditorialReleasesPreview() =
+        createPreviewFlow {
+            api.getEditorialReleases()
+        }
 
     override fun getSearchHistory(): Observable<List<SearchHistoryResultApiData>> =
         api.getSearchHistory().map { it.data ?: emptyList() }
@@ -72,16 +62,10 @@ class NetworkDeezerDataSource @Inject constructor(
             .toObservable()
 
     override fun getSearchResultsForQuery(page: Int, pageSize: Int, query: String) =
-        flow {
+        createPreviewFlow {
             val pageOffset = page * pageSize
-            val response = api.getSearchResultsForQuery(query, pageOffset, pageSize)
-            val body = response.body()
-            if (!response.isSuccessful || body == null) throw NoSuchElementException()
-            if (isOAuthException(body.error)) emit(emptyList())
-            else if (body.data == null) throw NoSuchElementException()
-            else emit(body.data)
-        }.flowOn(apiCoroutineContext)
-
+            api.getSearchResultsForQuery(query, pageOffset, pageSize)
+        }
 
     override fun getTrackInfo(id: Int): Observable<TrackApiData> =
         api.getTrackInfo(id).doOnSuccess {
@@ -95,4 +79,14 @@ class NetworkDeezerDataSource @Inject constructor(
 
     private fun isOAuthException(errorMap: Map<String, String>?) =
         errorMap?.get("type") == "OAuthException"
+
+    private fun <T> createPreviewFlow(source: suspend () -> Response<ResultPageApiData<T>>): Flow<List<T>> =
+        flow {
+            val response = source()
+            val body = response.body()
+            if (!response.isSuccessful || body == null) throw NoSuchElementException()
+            if (isOAuthException(body.error)) emit(emptyList())
+            else if (body.data == null) throw NoSuchElementException()
+            else emit(body.data)
+        }.flowOn(apiCoroutineContext)
 }

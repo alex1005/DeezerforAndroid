@@ -27,6 +27,10 @@ interface DeezerService {
     suspend fun getEditorialSelection():
             Response<ResultPageApiData<AlbumApiData>>
 
+    @GET("editorial/0/releases")
+    suspend fun getEditorialReleases():
+            Response<ResultPageApiData<AlbumApiData>>
+
     @GET("search/history")
     fun getSearchHistory():
             Single<ResultPageApiData<SearchHistoryResultApiData>>

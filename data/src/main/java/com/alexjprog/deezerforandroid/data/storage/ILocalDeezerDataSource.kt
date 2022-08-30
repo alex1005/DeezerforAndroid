@@ -10,5 +10,7 @@ interface ILocalDeezerDataSource {
     fun addSearchQueryToLocalHistory(query: QueryHistoryEntity)
 
     fun getEditorialSelectionCache(): Flow<List<MediaCacheEntity>>
-    suspend fun rewriteEditorialSelectionCache(cache: List<MediaCacheEntity>)
+    fun getEditorialReleasesCache(): Flow<List<MediaCacheEntity>>
+
+    suspend fun rewriteEditorialCategoryCache(cache: List<MediaCacheEntity>)
 }
