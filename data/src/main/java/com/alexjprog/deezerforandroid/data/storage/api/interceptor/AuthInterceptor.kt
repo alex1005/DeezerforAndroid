@@ -8,10 +8,12 @@ import javax.inject.Inject
 class AuthInterceptor @Inject constructor(private val loginStore: LoginStore): Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
+        val requestUrl = request.url()
         val token = loginStore.userToken
-        return if(token == null) chain.proceed(request)
+        return if (token == null || requestUrl.queryParameter(ACCESS_TOKEN_PARAM_KEY) != null)
+            chain.proceed(request)
         else {
-            val newRequestUrl = request.url()
+            val newRequestUrl = requestUrl
                 .newBuilder()
                 .addQueryParameter(ACCESS_TOKEN_PARAM_KEY, token)
                 .build()

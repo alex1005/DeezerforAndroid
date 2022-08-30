@@ -1,7 +1,6 @@
 package com.alexjprog.deezerforandroid.ui
 
 import android.animation.Animator
-import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -15,7 +14,6 @@ import androidx.navigation.ui.setupWithNavController
 import com.alexjprog.deezerforandroid.R
 import com.alexjprog.deezerforandroid.databinding.ActivityMainBinding
 import com.alexjprog.deezerforandroid.service.DeezerFirebaseMessagingService
-import com.alexjprog.deezerforandroid.ui.mvp.LoginActivity
 import com.alexjprog.deezerforandroid.util.FIREBASE_MEDIA_ID_KEY
 import com.alexjprog.deezerforandroid.util.FIREBASE_MEDIA_TYPE_KEY
 import com.alexjprog.deezerforandroid.util.putPlayerArgs
@@ -101,7 +99,7 @@ class MainActivity : AppCompatActivity() {
                 true
             }
             R.id.account_menu -> {
-                startActivity(Intent(this, LoginActivity::class.java))
+                navController.navigate(R.id.loginActivity)
                 true
             }
             else -> super.onOptionsItemSelected(item)

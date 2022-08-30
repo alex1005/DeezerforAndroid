@@ -1,9 +1,6 @@
 package com.alexjprog.deezerforandroid.data.storage.api
 
-import com.alexjprog.deezerforandroid.data.storage.api.model.AlbumApiData
-import com.alexjprog.deezerforandroid.data.storage.api.model.ResultPageApiData
-import com.alexjprog.deezerforandroid.data.storage.api.model.SearchHistoryResultApiData
-import com.alexjprog.deezerforandroid.data.storage.api.model.TrackApiData
+import com.alexjprog.deezerforandroid.data.storage.api.model.*
 import io.reactivex.rxjava3.core.Single
 import retrofit2.Response
 import retrofit2.http.GET
@@ -51,4 +48,10 @@ interface DeezerService {
 
     @GET("album/{id}")
     fun getAlbumInfo(@Path("id") id: Int): Single<AlbumApiData>
+
+    @GET("user/me")
+    fun getUserInfo(): Single<UserInfoApiData>
+
+    @GET("user/me")
+    fun getUserInfoWithToken(@Query("access_token") token: String): Single<UserInfoApiData>
 }

@@ -3,6 +3,7 @@ package com.alexjprog.deezerforandroid.data.storage
 import com.alexjprog.deezerforandroid.data.storage.api.model.AlbumApiData
 import com.alexjprog.deezerforandroid.data.storage.api.model.SearchHistoryResultApiData
 import com.alexjprog.deezerforandroid.data.storage.api.model.TrackApiData
+import com.alexjprog.deezerforandroid.data.storage.api.model.UserInfoApiData
 import io.reactivex.rxjava3.core.Observable
 import kotlinx.coroutines.flow.Flow
 
@@ -19,4 +20,7 @@ interface IDeezerDataSource {
     fun getSearchResultsForQuery(page: Int, pageSize: Int, query: String): Flow<List<TrackApiData>>
     fun getTrackInfo(id: Int): Observable<TrackApiData>
     fun getAlbumInfo(id: Int): Observable<AlbumApiData>
+
+    fun getUserInfo(): Observable<UserInfoApiData>
+    fun getUserInfoWithToken(token: String): Observable<UserInfoApiData>
 }

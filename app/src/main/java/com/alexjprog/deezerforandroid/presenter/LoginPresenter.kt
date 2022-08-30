@@ -1,35 +1,40 @@
 package com.alexjprog.deezerforandroid.presenter
 
-import android.net.Uri
+import com.alexjprog.deezerforandroid.domain.usecase.CheckAccessTokenUseCase
 import com.alexjprog.deezerforandroid.domain.usecase.GetAccessTokenUseCase
 import com.alexjprog.deezerforandroid.domain.usecase.LoginUseCase
 import com.alexjprog.deezerforandroid.ui.mvp.contract.LoginContract
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 
 class LoginPresenter @Inject constructor(
     private val loginUseCase: LoginUseCase,
-    private val getAccessTokenUseCase: GetAccessTokenUseCase
+    private val getAccessTokenUseCase: GetAccessTokenUseCase,
+    private val checkLoginTokenUseCase: CheckAccessTokenUseCase
 ): BasePresenter<LoginContract.View>(),
     LoginContract.Presenter {
-    override fun extractAndSaveUserToken(authUri: Uri) {
-        val token = authUri.fragment
-            ?.split("&")?.associate {
-                it.split("=").zipWithNext().firstOrNull() ?: ("" to "")
-            }?.get(TOKEN_PARAM_KEY)
-        if(!token.isNullOrEmpty()) {
-            loginUseCase(token)
-            checkLoginState()
+
+    override fun checkAndSaveUserToken(token: String?) {
+        if (token != null) {
+            checkLoginTokenUseCase(token)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    if (it) {
+                        view?.onSuccessfulLogin()
+                        loginUseCase(token)
+                    } else {
+                        view?.showLoginButton()
+                        //TODO: show error
+                    }
+                }
+        } else {
+            if (isLoggedIn()) view?.onSuccessfulLogin()
+            else view?.showLoginButton()
         }
     }
 
-    override fun checkLoginState() {
-        if(getAccessTokenUseCase() == null)
-            view?.showLoginButton()
-        else
-            view?.onSuccessfulLogin()
-    }
-
-    companion object {
-        const val TOKEN_PARAM_KEY = "access_token"
-    }
+    private fun isLoggedIn(): Boolean =
+        getAccessTokenUseCase() != null
 }

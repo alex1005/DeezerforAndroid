@@ -57,18 +57,19 @@
         </receiver>
 
         <activity
-            android:name=".ui.mvp.LoginActivity"
+            android:name=".ui.LoginActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
+            <nav-graph android:value="@navigation/login_nav_graph" />
+            <!--            <intent-filter>-->
+            <!--                <action android:name="android.intent.action.VIEW" />-->
 
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
+            <!--                <category android:name="android.intent.category.DEFAULT" />-->
+            <!--                <category android:name="android.intent.category.BROWSABLE" />-->
 
-                <data
-                    android:host="deezer.alexjprog.com"
-                    android:scheme="myapp" />
-            </intent-filter>
+            <!--                <data-->
+            <!--                    android:host="deezer.alexjprog.com"-->
+            <!--                    android:scheme="myapp" />-->
+            <!--            </intent-filter>-->
         </activity>
         <activity
             android:name=".ui.MainActivity"

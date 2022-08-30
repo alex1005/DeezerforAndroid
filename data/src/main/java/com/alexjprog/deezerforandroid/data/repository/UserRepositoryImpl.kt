@@ -6,6 +6,7 @@ import com.alexjprog.deezerforandroid.data.storage.IDeezerDataSource
 import com.alexjprog.deezerforandroid.data.storage.ILocalDeezerDataSource
 import com.alexjprog.deezerforandroid.data.storage.sharedprefs.LoginStore
 import com.alexjprog.deezerforandroid.domain.model.SearchSuggestionModel
+import com.alexjprog.deezerforandroid.domain.model.UserInfoModel
 import com.alexjprog.deezerforandroid.domain.repository.UserRepository
 import io.reactivex.rxjava3.core.Observable
 import javax.inject.Inject
@@ -23,6 +24,11 @@ class UserRepositoryImpl @Inject constructor(
         loginStore.userToken = token
     }
 
+    //TODO: maybe remove
+    override fun deleteUserAccessToken() {
+        loginStore.userToken = null
+    }
+
     override fun getSearchHistory(query: String): Observable<List<SearchSuggestionModel>> {
         val liveHistory = deezerSource.getSearchHistory().map { list ->
             list.map { apiMapper.fromSearchHistoryResultApiData(it) }
@@ -38,4 +44,12 @@ class UserRepositoryImpl @Inject constructor(
     override fun addSearchQueryToLocalHistory(query: String) {
         localDeezerSource.addSearchQueryToLocalHistory(dbMapper.toQueryHistoryEntity(query))
     }
+
+
+    //TODO: save in prefs user info
+    override fun getUserInfo(): Observable<UserInfoModel> =
+        deezerSource.getUserInfo().map { apiMapper.fromUserInfoApiData(it) }
+
+    override fun getUserInfoWithToken(token: String): Observable<UserInfoModel> =
+        deezerSource.getUserInfoWithToken(token).map { apiMapper.fromUserInfoApiData(it) }
 }

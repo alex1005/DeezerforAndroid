@@ -1,13 +1,7 @@
 package com.alexjprog.deezerforandroid.data.mapper
 
-import com.alexjprog.deezerforandroid.data.storage.api.model.AlbumApiData
-import com.alexjprog.deezerforandroid.data.storage.api.model.ArtistApiData
-import com.alexjprog.deezerforandroid.data.storage.api.model.SearchHistoryResultApiData
-import com.alexjprog.deezerforandroid.data.storage.api.model.TrackApiData
-import com.alexjprog.deezerforandroid.domain.model.AlbumModel
-import com.alexjprog.deezerforandroid.domain.model.ArtistModel
-import com.alexjprog.deezerforandroid.domain.model.SearchSuggestionModel
-import com.alexjprog.deezerforandroid.domain.model.TrackModel
+import com.alexjprog.deezerforandroid.data.storage.api.model.*
+import com.alexjprog.deezerforandroid.domain.model.*
 import javax.inject.Inject
 
 class DefaultApiMapper @Inject constructor() : IApiMapper {
@@ -41,4 +35,14 @@ class DefaultApiMapper @Inject constructor() : IApiMapper {
 
     override fun fromSearchResultApiData(result: TrackApiData): SearchSuggestionModel =
         SearchSuggestionModel(title = result.title, isInHistory = false)
+
+    override fun fromUserInfoApiData(userInfo: UserInfoApiData): UserInfoModel =
+        UserInfoModel(
+            id = userInfo.id,
+            name = userInfo.name,
+            email = userInfo.email,
+            smallPictureLink = userInfo.smallPictureLink,
+            bigPictureLink = userInfo.bigPictureLink,
+            linkToDeezer = userInfo.linkToDeezer
+        )
 }

@@ -62,7 +62,8 @@
     <fragment
         android:id="@+id/editorialFragment"
         android:name="com.alexjprog.deezerforandroid.ui.mvvm.EditorialFragment"
-        android:label="EditorialFragment">
+        android:label="EditorialFragment"
+        tools:layout="@layout/fragment_editorial">
         <action
             android:id="@+id/actionOpenMoreContentFromEditorial"
             app:destination="@id/moreContentFragment"
@@ -89,4 +90,9 @@
     </fragment>
     <include app:graph="@navigation/search_nav_graph" />
     <include app:graph="@navigation/player_nav_graph" />
+    <activity
+        android:id="@+id/loginActivity"
+        android:name="com.alexjprog.deezerforandroid.ui.LoginActivity"
+        android:label="activity_login"
+        tools:layout="@layout/activity_login" />
 </navigation>

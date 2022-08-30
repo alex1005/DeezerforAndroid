@@ -1,10 +1,7 @@
 package com.alexjprog.deezerforandroid.data.storage.api
 
 import com.alexjprog.deezerforandroid.data.storage.IDeezerDataSource
-import com.alexjprog.deezerforandroid.data.storage.api.model.AlbumApiData
-import com.alexjprog.deezerforandroid.data.storage.api.model.ResultPageApiData
-import com.alexjprog.deezerforandroid.data.storage.api.model.SearchHistoryResultApiData
-import com.alexjprog.deezerforandroid.data.storage.api.model.TrackApiData
+import com.alexjprog.deezerforandroid.data.storage.api.model.*
 import io.reactivex.rxjava3.core.Observable
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -74,6 +71,16 @@ class NetworkDeezerDataSource @Inject constructor(
 
     override fun getAlbumInfo(id: Int): Observable<AlbumApiData> =
         api.getAlbumInfo(id).doOnSuccess {
+            if (it.error != null) throw NoSuchElementException()
+        }.toObservable()
+
+    override fun getUserInfo(): Observable<UserInfoApiData> =
+        api.getUserInfo().doOnSuccess {
+            if (it.error != null) throw NoSuchElementException()
+        }.toObservable()
+
+    override fun getUserInfoWithToken(token: String): Observable<UserInfoApiData> =
+        api.getUserInfoWithToken(token).doOnSuccess {
             if (it.error != null) throw NoSuchElementException()
         }.toObservable()
 
