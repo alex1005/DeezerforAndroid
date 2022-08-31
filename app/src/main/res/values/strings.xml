@@ -28,4 +28,10 @@
     <string name="releases_update_content">Don\'t miss new releases: %1$s</string>
     <string name="releases_update_title">Releases</string>
     <string name="and_more">and more</string>
+    <string name="email_label">Email:</string>
+    <string name="birthday_label">Birthday:</string>
+    <string name="inscription_date_label">Inscription date:</string>
+    <string name="country_label">Country:</string>
+    <string name="open_profile_info_in_web">Open profile info in web</string>
+    <string name="user_name">%1$s\n%2$s</string>
 </resources>

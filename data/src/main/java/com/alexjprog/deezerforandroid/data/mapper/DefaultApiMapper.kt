@@ -37,12 +37,19 @@ class DefaultApiMapper @Inject constructor() : IApiMapper {
         SearchSuggestionModel(title = result.title, isInHistory = false)
 
     override fun fromUserInfoApiData(userInfo: UserInfoApiData): UserInfoModel =
-        UserInfoModel(
-            id = userInfo.id,
-            name = userInfo.name,
-            email = userInfo.email,
-            smallPictureLink = userInfo.smallPictureLink,
-            bigPictureLink = userInfo.bigPictureLink,
-            linkToDeezer = userInfo.linkToDeezer
-        )
+        userInfo.run {
+            UserInfoModel(
+                id = id,
+                name = name,
+                email = email,
+                birthday = birthday,
+                country = country,
+                inscriptionDate = inscriptionDate,
+                smallPictureLink = smallPictureLink,
+                bigPictureLink = bigPictureLink,
+                linkToDeezer = linkToDeezer,
+                firstname = firstname,
+                lastname = lastname
+            )
+        }
 }

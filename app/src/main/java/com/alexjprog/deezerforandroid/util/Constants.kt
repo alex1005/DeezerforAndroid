@@ -2,6 +2,8 @@ package com.alexjprog.deezerforandroid.util
 
 import java.util.concurrent.TimeUnit
 
+const val NETWORK_DATE_FORMAT_PATTERN = "yyyy-MM-dd"
+
 const val FIREBASE_MEDIA_ID_KEY = "id"
 const val FIREBASE_MEDIA_TYPE_KEY = "type"
 
@@ -30,3 +32,5 @@ const val EDIT_RELEASES_UPDATE_FLEX_INTERVAL = 15L
 
 val EDIT_SELECTION_UPDATE_FLEX_INTERVAL_TIME_UNIT = TimeUnit.MINUTES
 val EDIT_RELEASES_UPDATE_FLEX_INTERVAL_TIME_UNIT = TimeUnit.MINUTES
+
+const val MIN_KNOWN_BIRTHDAY = 1800

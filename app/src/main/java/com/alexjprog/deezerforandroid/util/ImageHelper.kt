@@ -61,6 +61,7 @@ object ImageHelper {
         Glide.with(context)
             .asDrawable()
             .error(R.drawable.account_icon)
+            .circleCrop()
             .load(uri)
             .into(object : CustomTarget<Drawable>() {
                 override fun onResourceReady(
@@ -77,6 +78,12 @@ object ImageHelper {
                     super.onLoadFailed(errorDrawable)
                     onLoadComplete(errorDrawable)
                 }
-
             })
+
+    fun loadUserIconIntoImage(imageView: ImageView, uri: String?) =
+        Glide.with(imageView.context)
+            .load(uri)
+            .circleCrop()
+            .error(R.drawable.account_icon)
+            .into(imageView)
 }

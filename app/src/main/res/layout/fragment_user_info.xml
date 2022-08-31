@@ -1,8 +1,143 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.mvp.UserInfoFragment">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivAccountPicture"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/default_margin"
+        android:src="@drawable/account_icon"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toStartOf="@+id/tvName"
+        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLines="2"
+        android:textSize="@dimen/big_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/ivAccountPicture"
+        app:layout_constraintTop_toTopOf="@+id/ivAccountPicture"
+        tools:text="Name\nSurname" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.2" />
+
+    <TextView
+        android:id="@+id/tvEmailLabel"
+        style="@style/Theme.DeezerForAndroid.InfoTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/default_margin"
+        android:text="@string/email_label"
+        app:layout_constraintStart_toStartOf="@+id/ivAccountPicture"
+        app:layout_constraintTop_toTopOf="@+id/guideline" />
+
+    <TextView
+        android:id="@+id/tvEmail"
+        style="@style/Theme.DeezerForAndroid.InfoTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/default_margin"
+        app:layout_constraintBottom_toBottomOf="@+id/tvEmailLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toEndOf="@+id/tvEmailLabel"
+        app:layout_constraintTop_toTopOf="@+id/tvEmailLabel"
+        tools:text="some@example.com" />
+
+    <TextView
+        android:id="@+id/tvBirthdayLabel"
+        style="@style/Theme.DeezerForAndroid.InfoTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/default_margin"
+        android:text="@string/birthday_label"
+        app:layout_constraintStart_toStartOf="@+id/tvEmailLabel"
+        app:layout_constraintTop_toBottomOf="@+id/tvEmailLabel" />
+
+    <TextView
+        android:id="@+id/tvBirthday"
+        style="@style/Theme.DeezerForAndroid.InfoTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/default_margin"
+        app:layout_constraintBottom_toBottomOf="@+id/tvBirthdayLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toEndOf="@+id/tvBirthdayLabel"
+        app:layout_constraintTop_toTopOf="@+id/tvBirthdayLabel"
+        tools:text="2000-01-01" />
+
+    <TextView
+        android:id="@+id/tvInscriptionDateLabel"
+        style="@style/Theme.DeezerForAndroid.InfoTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/default_margin"
+        android:text="@string/inscription_date_label"
+        app:layout_constraintStart_toStartOf="@+id/tvBirthdayLabel"
+        app:layout_constraintTop_toBottomOf="@+id/tvBirthdayLabel" />
+
+    <TextView
+        android:id="@+id/tvInspirationDate"
+        style="@style/Theme.DeezerForAndroid.InfoTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/default_margin"
+        app:layout_constraintBottom_toBottomOf="@+id/tvInscriptionDateLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toEndOf="@+id/tvInscriptionDateLabel"
+        app:layout_constraintTop_toTopOf="@+id/tvInscriptionDateLabel"
+        tools:text="2022-01-01" />
+
+    <TextView
+        android:id="@+id/tvCountryLabel"
+        style="@style/Theme.DeezerForAndroid.InfoTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/default_margin"
+        android:text="@string/country_label"
+        app:layout_constraintStart_toStartOf="@+id/tvInscriptionDateLabel"
+        app:layout_constraintTop_toBottomOf="@+id/tvInscriptionDateLabel" />
+
+    <TextView
+        android:id="@+id/tvCountry"
+        style="@style/Theme.DeezerForAndroid.InfoTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/default_margin"
+        app:layout_constraintBottom_toBottomOf="@+id/tvCountryLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toEndOf="@+id/tvCountryLabel"
+        app:layout_constraintTop_toTopOf="@+id/tvCountryLabel"
+        tools:text="Ukraine" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabViewInWeb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/default_margin"
+        android:contentDescription="@string/open_profile_info_in_web"
+        android:src="@drawable/ic_small_notification"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
