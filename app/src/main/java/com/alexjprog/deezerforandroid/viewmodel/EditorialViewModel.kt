@@ -9,9 +9,11 @@ import com.alexjprog.deezerforandroid.model.ContentCategory
 import com.alexjprog.deezerforandroid.ui.adapter.complex.ComplexListItem
 import com.alexjprog.deezerforandroid.util.addNewFeedCategory
 import com.alexjprog.deezerforandroid.util.getNewFeedCategory
-import kotlinx.coroutines.async
+import com.alexjprog.deezerforandroid.util.getNewFeedCategoryWithMoreAction
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.lastOrNull
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Named
@@ -35,27 +37,28 @@ class EditorialViewModel @Inject constructor(
             _feed.startLoading()
             var isError = false
             val newFeed = mutableListOf<ComplexListItem>()
-            val weeklySelectionPart = async {
-                val content = getEditorialSelectionUseCase()
-                    .catch { isError = true }
-                    .lastOrNull()
-                getNewFeedCategory(
-                    ContentCategory.EDIT_SELECTION,
-                    content
-                )
-            }
-            val releasesPart = async {
-                val content = getEditorialReleasesUseCase()
-                    .catch { isError = true }
-                    .lastOrNull()
-                getNewFeedCategory(
-                    ContentCategory.EDIT_RELEASES,
-                    content
-                )
-            }
+
+            val weeklySelectionPart = getEditorialSelectionUseCase()
+                .map {
+                    getNewFeedCategoryWithMoreAction(
+                        ContentCategory.EDIT_SELECTION,
+                        it
+                    )
+                }.catch { isError = true }
+                .flowOn(dataCoroutineContext)
+
+            val releasesPart = getEditorialReleasesUseCase()
+                .map {
+                    getNewFeedCategory(
+                        ContentCategory.EDIT_RELEASES,
+                        it
+                    )
+                }.catch { isError = true }
+                .flowOn(dataCoroutineContext)
+
             newFeed.addNewFeedCategory(
-                weeklySelectionPart.await(),
-                releasesPart.await()
+                weeklySelectionPart.lastOrNull(),
+                releasesPart.lastOrNull()
             )
             _feed.postDataOrError(isError, newFeed)
         }

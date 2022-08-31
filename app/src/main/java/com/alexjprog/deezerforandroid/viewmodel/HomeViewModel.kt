@@ -9,9 +9,10 @@ import com.alexjprog.deezerforandroid.domain.usecase.GetRecommendationsUseCase
 import com.alexjprog.deezerforandroid.model.ContentCategory
 import com.alexjprog.deezerforandroid.ui.adapter.complex.ComplexListItem
 import com.alexjprog.deezerforandroid.util.*
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.lastOrNull
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Named
@@ -36,36 +37,40 @@ class HomeViewModel @Inject constructor(
             _feed.startLoading()
             var isError = false
             val newFeed = mutableListOf<ComplexListItem>()
-            val recommendationsPart = async {
-                val content =
-                    getRecommendationsUseCase(RECOMMENDATIONS_PREVIEW_SIZE).catch { isError = true }
-                        .lastOrNull()
-                getNewFeedCategoryWithMoreAction(
-                    ContentCategory.RECOMMENDATIONS,
-                    content
-                )
-            }
-            val chartsPart = async {
-                val content = getChartsUseCase(CHARTS_PREVIEW_SIZE).catch { isError = true }
-                    .lastOrNull()
-                getNewFeedCategoryWithMoreAction(
-                    ContentCategory.CHARTS,
-                    content
-                )
-            }
-            val flowPart = async {
-                val content = getFlowUseCase(FLOW_PREVIEW_SIZE).catch { isError = true }
-                    .lastOrNull()
-                getNewFeedCategoryWithMoreAction(
-                    ContentCategory.FLOW,
-                    content
-                )
-            }
+
+            val recommendationsPart = getRecommendationsUseCase(RECOMMENDATIONS_PREVIEW_SIZE)
+                .map {
+                    getNewFeedCategoryWithMoreAction(
+                        ContentCategory.RECOMMENDATIONS,
+                        it
+                    )
+                }.catch { isError = true }
+                .flowOn(dataCoroutineContext)
+
+            val chartsPart = getChartsUseCase(CHARTS_PREVIEW_SIZE)
+                .map {
+                    getNewFeedCategoryWithMoreAction(
+                        ContentCategory.CHARTS,
+                        it
+                    )
+                }.catch { isError = true }
+                .flowOn(dataCoroutineContext)
+
+            val flowPart = getFlowUseCase(FLOW_PREVIEW_SIZE)
+                .map {
+                    getNewFeedCategoryWithMoreAction(
+                        ContentCategory.FLOW,
+                        it
+                    )
+                }.catch { isError = true }
+                .flowOn(dataCoroutineContext)
+
             newFeed.addNewFeedCategory(
-                recommendationsPart.await(),
-                chartsPart.await(),
-                flowPart.await()
+                recommendationsPart.lastOrNull(),
+                chartsPart.lastOrNull(),
+                flowPart.lastOrNull()
             )
+
             _feed.postDataOrError(
                 isError,
                 newFeed
