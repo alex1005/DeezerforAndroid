@@ -58,7 +58,11 @@ class SearchFragment : Fragment(), SearchContract.View {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         presenter.subscribeToSearchInput()
         if (savedInstanceState == null)
             presenter.postSearchQuery("")
@@ -100,7 +104,6 @@ class SearchFragment : Fragment(), SearchContract.View {
                 })
             }
         }
-        return binding.root
     }
 
     override fun onStart() {
