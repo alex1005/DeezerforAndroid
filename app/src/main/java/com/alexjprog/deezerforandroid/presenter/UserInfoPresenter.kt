@@ -19,13 +19,15 @@ class UserInfoPresenter @Inject constructor(
         getUserInfoUserCase()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(onNext@{
-                showUserInfo(it)
-            },
+            .subscribe(
+                onNext@{
+                    showUserInfo(it)
+                },
                 onError@{
                     //TODO: show error
                     Log.d("userTag", it.message.toString())
-                })
+                }
+            ).addDisposable()
     }
 
     private fun showUserInfo(userInfo: UserInfoModel) {

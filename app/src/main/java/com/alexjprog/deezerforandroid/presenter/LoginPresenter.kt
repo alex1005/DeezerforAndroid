@@ -28,7 +28,7 @@ class LoginPresenter @Inject constructor(
                         view?.showLoginButton()
                         //TODO: show error
                     }
-                }
+                }.addDisposable()
         } else {
             if (isLoggedIn()) view?.onSuccessfulLogin()
             else view?.showLoginButton()

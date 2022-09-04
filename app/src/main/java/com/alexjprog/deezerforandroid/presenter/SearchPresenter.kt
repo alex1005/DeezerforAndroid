@@ -16,15 +16,14 @@ class SearchPresenter @Inject constructor(
     private val searchInputEvents = PublishSubject.create<String>()
 
     override fun subscribeToSearchInput() {
-        val disposable = searchInputEvents
+        searchInputEvents
             .observeOn(Schedulers.io())
             .debounce(DEBOUNCE_INTERVAL_LENGTH, DEBOUNCE_INTERVAL_UNITS)
             .switchMap { getSearchSuggestionsUseCase(it) }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 view?.updateSearchSuggestions(it)
-            }
-        disposableBag.add(disposable)
+            }.addDisposable()
     }
 
     override fun postSearchQuery(query: String) {
