@@ -3,7 +3,7 @@ package com.alexjprog.deezerforandroid.di.module
 
 import com.alexjprog.deezerforandroid.data.storage.api.DeezerService
 import com.alexjprog.deezerforandroid.data.storage.api.interceptor.AuthInterceptor
-import com.alexjprog.deezerforandroid.data.storage.sharedprefs.LoginStore
+import com.alexjprog.deezerforandroid.data.storage.sharedprefs.UserStore
 import com.alexjprog.deezerforandroid.util.NETWORK_DATE_FORMAT_PATTERN
 import com.google.gson.GsonBuilder
 import dagger.Module
@@ -19,10 +19,10 @@ import javax.inject.Singleton
 class NetworkModule {
     @Singleton
     @Provides
-    fun provideOkHttpClient(loginStore: LoginStore): OkHttpClient =
+    fun provideOkHttpClient(userStore: UserStore): OkHttpClient =
         OkHttpClient.Builder()
             .also { builder ->
-                builder.addInterceptor(AuthInterceptor(loginStore))
+                builder.addInterceptor(AuthInterceptor(userStore))
             }.build()
 
     @Singleton

@@ -10,8 +10,8 @@ import com.alexjprog.deezerforandroid.data.storage.IDeezerDataSource
 import com.alexjprog.deezerforandroid.data.storage.ILocalDeezerDataSource
 import com.alexjprog.deezerforandroid.data.storage.api.NetworkDeezerDataSource
 import com.alexjprog.deezerforandroid.data.storage.db.LocalDeezerDataSource
-import com.alexjprog.deezerforandroid.data.storage.sharedprefs.LoginStore
-import com.alexjprog.deezerforandroid.data.storage.sharedprefs.LoginStoreImpl
+import com.alexjprog.deezerforandroid.data.storage.sharedprefs.UserStore
+import com.alexjprog.deezerforandroid.data.storage.sharedprefs.UserStoreImpl
 import com.alexjprog.deezerforandroid.domain.repository.MediaRepository
 import com.alexjprog.deezerforandroid.domain.repository.UserRepository
 import dagger.Binds
@@ -36,7 +36,7 @@ class DataModule {
 
         @Singleton
         @Binds
-        fun bindLoginStore(loginStoreImpl: LoginStoreImpl): LoginStore
+        fun bindLoginStore(loginStoreImpl: UserStoreImpl): UserStore
 
         @Singleton
         @Binds
