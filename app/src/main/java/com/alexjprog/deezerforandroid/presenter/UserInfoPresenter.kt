@@ -1,8 +1,8 @@
 package com.alexjprog.deezerforandroid.presenter
 
-import android.util.Log
 import com.alexjprog.deezerforandroid.domain.model.UserInfoModel
 import com.alexjprog.deezerforandroid.domain.usecase.GetUserInfoUseCase
+import com.alexjprog.deezerforandroid.model.UserInfoDisplayable
 import com.alexjprog.deezerforandroid.ui.mvp.contract.UserInfoContract
 import com.alexjprog.deezerforandroid.util.MIN_KNOWN_BIRTHDAY
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -24,8 +24,7 @@ class UserInfoPresenter @Inject constructor(
                     showUserInfo(it)
                 },
                 onError@{
-                    //TODO: show error
-                    Log.d("userTag", it.message.toString())
+                    view?.showErrorAndClose()
                 }
             ).addDisposable()
     }
@@ -43,14 +42,16 @@ class UserInfoPresenter @Inject constructor(
         val inscriptionDateText = dateFormatter.format(userInfo.inscriptionDate)
 
         view?.showUserInfo(
-            userInfo.displayableFirstname,
-            userInfo.displayableLastname,
-            birthdayText,
-            inscriptionDateText,
-            userInfo.email,
-            countryText,
-            userInfo.bigPictureLink,
-            userInfo.linkToDeezer
+            UserInfoDisplayable(
+                userInfo.displayableFirstname,
+                userInfo.displayableLastname,
+                birthdayText,
+                inscriptionDateText,
+                userInfo.email,
+                countryText,
+                userInfo.bigPictureLink,
+                userInfo.linkToDeezer
+            )
         )
     }
 }

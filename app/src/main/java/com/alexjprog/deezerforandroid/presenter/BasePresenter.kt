@@ -7,7 +7,7 @@ import io.reactivex.rxjava3.disposables.Disposable
 abstract class BasePresenter<V: BaseView>: MVPPresenter<V> {
     final override var view: V? = null
         private set
-    protected val disposableBag = CompositeDisposable()
+    private val disposableBag = CompositeDisposable()
 
     override fun onAttach(view: V) {
         this.view = view

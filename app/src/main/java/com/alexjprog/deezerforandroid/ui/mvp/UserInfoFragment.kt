@@ -7,10 +7,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.alexjprog.deezerforandroid.R
 import com.alexjprog.deezerforandroid.app.DeezerApplication
 import com.alexjprog.deezerforandroid.databinding.FragmentUserInfoBinding
+import com.alexjprog.deezerforandroid.model.UserInfoDisplayable
 import com.alexjprog.deezerforandroid.ui.mvp.contract.UserInfoContract
 import com.alexjprog.deezerforandroid.util.ImageHelper
 import javax.inject.Inject
@@ -45,42 +48,36 @@ class UserInfoFragment : Fragment(), UserInfoContract.View {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        presenter.onDetach()
         _binding = null
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        presenter.onDetach()
+    override fun showUserInfo(userInfo: UserInfoDisplayable) {
+        with(binding) {
+            with(userInfo) {
+                ImageHelper.loadUserIconIntoImage(ivAccountPicture, bigPictureLink)
+                fabViewInWeb.setOnClickListener {
+                    openUserInfoInWeb(linkToDeezer)
+                }
+
+                tvName.text = resources.getString(
+                    R.string.user_name,
+                    firstname,
+                    lastname
+                )
+                tvEmail.text = email
+
+                tvBirthday.text = birthday ?: resources.getString(R.string.unknown)
+                tvInspirationDate.text = inscriptionDate
+
+                tvCountry.text = country
+            }
+        }
     }
 
-    override fun showUserInfo(
-        firstname: String,
-        lastname: String,
-        birthday: String?,
-        inscriptionDate: String,
-        email: String,
-        country: String,
-        bigPictureLink: String,
-        linkToDeezer: String
-    ) {
-        with(binding) {
-            ImageHelper.loadUserIconIntoImage(ivAccountPicture, bigPictureLink)
-            fabViewInWeb.setOnClickListener {
-                openUserInfoInWeb(linkToDeezer)
-            }
-
-            tvName.text = resources.getString(
-                R.string.user_name,
-                firstname,
-                lastname
-            )
-            tvEmail.text = email
-
-            tvBirthday.text = birthday ?: resources.getString(R.string.unknown)
-            tvInspirationDate.text = inscriptionDate
-
-            tvCountry.text = country
-        }
+    override fun showErrorAndClose() {
+        Toast.makeText(context, R.string.user_info_fetch_error, Toast.LENGTH_LONG).show()
+        findNavController().navigateUp()
     }
 
     private fun openUserInfoInWeb(uri: String) {

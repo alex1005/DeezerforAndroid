@@ -23,15 +23,19 @@ class LoginPresenter @Inject constructor(
                 .subscribe {
                     if (it) {
                         view?.onSuccessfulLogin()
+                        view?.hideLoading()
                         loginUseCase(token)
                     } else {
+                        view?.showErrorMessage()
                         view?.showLoginButton()
-                        //TODO: show error
                     }
                 }.addDisposable()
         } else {
-            if (isLoggedIn()) view?.onSuccessfulLogin()
-            else view?.showLoginButton()
+            if (isLoggedIn())
+                view?.onSuccessfulLogin()
+            else
+                view?.showLoginButton()
+            view?.hideLoading()
         }
     }
 

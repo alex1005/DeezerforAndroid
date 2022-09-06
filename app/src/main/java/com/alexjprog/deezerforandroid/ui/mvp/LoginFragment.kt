@@ -4,13 +4,14 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.alexjprog.deezerforandroid.R
 import com.alexjprog.deezerforandroid.app.DeezerApplication
 import com.alexjprog.deezerforandroid.databinding.FragmentLoginBinding
 import com.alexjprog.deezerforandroid.ui.mvp.contract.LoginContract
@@ -46,7 +47,6 @@ class LoginFragment : Fragment(), LoginContract.View {
         binding.btnLogin.setOnClickListener { openAppropriateLoginApp() }
 
         val token = args.token
-        Log.d("loginTag", "token: $token")
         presenter.checkAndSaveUserToken(token)
     }
 
@@ -66,14 +66,22 @@ class LoginFragment : Fragment(), LoginContract.View {
         findNavController().navigate(LoginFragmentDirections.actionOpenUserInfoFragmentFromLogin())
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    override fun showErrorMessage() {
+        Toast.makeText(context, R.string.login_error, Toast.LENGTH_LONG).show()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun showLoading() {
+        binding.waveLoading.visibility = View.VISIBLE
+    }
+
+    override fun hideLoading() {
+        binding.waveLoading.visibility = View.GONE
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
         presenter.onDetach()
+        _binding = null
     }
 
     companion object {

@@ -34,4 +34,6 @@
     <string name="country_label">Country:</string>
     <string name="open_profile_info_in_web">Open profile info in web</string>
     <string name="user_name">%1$s\n%2$s</string>
+    <string name="login_error">Login failed! Try again.</string>
+    <string name="user_info_fetch_error">Cannot fetch user info. Try again later</string>
 </resources>
