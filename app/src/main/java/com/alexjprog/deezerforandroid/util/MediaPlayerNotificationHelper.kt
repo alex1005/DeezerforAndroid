@@ -126,6 +126,9 @@ class MediaPlayerNotificationHelper(
     ) =
         notificationManager.notify(NOTIFICATION_ID, getNotification(metadata, state, token, bitmap))
 
+    fun cancelNotification() =
+        notificationManager.cancel(NOTIFICATION_ID)
+
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createChannel() {
         val name: CharSequence = "DeezerPlayer"

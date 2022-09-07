@@ -202,7 +202,8 @@ class MediaPlayerService : Service() {
         mediaSession.isActive = false
         pushOnStopEvent()
         stopProgressUpdater()
-        stopForeground(true)
+        stopForeground(false)
+        notificationHelper.cancelNotification()
     }
 
     fun startSeek() {
@@ -254,7 +255,6 @@ class MediaPlayerService : Service() {
                 try {
                     newPlayer.setDataSource(track.trackLink)
                 } catch (e: FileNotFoundException) {
-                    stopMedia()
                     return
                 }
                 newPlayer.prepareAsync()
