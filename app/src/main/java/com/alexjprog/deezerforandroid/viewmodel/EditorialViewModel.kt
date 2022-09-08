@@ -9,7 +9,6 @@ import com.alexjprog.deezerforandroid.model.ContentCategory
 import com.alexjprog.deezerforandroid.ui.adapter.complex.ComplexListItem
 import com.alexjprog.deezerforandroid.util.addNewFeedCategory
 import com.alexjprog.deezerforandroid.util.getNewFeedCategory
-import com.alexjprog.deezerforandroid.util.getNewFeedCategoryWithMoreAction
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.lastOrNull
@@ -40,7 +39,7 @@ class EditorialViewModel @Inject constructor(
 
             val weeklySelectionPart = getEditorialSelectionUseCase()
                 .map {
-                    getNewFeedCategoryWithMoreAction(
+                    getNewFeedCategory(
                         ContentCategory.EDIT_SELECTION,
                         it
                     )
