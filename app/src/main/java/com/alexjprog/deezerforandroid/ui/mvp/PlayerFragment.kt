@@ -229,7 +229,7 @@ class PlayerFragment : Fragment(), PlayerContract.View, MediaPlayerService.Media
         with(binding) {
             sbSeekBar.progress = 0
             sbSeekBar.isEnabled = false
-            setPlayButtonState(false)
+            setPlayButtonState(null)
         }
     }
 }
