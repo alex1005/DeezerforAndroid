@@ -121,17 +121,17 @@ class MainActivity : AppCompatActivity() {
             animate()
                 .translationY(0.0f)
                 .setListener(object : Animator.AnimatorListener {
-                    override fun onAnimationStart(animation: Animator?) {
+                    override fun onAnimationStart(animation: Animator) {
                         visibility = View.VISIBLE
                     }
 
-                    override fun onAnimationEnd(animation: Animator?) {
+                    override fun onAnimationEnd(animation: Animator) {
                     }
 
-                    override fun onAnimationCancel(animation: Animator?) {
+                    override fun onAnimationCancel(animation: Animator) {
                     }
 
-                    override fun onAnimationRepeat(animation: Animator?) {}
+                    override fun onAnimationRepeat(animation: Animator) {}
                 })
         }
     }
@@ -141,17 +141,17 @@ class MainActivity : AppCompatActivity() {
             animate()
                 .translationY(height.toFloat())
                 .setListener(object : Animator.AnimatorListener {
-                    override fun onAnimationStart(animation: Animator?) {}
+                    override fun onAnimationStart(animation: Animator) {}
 
-                    override fun onAnimationEnd(animation: Animator?) {
+                    override fun onAnimationEnd(animation: Animator) {
                         visibility = View.GONE
                     }
 
-                    override fun onAnimationCancel(animation: Animator?) {
+                    override fun onAnimationCancel(animation: Animator) {
                         visibility = View.GONE
                     }
 
-                    override fun onAnimationRepeat(animation: Animator?) {}
+                    override fun onAnimationRepeat(animation: Animator) {}
                 })
         }
     }
