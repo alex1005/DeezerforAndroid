@@ -96,7 +96,7 @@ class MediaPlayerNotificationHelper(
             .setStyle(
                 androidx.media.app.NotificationCompat.MediaStyle()
                     .setMediaSession(token)
-                    .setShowActionsInCompactView(0, 1, 2, 4)
+                    .setShowActionsInCompactView(0, 1, 2, 3)
                     .setShowCancelButton(true)
                     .setCancelButtonIntent(
                         MediaButtonReceiver.buildMediaButtonPendingIntent(
@@ -107,8 +107,8 @@ class MediaPlayerNotificationHelper(
             )
             .setSmallIcon(R.drawable.ic_small_notification)
             .setContentIntent(playerDeepLink)
-            .setContentTitle(description?.title)
-            .setContentText(description?.subtitle)
+            .setContentTitle(description?.title ?: mediaPlayerService.getString(R.string.unknown))
+            .setContentText(description?.subtitle ?: mediaPlayerService.getString(R.string.unknown))
             .addAction(previousTrackAction(hasPreviousTrack))
             .addAction(if (isPlaying) pauseAction else playAction)
             .addAction(nextTrackAction(hasNextTrack))

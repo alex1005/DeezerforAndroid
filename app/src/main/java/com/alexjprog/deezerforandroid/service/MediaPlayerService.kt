@@ -118,13 +118,23 @@ class MediaPlayerService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         if (intent?.action == "android.intent.action.MEDIA_BUTTON") {
             val keyEvent: KeyEvent? =
-                intent.extras?.get("android.intent.extra.KEY_EVENT") as KeyEvent?
+                if (Build.VERSION.SDK_INT >= 33) {
+                    intent.extras?.getParcelable(
+                        "android.intent.extra.KEY_EVENT",
+                        KeyEvent::class.java
+                    )
+                } else {
+                    intent.extras?.getParcelable("android.intent.extra.KEY_EVENT")
+                }
             when (keyEvent?.keyCode) {
-                KeyEvent.KEYCODE_MEDIA_PAUSE -> pauseMedia()
+                KeyEvent.KEYCODE_MEDIA_PAUSE -> pauseMedia(false)
                 KeyEvent.KEYCODE_MEDIA_PLAY -> playMedia()
                 KeyEvent.KEYCODE_MEDIA_NEXT -> nextTrack()
                 KeyEvent.KEYCODE_MEDIA_PREVIOUS -> previousTrack()
-                KeyEvent.KEYCODE_MEDIA_STOP -> stopMedia()
+                KeyEvent.KEYCODE_MEDIA_STOP -> {
+                    pauseMedia(true)
+                    notificationHelper.cancelNotification()
+                }
             }
         }
         return super.onStartCommand(intent, flags, startId)
@@ -163,8 +173,9 @@ class MediaPlayerService : Service() {
     }
 
     private fun playMedia() {
+        startForegroundNotification()
         if (isStopped) {
-            startForegroundMedia()
+            prepareMediaSession()
             loadTrack(currentTrack)
             isStopped = false
             return
@@ -176,10 +187,10 @@ class MediaPlayerService : Service() {
         mediaSession.isActive = true
         startProgressUpdater()
         pushOnPlayEvent()
-        updateForegroundMedia()
+        updateForegroundNotification()
     }
 
-    private fun pauseMedia() {
+    private fun pauseMedia(stopForeground: Boolean) {
         try {
             player.pause()
         } catch (e: UninitializedPropertyAccessException) {
@@ -187,7 +198,10 @@ class MediaPlayerService : Service() {
         mediaSession.isActive = false
         stopProgressUpdater()
         pushOnPauseEvent()
-        updateForegroundMedia()
+        if (stopForeground) {
+            stopForeground(true)
+            notificationHelper.cancelNotification()
+        } else updateForegroundNotification()
     }
 
     private fun stopMedia() {
@@ -202,7 +216,7 @@ class MediaPlayerService : Service() {
         mediaSession.isActive = false
         pushOnStopEvent()
         stopProgressUpdater()
-        stopForeground(false)
+        stopForeground(true)
         notificationHelper.cancelNotification()
     }
 
@@ -214,24 +228,24 @@ class MediaPlayerService : Service() {
         player.seekTo(progress)
     }
 
-    private fun startForegroundMedia() {
-        val iconUri = currentTrack?.pictureLink
-        ImageHelper.loadLargeIconForNotification(this, iconUri) { bitmap ->
-            mediaSession.setMetadata(metadata)
-            mediaSession.setPlaybackState(state)
-            startForeground(
-                MediaPlayerNotificationHelper.NOTIFICATION_ID,
-                notificationHelper.getNotification(
-                    metadata,
-                    state,
-                    mediaSession.sessionToken,
-                    bitmap
-                )
-            )
-        }
+    private fun prepareMediaSession() {
+        mediaSession.setMetadata(metadata)
+        mediaSession.setPlaybackState(state)
     }
 
-    private fun updateForegroundMedia() {
+    private fun startForegroundNotification() {
+        startForeground(
+            MediaPlayerNotificationHelper.NOTIFICATION_ID,
+            notificationHelper.getNotification(
+                metadata,
+                state,
+                mediaSession.sessionToken,
+                null
+            )
+        )
+    }
+
+    private fun updateForegroundNotification() {
         val iconUri = currentTrack?.pictureLink
         ImageHelper.loadLargeIconForNotification(this, iconUri) { bitmap ->
             notificationHelper.updateNotification(
@@ -263,7 +277,7 @@ class MediaPlayerService : Service() {
                     playMedia()
                 }
                 newPlayer.setOnCompletionListener {
-                    pauseMedia()
+                    pauseMedia(false)
                     pushProgressUpdateEvent()
                 }
                 newPlayer.setOnSeekCompleteListener { startProgressUpdater() }
@@ -357,7 +371,7 @@ class MediaPlayerService : Service() {
 
     fun playStopTrack() {
         when (isPlaying) {
-            true -> pauseMedia()
+            true -> pauseMedia(false)
             false -> playMedia()
             else -> {}
         }
