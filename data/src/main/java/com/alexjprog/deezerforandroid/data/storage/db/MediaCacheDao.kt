@@ -1,9 +1,6 @@
 package com.alexjprog.deezerforandroid.data.storage.db
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Transaction
+import androidx.room.*
 import com.alexjprog.deezerforandroid.data.storage.db.model.MediaCacheEntity
 import com.alexjprog.deezerforandroid.domain.model.params.ContentCategoryParam
 import kotlinx.coroutines.flow.Flow
@@ -13,7 +10,7 @@ interface MediaCacheDao {
     @Query("SELECT * FROM media_cache WHERE category = :category")
     fun getCacheForCategory(category: ContentCategoryParam): Flow<List<MediaCacheEntity>>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCache(cache: List<MediaCacheEntity>)
 
     @Query("DELETE FROM media_cache WHERE category = :category")
