@@ -10,9 +10,11 @@ plugins {
 android {
     compileSdk 33
 
-    def keystorePropertiesFile = rootProject.file("keystore.properties")
     def keystoreProperties = new Properties()
-    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+    keystoreProperties.load(new FileInputStream(rootProject.file("keystore.properties")))
+
+    def apiCredentials = new Properties()
+    apiCredentials.load(new FileInputStream(rootProject.file("remote_api_data.properties")))
 
     signingConfigs {
         release {
@@ -31,6 +33,8 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField('int', "API_ACCESS_TOKEN", apiCredentials["access_token"])
+        buildConfigField('String', "API_REDIRECT_URI", apiCredentials["redirect_uri"])
     }
 
     buildTypes {

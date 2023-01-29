@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.alexjprog.deezerforandroid.BuildConfig
 import com.alexjprog.deezerforandroid.R
 import com.alexjprog.deezerforandroid.app.DeezerApplication
 import com.alexjprog.deezerforandroid.databinding.FragmentLoginBinding
@@ -85,9 +86,9 @@ class LoginFragment : Fragment(), LoginContract.View {
     }
 
     companion object {
-        private const val APP_ID = ***REMOVED***
-        private const val REDIRECT_URI = ***REMOVED***
-        private const val LOGIN_URL = "https://connect.deezer.com/oauth/auth.php?app_id=$APP_ID&" +
-                "redirect_uri=$REDIRECT_URI&perms=basic_access,email,listening_history,offline_access&response_type=token"
+        private const val LOGIN_URL =
+            "https://connect.deezer.com/oauth/auth.php?app_id=${BuildConfig.API_ACCESS_TOKEN}&" +
+                    "redirect_uri=${BuildConfig.API_REDIRECT_URI}&" +
+                    "perms=basic_access,email,listening_history,offline_access&response_type=token"
     }
 }
