@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.forEach
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import com.alexjprog.deezerforandroid.R
 import com.alexjprog.deezerforandroid.databinding.ActivityMainBinding
@@ -69,22 +68,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         if (navController.currentDestination?.id == R.id.homeFragment) finishAfterTransition()
-        else {
-            with(binding.bottomNavigationView) {
-                val previousItem = menu.findItem(
-                    navController.previousBackStackEntry?.destination?.id ?: 0
-                )
-                val currentItem = menu.findItem(
-                    navController.currentDestination?.id ?: 0
-                )
-                if (previousItem != null && currentItem != null) {
-                    NavigationUI.onNavDestinationSelected(
-                        previousItem,
-                        navController
-                    )
-                } else super.onBackPressed()
-            }
-        }
+        else super.onBackPressed()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
