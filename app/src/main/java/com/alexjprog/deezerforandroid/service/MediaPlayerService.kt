@@ -74,7 +74,7 @@ class MediaPlayerService : Service() {
     private val state: PlaybackStateCompat
         get() {
             val actions =
-                if (isPlaying == true) PlaybackStateCompat.ACTION_PAUSE else PlaybackStateCompat.ACTION_PLAY
+                if (isPlaying == true) PlaybackStateCompat.ACTION_PLAY else PlaybackStateCompat.ACTION_PAUSE
             val state =
                 if (isPlaying == true) PlaybackStateCompat.STATE_PLAYING else PlaybackStateCompat.STATE_PAUSED
             val extras = Bundle()

@@ -12,11 +12,11 @@ import java.util.*
 import javax.inject.Inject
 
 class UserInfoPresenter @Inject constructor(
-    private val getUserInfoUserCase: GetUserInfoUseCase
+    private val getUserInfoUseCase: GetUserInfoUseCase
 ) : BasePresenter<UserInfoContract.View>(),
     UserInfoContract.Presenter {
     override fun loadUserInfo() {
-        getUserInfoUserCase()
+        getUserInfoUseCase()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
