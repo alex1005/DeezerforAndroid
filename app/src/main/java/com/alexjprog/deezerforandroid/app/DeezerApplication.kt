@@ -39,6 +39,8 @@ class DeezerApplication : Application(), Configuration.Provider {
         ).setConstraints(constraints)
             .build()
 
+        PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS
+
         WorkManager.getInstance(this)
             .enqueueUniquePeriodicWork(
                 EditorialWeeklySelectionCheckWorker.UNIQUE_NAME,
